@@ -35,6 +35,9 @@ import { EducationPage as DashboardEducationPage } from '@/pages/dashboard/Educa
 import { MediaManagerPage } from '@/pages/dashboard/MediaManager';
 import { PartnersManagerPage } from '@/pages/dashboard/PartnersManager';
 import { SettingsManagerPage } from '@/pages/dashboard/SettingsManager';
+import { NewsManagerPage } from '@/pages/dashboard/NewsManager';
+import { EventsManagerPage } from '@/pages/dashboard/EventsManager';
+import { MembersManagerPage } from '@/pages/dashboard/MembersManager';
 import { PrivacyPage } from '@/pages/legal/Privacy';
 import { TermsPage } from '@/pages/legal/Terms';
 import { NotFoundPage } from '@/pages/NotFound';
@@ -142,6 +145,30 @@ function App() {
           element={
             <ProtectedRoute requirePermission={['settings.view', 'settings.update']}>
               <SettingsManagerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/news"
+          element={
+            <ProtectedRoute requirePermission={['news.view', 'news.create', 'news.update', 'news.delete']}>
+              <NewsManagerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/events"
+          element={
+            <ProtectedRoute requirePermission={['events.view', 'events.create', 'events.update', 'events.delete']}>
+              <EventsManagerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/members"
+          element={
+            <ProtectedRoute requirePermission={['members.view', 'members.create', 'members.update', 'members.delete']}>
+              <MembersManagerPage />
             </ProtectedRoute>
           }
         />

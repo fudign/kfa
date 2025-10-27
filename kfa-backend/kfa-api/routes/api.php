@@ -75,11 +75,29 @@ Route::middleware(['auth:sanctum', 'permission:content.delete'])->group(function
     Route::delete('/programs/{program}', [ProgramController::class, 'destroy']);
 });
 
+// News media management routes
+Route::middleware(['auth:sanctum', 'permission:content.update'])->group(function () {
+    Route::post('/news/{news}/media', [NewsController::class, 'attachMedia']);
+    Route::delete('/news/{news}/media/{media}', [NewsController::class, 'detachMedia']);
+    Route::put('/news/{news}/media/reorder', [NewsController::class, 'reorderMedia']);
+});
+
+// News stats (for admin dashboard)
+Route::middleware(['auth:sanctum', 'permission:content.view'])->group(function () {
+    Route::get('/news/stats', [NewsController::class, 'stats']);
+});
+
+// News submission (for content creators)
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/news/{news}/submit', [NewsController::class, 'submit']);
+});
+
 // Content moderation routes (admin only)
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/news/{news}/approve', [NewsController::class, 'approve']);
     Route::post('/news/{news}/reject', [NewsController::class, 'reject']);
-    Route::post('/news/{news}/feature', [NewsController::class, 'feature']);
+    Route::post('/news/{news}/toggle-featured', [NewsController::class, 'toggleFeatured']);
+    Route::post('/news/{news}/publish', [NewsController::class, 'publish']);
     Route::post('/news/{news}/unpublish', [NewsController::class, 'unpublish']);
     Route::post('/news/{news}/archive', [NewsController::class, 'archive']);
 

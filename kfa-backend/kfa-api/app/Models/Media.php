@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,6 +43,14 @@ class Media extends Model
     public function uploader(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    /**
+     * News где это медиа используется как главное изображение
+     */
+    public function featuredInNews(): HasMany
+    {
+        return $this->hasMany(News::class, 'featured_image_id');
     }
 
     /**
@@ -127,5 +136,38 @@ class Media extends Model
             return Storage::disk($this->disk)->url($this->metadata['thumbnails'][$size]);
         }
         return $this->url;
+    }
+
+    /**
+     * Получить все размеры миниатюр
+     */
+    public function getAllThumbnails(): array
+    {
+        if (!$this->metadata || !isset($this->metadata['thumbnails'])) {
+            return [];
+        }
+
+        $thumbnails = [];
+        foreach ($this->metadata['thumbnails'] as $size => $path) {
+            $thumbnails[$size] = Storage::disk($this->disk)->url($path);
+        }
+
+        return $thumbnails;
+    }
+
+    /**
+     * Проверить, используется ли медиафайл
+     */
+    public function isInUse(): bool
+    {
+        // Проверить, используется ли в качестве главного изображения в новостях
+        if ($this->featuredInNews()->exists()) {
+            return true;
+        }
+
+        // Можно добавить проверки для других моделей
+        // если они будут использовать этот медиафайл
+
+        return false;
     }
 }
