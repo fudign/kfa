@@ -1,0 +1,40 @@
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+Running 14 tests using 1 worker
+
+[1A[2K[1/14] [chromium] › tests\e2e\auth-roles.spec.ts:19:3 › Authentication and Role-Based Access Control › should register a new user with default role
+[1A[2K  1) [chromium] › tests\e2e\auth-roles.spec.ts:19:3 › Authentication and Role-Based Access Control › should register a new user with default role 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m201[39m
+
+      27 |     });
+      28 |
+    > 29 |     expect(response.status()).toBe(200);
+         |                               ^
+      30 |     const data = await response.json();
+      31 |
+      32 |     expect(data).toHaveProperty('user');
+        at E:\CODE\kfa\BMAD-METHOD\kfa-website\tests\e2e\auth-roles.spec.ts:29:31
+
+
+[1A[2K[2/14] [chromium] › tests\e2e\auth-roles.spec.ts:38:3 › Authentication and Role-Based Access Control › should register a new member with member role
+[1A[2K[3/14] [chromium] › tests\e2e\auth-roles.spec.ts:56:3 › Authentication and Role-Based Access Control › should register a new admin with admin role
+[1A[2K[4/14] [chromium] › tests\e2e\auth-roles.spec.ts:74:3 › Authentication and Role-Based Access Control › should login with correct credentials
+[1A[2K[5/14] [chromium] › tests\e2e\auth-roles.spec.ts:100:3 › Authentication and Role-Based Access Control › should fail login with incorrect credentials
+[1A[2K[6/14] [chromium] › tests\e2e\auth-roles.spec.ts:111:3 › Authentication and Role-Based Access Control › should get user info with valid token
+[1A[2K[7/14] [chromium] › tests\e2e\auth-roles.spec.ts:137:3 › Authentication and Role-Based Access Control › should deny access without authentication
+[1A[2K[8/14] [chromium] › tests\e2e\auth-roles.spec.ts:176:3 › Role-Based Authorization › user role can READ news
+[1A[2K[9/14] [chromium] › tests\e2e\auth-roles.spec.ts:186:3 › Role-Based Authorization › user role CANNOT CREATE news
+[1A[2K[10/14] [chromium] › tests\e2e\auth-roles.spec.ts:204:3 › Role-Based Authorization › member role CAN CREATE news
+[1A[2K[11/14] [chromium] › tests\e2e\auth-roles.spec.ts:220:3 › Role-Based Authorization › member role CANNOT DELETE news
+[1A[2K[12/14] [chromium] › tests\e2e\auth-roles.spec.ts:247:3 › Role-Based Authorization › admin role CAN DELETE news
+[1A[2K[13/14] [chromium] › tests\e2e\auth-roles.spec.ts:274:3 › Role-Based Authorization › admin role has full CRUD access
+[1A[2K[14/14] [chromium] › tests\e2e\auth-roles.spec.ts:328:3 › Role-Based Authorization › logout invalidates token
+[1A[2K  1 failed
+    [chromium] › tests\e2e\auth-roles.spec.ts:19:3 › Authentication and Role-Based Access Control › should register a new user with default role 
+  13 did not run
+
+[36m  Serving HTML report at http://localhost:55018. Press Ctrl+C to quit.[39m

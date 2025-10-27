@@ -1,0 +1,21 @@
+{
+  "hero": {
+    "title": {
+      "part1": "Sustainable development",
+      "part2": "of the stock market"
+    },
+    "subtitle": "Uniting the efforts of professionals and the state to develop the financial market of the Kyrgyz Republic",
+    "cta": {
+      "join": "Become a Member",
+      "login": "Member Login"
+    },
+    "metrics": {
+      "members": "KFA Members",
+      "volume": "Trading Volume",
+      "volumeUnit": "billion KGS",
+      "certified": "Certified",
+      "certifiedUnit": "specialists",
+      "nextEvent": "Next Event"
+    }
+  }
+}

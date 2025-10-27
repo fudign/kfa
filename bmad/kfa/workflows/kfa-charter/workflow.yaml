@@ -1,0 +1,37 @@
+# KFA Charter Generator - Workflow Configuration
+# Генератор устава КФА
+name: kfa-charter
+description: "Генератор устава Кыргызского Финансового Альянса Профессиональных Участников Рынка Ценных Бумаг на основе законодательства КР"
+author: "BMad Builder"
+version: "1.0.0"
+
+# Critical variables from config
+config_source: "{project-root}/bmad/kfa/config.yaml"
+output_folder: "{config_source}:output_folder"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+
+# Organization details from config
+organization_name: "{config_source}:organization_name"
+organization_short_name: "{config_source}:organization_short_name"
+legal_form: "{config_source}:legal_form"
+
+# Module paths and component files
+installed_path: "{project-root}/bmad/kfa/workflows/kfa-charter"
+template: "{installed_path}/template.md"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+
+# Required data files - Legal framework
+legal_requirements: "{installed_path}/legal-requirements.md"
+charter_sections: "{installed_path}/charter-sections.md"
+
+# Output configuration
+default_output_file: "{output_folder}/Устав-КФА-{date}.md"
+
+# Workflow metadata
+workflow_type: "document"
+instruction_style: "prescriptive"
+language: "russian"

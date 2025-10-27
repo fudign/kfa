@@ -1,0 +1,33 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kfa.kg/sitemap.xml
+
+# Disallow admin and auth pages from indexing
+Disallow: /admin/
+Disallow: /auth/login
+Disallow: /auth/register
+Disallow: /auth/forgot-password
+Disallow: /auth/reset-password
+Disallow: /dashboard
+
+# Allow all public pages
+Allow: /
+Allow: /about
+Allow: /news
+Allow: /events
+Allow: /members
+Allow: /membership
+Allow: /membership/join
+Allow: /documents
+Allow: /standards
+Allow: /education
+Allow: /education/programs
+Allow: /education/certification
+Allow: /education/calendar
+Allow: /research
+Allow: /faq
+Allow: /privacy
+Allow: /terms

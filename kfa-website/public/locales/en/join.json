@@ -1,0 +1,63 @@
+{
+  "hero": {
+    "title": "Become a KFA Member",
+    "subtitle": "Join the leading professional community of financiers in Kyrgyzstan and gain access to unique development opportunities"
+  },
+  "benefits": {
+    "networking": {
+      "title": "Professional Network",
+      "description": "Access to expert community"
+    },
+    "credibility": {
+      "title": "Credibility",
+      "description": "Recognition of competencies"
+    },
+    "recognition": {
+      "title": "Development",
+      "description": "Training and certification"
+    }
+  },
+  "form": {
+    "title": "Membership Application",
+    "subtitle": "Fill out the form and we will contact you within 3 business days",
+    "fields": {
+      "membershipType": {
+        "label": "Membership Type",
+        "options": {
+          "individual": "Individual",
+          "corporate": "Corporate",
+          "institutional": "Institutional"
+        }
+      },
+      "firstName": {
+        "label": "First Name"
+      },
+      "lastName": {
+        "label": "Last Name"
+      },
+      "organizationName": {
+        "label": "Organization Name"
+      },
+      "position": {
+        "label": "Position"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "phone": {
+        "label": "Phone"
+      },
+      "experience": {
+        "label": "Experience in financial sector"
+      },
+      "motivation": {
+        "label": "Why do you want to join KFA?"
+      },
+      "agreeToTerms": {
+        "label": "I agree to the",
+        "termsLink": "terms of use"
+      }
+    },
+    "submitButton": "Submit Application"
+  }
+}

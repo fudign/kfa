@@ -1,0 +1,51 @@
+# Audit Project Validation Workflow Configuration
+name: audit-project-validation
+description: "Комплексная валидация и аудит проектов по международным стандартам, законодательным требованиям и лучшим практикам индустрии. Workflow проводит 7-этапную проверку: юридическое соответствие, gap-анализ, техническую экспертизу, оценку рисков и формирует приоритизированные рекомендации для улучшения проекта."
+author: "BMad Builder"
+
+# Critical variables from config
+config_source: "{project-root}/bmad/bmb/config.yaml"
+output_folder: "{config_source}:output_folder"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+# Project-specific variables (to be collected during workflow execution)
+project_name: ""
+project_type: ""  # website, app, platform, system
+industry: ""      # finance, healthcare, education, etc.
+validation_scope: "full"  # full, compliance-only, technical-only, gap-analysis-only
+
+# Module path and component files
+installed_path: "{project-root}/bmad/bmb/workflows/audit-project-validation"
+template: "{installed_path}/template.md"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+
+# Reference data files
+validation_questions_checklist: "{installed_path}/validation-questions.md"
+
+# Recommended input documents for validation
+recommended_inputs:
+  - project_document: "Документ проекта для валидации (концепция, ТЗ, PRD)"
+  - legislative_docs: "Применимые законы и нормативные акты"
+  - competitor_references: "Сайты/документы конкурентов для сравнения (URLs или файлы)"
+  - technical_specs: "Техническая документация - опционально"
+
+# Output configuration
+default_output_file: "{output_folder}/validation-report-{{project_name}}-{{date}}.md"
+
+# Web bundle configuration (for future deployment)
+web_bundle:
+  name: "audit-project-validation"
+  description: "Комплексная валидация и аудит проектов по международным стандартам и лучшим практикам"
+  author: "BMad Builder"
+  instructions: "bmad/bmb/workflows/audit-project-validation/instructions.md"
+  validation: "bmad/bmb/workflows/audit-project-validation/checklist.md"
+  template: "bmad/bmb/workflows/audit-project-validation/template.md"
+  validation_questions_checklist: "bmad/bmb/workflows/audit-project-validation/validation-questions.md"
+  web_bundle_files:
+    - "bmad/bmb/workflows/audit-project-validation/instructions.md"
+    - "bmad/bmb/workflows/audit-project-validation/checklist.md"
+    - "bmad/bmb/workflows/audit-project-validation/template.md"
+    - "bmad/bmb/workflows/audit-project-validation/validation-questions.md"

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Инструкция по установке Pandoc для конвертации документов КФА в PDF и DOCX">
+    <title>Установка Pandoc - Кыргызский Финансовый Альянс</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/documents.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">
+                    <div class="logo-placeholder">КФА</div>
+                    <span class="logo-text">Кыргызский Финансовый Альянс</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/documents/">Документы</a></li>
+                    <li><a href="/forms/">Формы</a></li>
+                    <li><a href="/members/">Членство</a></li>
+                    <li><a href="/education/">Образование</a></li>
+                    <li><a href="/contacts.html">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <nav class="breadcrumb">
+                    <a href="/">Главная</a> / <a href="/download/">Скачать</a> / <span>Установка Pandoc</span>
+                </nav>
+                <h1>🔧 Установка Pandoc</h1>
+                <p class="page-subtitle">Руководство по установке Pandoc для конвертации документов</p>
+            </div>
+        </section>
+
+        <section class="document-content" style="padding: var(--spacing-xl) 0;">
+            <div class="container">
+                <div style="max-width: 900px; margin: 0 auto; background: white; padding: var(--spacing-xl); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+
+                    <h2>Что такое Pandoc?</h2>
+                    <p><strong>Pandoc</strong> — это универсальный конвертер документов, который позволяет преобразовывать файлы из Markdown в PDF, DOCX и многие другие форматы.</p>
+
+                    <div class="alert alert-info">
+                        <strong>💡 Для чего это нужно?</strong><br>
+                        Pandoc необходим для конвертации исходных Markdown-документов КФА в форматы PDF (для печати) и DOCX (для редактирования).
+                    </div>
+
+                    <hr style="margin: var(--spacing-lg) 0; border: none; border-top: 1px solid var(--light-gray);">
+
+                    <h2>📦 Установка на Windows</h2>
+
+                    <h3>Способ 1: С помощью установщика (рекомендуется)</h3>
+                    <ol>
+                        <li><strong>Скачайте установщик:</strong><br>
+                            Перейдите на <a href="https://pandoc.org/installing.html" target="_blank" rel="noopener">https://pandoc.org/installing.html</a><br>
+                            Скачайте MSI-файл для Windows
+                        </li>
+                        <li><strong>Запустите установщик:</strong><br>
+                            Откройте скачанный файл <code>pandoc-VERSION-windows-x86_64.msi</code>
+                        </li>
+                        <li><strong>Следуйте инструкциям:</strong><br>
+                            Нажмите "Next" → "Install" → "Finish"
+                        </li>
+                        <li><strong>Проверьте установку:</strong><br>
+                            Откройте PowerShell и выполните:
+                            <pre><code>pandoc --version</code></pre>
+                            Вы должны увидеть версию Pandoc
+                        </li>
+                    </ol>
+
+                    <h3>Способ 2: С помощью Chocolatey</h3>
+                    <ol>
+                        <li>Откройте PowerShell от имени администратора</li>
+                        <li>Выполните команду:
+                            <pre><code>choco install pandoc -y</code></pre>
+                        </li>
+                        <li>Дождитесь завершения установки</li>
+                    </ol>
+
+                    <h3>⚠️ Установка LaTeX (для PDF)</h3>
+                    <p>Для создания PDF-файлов также требуется LaTeX:</p>
+                    <ol>
+                        <li>Скачайте MiKTeX: <a href="https://miktex.org/download" target="_blank" rel="noopener">https://miktex.org/download</a></li>
+                        <li>Установите базовую версию</li>
+                        <li>При первом запуске разрешите автоматическую установку пакетов</li>
+                    </ol>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>🍎 Установка на macOS</h2>
+
+                    <h3>С помощью Homebrew (рекомендуется)</h3>
+                    <ol>
+                        <li>Откройте Terminal</li>
+                        <li>Если Homebrew не установлен, выполните:
+                            <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+                        </li>
+                        <li>Установите Pandoc:
+                            <pre><code>brew install pandoc</code></pre>
+                        </li>
+                        <li>Установите LaTeX (для PDF):
+                            <pre><code>brew install --cask basictex</code></pre>
+                        </li>
+                        <li>Обновите PATH:
+                            <pre><code>echo 'export PATH=/Library/TeX/texbin:$PATH' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+                        </li>
+                    </ol>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>🐧 Установка на Linux (Ubuntu/Debian)</h2>
+
+                    <ol>
+                        <li>Откройте терминал</li>
+                        <li>Обновите списки пакетов:
+                            <pre><code>sudo apt-get update</code></pre>
+                        </li>
+                        <li>Установите Pandoc:
+                            <pre><code>sudo apt-get install pandoc</code></pre>
+                        </li>
+                        <li>Установите LaTeX (для PDF):
+                            <pre><code>sudo apt-get install texlive-xetex texlive-lang-cyrillic</code></pre>
+                        </li>
+                        <li>Проверьте установку:
+                            <pre><code>pandoc --version
+xelatex --version</code></pre>
+                        </li>
+                    </ol>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>🚀 Запуск конвертации</h2>
+
+                    <p>После установки Pandoc и LaTeX, вы можете запустить скрипты конвертации:</p>
+
+                    <h3>Windows (PowerShell)</h3>
+                    <pre><code>cd E:\CODE\kfa\BMAD-METHOD\docs\kfa\scripts
+.\convert-documents.ps1</code></pre>
+
+                    <h3>Linux / macOS (Bash)</h3>
+                    <pre><code>cd /path/to/BMAD-METHOD/docs/kfa/scripts
+chmod +x convert-documents.sh
+./convert-documents.sh</code></pre>
+
+                    <h3>📊 Что произойдет</h3>
+                    <p>Скрипт автоматически:</p>
+                    <ul>
+                        <li>✅ Проверит наличие Pandoc и LaTeX</li>
+                        <li>✅ Сконвертирует все 26 документов в PDF и DOCX</li>
+                        <li>✅ Создаст 9 ZIP-архивов по категориям</li>
+                        <li>✅ Сгенерирует лог конвертации</li>
+                    </ul>
+
+                    <p><strong>Время выполнения:</strong> ~5-10 минут (зависит от мощности компьютера)</p>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>❓ Устранение неполадок</h2>
+
+                    <h3>Проблема: "pandoc: command not found"</h3>
+                    <p><strong>Решение:</strong></p>
+                    <ul>
+                        <li>Убедитесь, что Pandoc установлен</li>
+                        <li>Перезапустите терминал/PowerShell</li>
+                        <li>Проверьте, что Pandoc добавлен в PATH</li>
+                    </ul>
+
+                    <h3>Проблема: "xelatex: command not found"</h3>
+                    <p><strong>Решение:</strong></p>
+                    <ul>
+                        <li>Установите LaTeX (MiKTeX для Windows, TeX Live для Linux, BasicTeX для macOS)</li>
+                        <li>Перезапустите терминал</li>
+                    </ul>
+
+                    <h3>Проблема: Ошибки с кириллицей в PDF</h3>
+                    <p><strong>Решение:</strong></p>
+                    <ul>
+                        <li><strong>Linux:</strong> <code>sudo apt-get install texlive-lang-cyrillic</code></li>
+                        <li><strong>macOS:</strong> <code>sudo tlmgr install collection-langcyrillic</code></li>
+                        <li><strong>Windows:</strong> В MiKTeX Console установите пакет "cyrillic"</li>
+                    </ul>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>📁 Результаты конвертации</h2>
+
+                    <p>После успешной конвертации файлы будут расположены в:</p>
+                    <pre><code>docs/kfa/output/
+├── pdf/                # PDF файлы
+│   ├── charter/        # Учредительные (8)
+│   ├── regulations/    # Положения (4)
+│   ├── web/            # Веб-документы (2)
+│   └── forms/          # Формы (4)
+│
+├── docx/               # DOCX файлы (аналогично)
+│
+├── archives/           # ZIP-архивы (9 штук)
+│
+└── conversion.log      # Лог конвертации</code></pre>
+
+                    <p><strong>Всего будет создано:</strong></p>
+                    <ul>
+                        <li>📄 18 PDF файлов</li>
+                        <li>📝 18 DOCX файлов</li>
+                        <li>📦 9 ZIP-архивов</li>
+                    </ul>
+
+                    <hr style="margin: var(--spacing-lg) 0;">
+
+                    <h2>🆘 Нужна помощь?</h2>
+
+                    <div style="background-color: var(--light); padding: var(--spacing-md); border-radius: var(--radius-md);">
+                        <p><strong>Не получается установить или запустить?</strong></p>
+                        <p>Свяжитесь с технической поддержкой:</p>
+                        <ul style="margin: 0;">
+                            <li>📧 Email: <a href="mailto:support@kfa.kg">support@kfa.kg</a></li>
+                            <li>☎️ Телефон: +996 (312) XXX-XXX</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: var(--spacing-lg); text-align: center;">
+                        <a href="/download/" class="btn btn-primary">← Вернуться к скачиванию</a>
+                        <a href="https://pandoc.org/MANUAL.html" target="_blank" class="btn btn-outline" rel="noopener">Документация Pandoc</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Кыргызский Финансовый Альянс</h4>
+                    <p>Саморегулируемая организация профессиональных участников рынка ценных бумаг</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Документы</h4>
+                    <ul>
+                        <li><a href="/documents/charter/">Учредительные документы</a></li>
+                        <li><a href="/documents/regulations/">Регулирующие положения</a></li>
+                        <li><a href="/forms/">Операционные формы</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Юридическая информация</h4>
+                    <ul>
+                        <li><a href="/privacy-policy.html">Политика конфиденциальности</a></li>
+                        <li><a href="/terms-of-use.html">Пользовательское соглашение</a></li>
+                        <li><a href="/contacts.html">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Кыргызский Финансовый Альянс. Все права защищены.</p>
+                <p class="powered-by">Powered by BMAD Method v6.0</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>
