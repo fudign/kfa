@@ -90,33 +90,8 @@ export const membersAPI = {
   },
 };
 
-// News API
-export const newsAPI = {
-  getAll: async () => {
-    const response = await api.get('/news');
-    return response.data;
-  },
-
-  getById: async (id: number) => {
-    const response = await api.get(`/news/${id}`);
-    return response.data;
-  },
-
-  create: async (data: any) => {
-    const response = await api.post('/news', data);
-    return response.data;
-  },
-
-  update: async (id: number, data: any) => {
-    const response = await api.put(`/news/${id}`, data);
-    return response.data;
-  },
-
-  delete: async (id: number) => {
-    const response = await api.delete(`/news/${id}`);
-    return response.data;
-  },
-};
+// News API - использует новый NewsService с полной функциональностью
+export { NewsService as newsAPI } from './api/news';
 
 // Events API
 export const eventsAPI = {

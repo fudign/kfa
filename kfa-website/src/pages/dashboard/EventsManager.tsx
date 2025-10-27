@@ -4,6 +4,7 @@ import { MediaPicker } from '@/components/cms/MediaPicker';
 import { eventsAPI } from '@/services/api';
 import { usePermission } from '@/hooks/usePermission';
 import type { Event, PaginatedResponse, Media } from '@/types';
+import { eventsSchema } from '@/schemas/events.schema';
 import {
   Plus,
   Search,
@@ -63,62 +64,31 @@ export function EventsManagerPage() {
   };
 
   const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
+    try {
+      eventsSchema.parse({
+        title: formData.title,
+        slug: formData.slug || generateSlug(formData.title),
+        description: formData.description,
+        location: formData.location,
+        starts_at: formData.starts_at,
+        ends_at: formData.ends_at,
+        capacity: formData.capacity ? Number(formData.capacity) : null,
+        image: formData.image
+      });
 
-    // Заголовок
-    if (!formData.title.trim()) {
-      errors.title = 'Заголовок обязателен';
-    } else if (formData.title.trim().length < 3) {
-      errors.title = 'Заголовок должен содержать минимум 3 символа';
-    } else if (formData.title.length > 255) {
-      errors.title = 'Заголовок не должен превышать 255 символов';
-    }
-
-    // Описание
-    if (!formData.description.trim()) {
-      errors.description = 'Описание обязательно';
-    } else if (formData.description.trim().length < 10) {
-      errors.description = 'Описание должно содержать минимум 10 символов';
-    }
-
-    // Локация
-    if (formData.location && formData.location.length > 255) {
-      errors.location = 'Локация не должна превышать 255 символов';
-    }
-
-    // Дата начала
-    if (!formData.starts_at) {
-      errors.starts_at = 'Дата начала обязательна';
-    }
-
-    // Дата окончания
-    if (formData.ends_at && formData.starts_at) {
-      const startDate = new Date(formData.starts_at);
-      const endDate = new Date(formData.ends_at);
-      if (endDate < startDate) {
-        errors.ends_at = 'Дата окончания должна быть позже даты начала';
+      setFormErrors({});
+      return true;
+    } catch (error: any) {
+      const errors: Record<string, string> = {};
+      if (error.errors) {
+        error.errors.forEach((err: any) => {
+          const field = err.path[0];
+          errors[field] = err.message;
+        });
       }
+      setFormErrors(errors);
+      return false;
     }
-
-    // Вместимость
-    if (formData.capacity) {
-      const capacity = parseInt(formData.capacity);
-      if (isNaN(capacity) || capacity < 1) {
-        errors.capacity = 'Вместимость должна быть положительным числом';
-      }
-    }
-
-    // URL изображения
-    if (formData.image) {
-      try {
-        new URL(formData.image);
-      } catch {
-        errors.image = 'Введите корректный URL изображения';
-      }
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

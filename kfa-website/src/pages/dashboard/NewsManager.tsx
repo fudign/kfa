@@ -4,6 +4,7 @@ import { MediaPicker } from '@/components/cms/MediaPicker';
 import { newsAPI } from '@/services/api';
 import { usePermission } from '@/hooks/usePermission';
 import type { News, PaginatedResponse, Media } from '@/types';
+import { newsSchema } from '@/schemas/news.schema';
 import {
   Plus,
   Search,
@@ -67,40 +68,35 @@ export function NewsManagerPage() {
   };
 
   const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
+    try {
+      // Валидация с использованием Zod схемы
+      newsSchema.parse({
+        title: formData.title,
+        slug: formData.slug || generateSlug(formData.title),
+        content: formData.content,
+        excerpt: formData.excerpt,
+        image: formData.image,
+        status: formData.status,
+        featured: formData.featured
+      });
 
-    // Заголовок
-    if (!formData.title.trim()) {
-      errors.title = 'Заголовок обязателен';
-    } else if (formData.title.trim().length < 3) {
-      errors.title = 'Заголовок должен содержать минимум 3 символа';
-    } else if (formData.title.length > 255) {
-      errors.title = 'Заголовок не должен превышать 255 символов';
-    }
+      // Если валидация прошла успешно, очищаем ошибки
+      setFormErrors({});
+      return true;
+    } catch (error: any) {
+      // Обработка ошибок Zod
+      const errors: Record<string, string> = {};
 
-    // Контент
-    if (!formData.content.trim()) {
-      errors.content = 'Контент обязателен';
-    } else if (formData.content.trim().length < 10) {
-      errors.content = 'Контент должен содержать минимум 10 символов';
-    }
-
-    // Краткое описание
-    if (formData.excerpt && formData.excerpt.length > 500) {
-      errors.excerpt = 'Краткое описание не должно превышать 500 символов';
-    }
-
-    // URL изображения
-    if (formData.image) {
-      try {
-        new URL(formData.image);
-      } catch {
-        errors.image = 'Введите корректный URL изображения';
+      if (error.errors) {
+        error.errors.forEach((err: any) => {
+          const field = err.path[0];
+          errors[field] = err.message;
+        });
       }
-    }
 
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+      setFormErrors(errors);
+      return false;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

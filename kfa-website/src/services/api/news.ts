@@ -1,4 +1,4 @@
-import { apiClient } from '../apiClient';
+import { api } from '../api';
 import type {
   News,
   NewsFormData,
@@ -14,7 +14,7 @@ export class NewsService {
    * Получить список новостей с фильтрацией и пагинацией
    */
   static async getAll(filters?: NewsFilters): Promise<PaginatedNewsResponse> {
-    const response = await apiClient.get<PaginatedNewsResponse>(
+    const response = await api.get<PaginatedNewsResponse>(
       this.BASE_URL,
       { params: filters }
     );
@@ -25,7 +25,7 @@ export class NewsService {
    * Получить одну новость по ID
    */
   static async getById(id: number): Promise<News> {
-    const response = await apiClient.get<{ data: News }>(
+    const response = await api.get<{ data: News }>(
       `${this.BASE_URL}/${id}`
     );
     return response.data.data;
@@ -35,7 +35,7 @@ export class NewsService {
    * Создать новость
    */
   static async create(data: NewsFormData): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       this.BASE_URL,
       data
     );
@@ -46,7 +46,7 @@ export class NewsService {
    * Обновить новость
    */
   static async update(id: number, data: Partial<NewsFormData>): Promise<News> {
-    const response = await apiClient.put<{ data: News }>(
+    const response = await api.put<{ data: News }>(
       `${this.BASE_URL}/${id}`,
       data
     );
@@ -57,7 +57,7 @@ export class NewsService {
    * Удалить новость
    */
   static async delete(id: number): Promise<void> {
-    await apiClient.delete(`${this.BASE_URL}/${id}`);
+    await api.delete(`${this.BASE_URL}/${id}`);
   }
 
   // =============== УПРАВЛЕНИЕ МЕДИА ===============
@@ -71,7 +71,7 @@ export class NewsService {
     type: 'featured' | 'gallery',
     order = 0
   ): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${newsId}/media`,
       { media_id: mediaId, type, order }
     );
@@ -82,7 +82,7 @@ export class NewsService {
    * Открепить медиафайл от новости
    */
   static async detachMedia(newsId: number, mediaId: number): Promise<News> {
-    const response = await apiClient.delete<{ data: News }>(
+    const response = await api.delete<{ data: News }>(
       `${this.BASE_URL}/${newsId}/media/${mediaId}`
     );
     return response.data.data;
@@ -95,7 +95,7 @@ export class NewsService {
     newsId: number,
     mediaIds: number[]
   ): Promise<News> {
-    const response = await apiClient.put<{ data: News }>(
+    const response = await api.put<{ data: News }>(
       `${this.BASE_URL}/${newsId}/media/reorder`,
       { media_ids: mediaIds }
     );
@@ -108,7 +108,7 @@ export class NewsService {
    * Одобрить новость (админ)
    */
   static async approve(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/approve`
     );
     return response.data.data;
@@ -118,7 +118,7 @@ export class NewsService {
    * Отклонить новость (админ)
    */
   static async reject(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/reject`
     );
     return response.data.data;
@@ -128,7 +128,7 @@ export class NewsService {
    * Переключить статус "избранное" (админ)
    */
   static async toggleFeatured(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/toggle-featured`
     );
     return response.data.data;
@@ -138,7 +138,7 @@ export class NewsService {
    * Опубликовать новость (админ)
    */
   static async publish(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/publish`
     );
     return response.data.data;
@@ -148,7 +148,7 @@ export class NewsService {
    * Снять с публикации (админ)
    */
   static async unpublish(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/unpublish`
     );
     return response.data.data;
@@ -158,7 +158,7 @@ export class NewsService {
    * Архивировать новость (админ)
    */
   static async archive(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/archive`
     );
     return response.data.data;
@@ -168,7 +168,7 @@ export class NewsService {
    * Отправить на модерацию
    */
   static async submit(id: number): Promise<News> {
-    const response = await apiClient.post<{ data: News }>(
+    const response = await api.post<{ data: News }>(
       `${this.BASE_URL}/${id}/submit`
     );
     return response.data.data;
@@ -180,7 +180,7 @@ export class NewsService {
    * Получить статистику по новостям
    */
   static async getStats(): Promise<NewsStats> {
-    const response = await apiClient.get<NewsStats>(
+    const response = await api.get<NewsStats>(
       `${this.BASE_URL}/stats`
     );
     return response.data;
