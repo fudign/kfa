@@ -13,7 +13,12 @@ import {
   Search,
   Filter,
   Download,
-  Eye
+  Eye,
+  CheckSquare,
+  Square,
+  Edit,
+  X,
+  Save
 } from 'lucide-react';
 
 export function MediaManagerPage() {
@@ -24,19 +29,26 @@ export function MediaManagerPage() {
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('');
+  const [collectionFilter, setCollectionFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<Media | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<number[]>([]);
+  const [editingMedia, setEditingMedia] = useState<Media | null>(null);
+  const [editForm, setEditForm] = useState({ filename: '', alt_text: '', description: '' });
+  const [saving, setSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, typeFilter]);
+    setSelectedMedia([]);
+  }, [searchTerm, typeFilter, collectionFilter]);
 
   useEffect(() => {
     loadMedia(currentPage);
-  }, [currentPage, searchTerm, typeFilter]);
+    setSelectedMedia([]);
+  }, [currentPage]);
 
   useEffect(() => {
     const dropZone = dropZoneRef.current;
@@ -91,6 +103,7 @@ export function MediaManagerPage() {
       const params: any = { page };
       if (searchTerm) params.search = searchTerm;
       if (typeFilter) params.type = typeFilter;
+      if (collectionFilter) params.collection = collectionFilter;
 
       const response = await mediaAPI.getAll(params);
       setMedia(response);
@@ -175,10 +188,83 @@ export function MediaManagerPage() {
     try {
       await mediaAPI.delete(id);
       await loadMedia();
-      // setSelectedMedia(null);
+      setSelectedMedia(prev => prev.filter(mediaId => mediaId !== id));
     } catch (error) {
       console.error('Error deleting media:', error);
       alert('Ошибка при удалении файла');
+    }
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedMedia(prev =>
+      prev.includes(id)
+        ? prev.filter(mediaId => mediaId !== id)
+        : [...prev, id]
+    );
+  };
+
+  const selectAll = () => {
+    if (media?.data) {
+      setSelectedMedia(media.data.map(item => item.id));
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedMedia([]);
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedMedia.length === 0) return;
+
+    const count = selectedMedia.length;
+    if (!confirm(`Вы уверены, что хотите удалить ${count} ${count === 1 ? 'файл' : count < 5 ? 'файла' : 'файлов'}?`)) return;
+
+    try {
+      // Удаляем файлы последовательно
+      for (const id of selectedMedia) {
+        await mediaAPI.delete(id);
+      }
+
+      setSelectedMedia([]);
+      await loadMedia();
+      alert(`Успешно удалено ${count} ${count === 1 ? 'файл' : count < 5 ? 'файла' : 'файлов'}`);
+    } catch (error) {
+      console.error('Error bulk deleting media:', error);
+      alert('Ошибка при удалении файлов');
+    }
+  };
+
+  const handleEdit = (item: Media) => {
+    setEditingMedia(item);
+    setEditForm({
+      filename: item.filename.split('.')[0], // Remove extension
+      alt_text: item.alt_text || '',
+      description: item.description || ''
+    });
+  };
+
+  const handleSaveMetadata = async () => {
+    if (!editingMedia) return;
+
+    try {
+      setSaving(true);
+      const extension = editingMedia.filename.split('.').pop();
+      const newFilename = editForm.filename + (extension ? `.${extension}` : '');
+
+      await mediaAPI.update(editingMedia.id, {
+        filename: newFilename,
+        alt_text: editForm.alt_text,
+        description: editForm.description
+      });
+
+      await loadMedia(currentPage);
+      setEditingMedia(null);
+      setEditForm({ filename: '', alt_text: '', description: '' });
+    } catch (error) {
+      console.error('Error updating metadata:', error);
+      alert('Ошибка при сохранении метаданных');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -257,7 +343,56 @@ export function MediaManagerPage() {
               <option value="application">Документы</option>
             </select>
           </div>
+          <div className="flex items-center gap-2">
+            <select
+              value={collectionFilter}
+              onChange={(e) => setCollectionFilter(e.target.value)}
+              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-800"
+            >
+              <option value="">Все коллекции</option>
+              <option value="default">По умолчанию</option>
+              <option value="news">Новости</option>
+              <option value="events">Мероприятия</option>
+              <option value="members">Члены КФА</option>
+              <option value="partners">Партнеры</option>
+              <option value="programs">Программы</option>
+              <option value="documents">Документы</option>
+            </select>
+          </div>
         </div>
+
+        {/* Bulk Actions Toolbar */}
+        {media?.data && media.data.length > 0 && (
+          <div className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-700 dark:bg-neutral-800/50">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={selectedMedia.length === media.data.length ? clearSelection : selectAll}
+                className="flex items-center gap-2 text-sm font-medium text-primary-700 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+              >
+                {selectedMedia.length === media.data.length ? (
+                  <CheckSquare className="h-4 w-4" />
+                ) : (
+                  <Square className="h-4 w-4" />
+                )}
+                {selectedMedia.length === media.data.length ? 'Снять выделение' : 'Выбрать все'}
+              </button>
+              {selectedMedia.length > 0 && (
+                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  Выбрано: {selectedMedia.length}
+                </span>
+              )}
+            </div>
+            {selectedMedia.length > 0 && can('media.delete') && (
+              <button
+                onClick={handleBulkDelete}
+                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+              >
+                <Trash2 className="h-4 w-4" />
+                Удалить выбранные ({selectedMedia.length})
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Upload Progress */}
         {Object.keys(uploadProgress).length > 0 && (
@@ -302,8 +437,26 @@ export function MediaManagerPage() {
             {media.data.map((item) => (
               <div
                 key={item.id}
-                className="group relative overflow-hidden rounded-lg border border-neutral-200 bg-white p-3 transition-all hover:border-primary-300 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800"
+                className={`group relative overflow-hidden rounded-lg border p-3 transition-all hover:shadow-md ${
+                  selectedMedia.includes(item.id)
+                    ? 'border-primary-500 bg-primary-50 dark:border-primary-500 dark:bg-primary-900/20'
+                    : 'border-neutral-200 bg-white hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800'
+                }`}
               >
+                {/* Selection Checkbox */}
+                <div className="absolute left-2 top-2 z-10">
+                  <button
+                    onClick={() => toggleSelect(item.id)}
+                    className="rounded-lg bg-white/90 p-1.5 shadow-md transition-colors hover:bg-white dark:bg-neutral-800/90 dark:hover:bg-neutral-800"
+                  >
+                    {selectedMedia.includes(item.id) ? (
+                      <CheckSquare className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                    ) : (
+                      <Square className="h-5 w-5 text-neutral-400" />
+                    )}
+                  </button>
+                </div>
+
                 {/* Preview */}
                 <div className="mb-3 flex h-40 items-center justify-center overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-700">
                   {item.is_image ? (
@@ -342,6 +495,15 @@ export function MediaManagerPage() {
                   >
                     <Eye className="h-4 w-4" />
                   </button>
+                  {can('media.upload') && (
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="rounded-lg bg-white/90 p-2 text-primary-600 shadow-md transition-colors hover:bg-white dark:bg-neutral-800/90 dark:hover:bg-neutral-800"
+                      title="Редактировать"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                  )}
                   <a
                     href={item.url}
                     download={item.filename}
@@ -404,6 +566,102 @@ export function MediaManagerPage() {
           </div>
         )}
       </div>
+
+      {/* Edit Metadata Modal */}
+      {editingMedia && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl dark:bg-neutral-800">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+                Редактирование метаданных
+              </h2>
+              <button
+                onClick={() => setEditingMedia(null)}
+                className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Preview */}
+            {editingMedia.is_image && (
+              <div className="mb-4 flex justify-center">
+                <img
+                  src={editingMedia.url}
+                  alt={editingMedia.filename}
+                  className="h-40 rounded-lg object-contain"
+                />
+              </div>
+            )}
+
+            {/* Form */}
+            <div className="space-y-4">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  Имя файла (без расширения)
+                </label>
+                <input
+                  type="text"
+                  value={editForm.filename}
+                  onChange={(e) => setEditForm({ ...editForm, filename: e.target.value })}
+                  className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+                  placeholder="Введите имя файла"
+                />
+                <p className="mt-1 text-xs text-neutral-500">
+                  Расширение: .{editingMedia.filename.split('.').pop()}
+                </p>
+              </div>
+
+              {editingMedia.is_image && (
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                    Alt-текст (для SEO и доступности)
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.alt_text}
+                    onChange={(e) => setEditForm({ ...editForm, alt_text: e.target.value })}
+                    className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+                    placeholder="Краткое описание изображения"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  Описание
+                </label>
+                <textarea
+                  value={editForm.description}
+                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                  rows={3}
+                  className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+                  placeholder="Подробное описание файла"
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={() => setEditingMedia(null)}
+                disabled={saving}
+                className="rounded-lg border border-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              >
+                Отмена
+              </button>
+              <button
+                onClick={handleSaveMetadata}
+                disabled={saving || !editForm.filename.trim()}
+                className="flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
+              >
+                <Save className="h-4 w-4" />
+                {saving ? 'Сохранение...' : 'Сохранить'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Lightbox */}
       {lightboxImage && (

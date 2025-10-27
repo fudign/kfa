@@ -14,6 +14,9 @@ import {
   Settings,
   Image,
   Users,
+  Newspaper,
+  Calendar,
+  UserCheck,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LogoCompact } from '@/components/ui/Logo';
@@ -40,6 +43,9 @@ const navItems: NavItem[] = [
 
 // Admin CMS navigation items
 const adminNavItems: NavItem[] = [
+  { to: '/dashboard/news', icon: Newspaper, label: 'Новости' },
+  { to: '/dashboard/events', icon: Calendar, label: 'События' },
+  { to: '/dashboard/members', icon: UserCheck, label: 'Участники' },
   { to: '/dashboard/media', icon: Image, label: 'Медиафайлы' },
   { to: '/dashboard/partners', icon: Users, label: 'Партнеры' },
   { to: '/dashboard/settings', icon: Settings, label: 'Настройки' },

@@ -151,7 +151,7 @@ function App() {
         <Route
           path="/dashboard/news"
           element={
-            <ProtectedRoute requirePermission={['news.view', 'news.create', 'news.update', 'news.delete']}>
+            <ProtectedRoute requirePermission={['content.view', 'content.create', 'content.update', 'content.delete']}>
               <NewsManagerPage />
             </ProtectedRoute>
           }
