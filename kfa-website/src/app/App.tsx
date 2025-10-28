@@ -1,53 +1,65 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { HomePage } from '@/pages/public/Home';
-import { AboutPage } from '@/pages/public/About';
-import { DocumentsPage } from '@/pages/public/Documents';
-import { MembershipPage } from '@/pages/public/Membership';
-import { JoinPage } from '@/pages/public/membership/Join';
-import { MembersPage } from '@/pages/public/Members';
-import { FAQPage } from '@/pages/public/FAQ';
-import { NewsPage } from '@/pages/public/News';
-import { EventsPage } from '@/pages/public/Events';
-import { StandardsPage } from '@/pages/public/Standards';
-import { EducationPage } from '@/pages/public/Education';
-import { ProgramsPage } from '@/pages/public/education/Programs';
-import { CertificationPage } from '@/pages/public/education/Certification';
-import { CalendarPage } from '@/pages/public/education/Calendar';
-import { ResearchPage } from '@/pages/public/Research';
-import { ResearchArticlePage } from '@/pages/public/ResearchArticle';
-import { GovernanceCodePage } from '@/pages/public/governance/Code';
-import { DirectorsCertificationPage } from '@/pages/public/governance/DirectorsCertification';
-import { DirectorsDatabasePage } from '@/pages/public/governance/DirectorsDatabase';
-import { GovernanceScorecardPage } from '@/pages/public/governance/Scorecard';
-import { DirectorsCommunityPage } from '@/pages/public/governance/DirectorsCommunity';
-import { LoginPage } from '@/pages/auth/Login';
-import { RegisterPage } from '@/pages/auth/Register';
-import { ForgotPasswordPage } from '@/pages/auth/ForgotPassword';
-import { ResetPasswordPage } from '@/pages/auth/ResetPassword';
-import { DashboardPage } from '@/pages/dashboard/Dashboard';
-import { ProfilePage } from '@/pages/dashboard/Profile';
-import { AdminDashboardPage } from '@/pages/dashboard/AdminDashboard';
-import { PaymentsPage } from '@/pages/dashboard/Payments';
-import { DocumentsPage as DashboardDocumentsPage } from '@/pages/dashboard/Documents';
-import { CertificatesPage } from '@/pages/dashboard/Certificates';
-import { EducationPage as DashboardEducationPage } from '@/pages/dashboard/Education';
-import { MediaManagerPage } from '@/pages/dashboard/MediaManager';
-import { PartnersManagerPage } from '@/pages/dashboard/PartnersManager';
-import { SettingsManagerPage } from '@/pages/dashboard/SettingsManager';
-import { NewsManagerPage } from '@/pages/dashboard/NewsManager';
-import { EventsManagerPage } from '@/pages/dashboard/EventsManager';
-import { MembersManagerPage } from '@/pages/dashboard/MembersManager';
-import { PrivacyPage } from '@/pages/legal/Privacy';
-import { TermsPage } from '@/pages/legal/Terms';
-import { NotFoundPage } from '@/pages/NotFound';
-import { Forbidden403Page } from '@/pages/errors/Forbidden403';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 import { OfflineBanner } from '@/components/common/OfflineBanner';
 import { PWAInstallPrompt } from '@/components/pwa/PWAInstallPrompt';
 import { PWAUpdateNotification } from '@/components/pwa/PWAUpdateNotification';
+
+// Lazy loading для критически важных страниц - загружаются сразу
+import { HomePage } from '@/pages/public/Home';
+
+// Lazy loading публичных страниц
+const AboutPage = lazy(() => import('@/pages/public/About').then(m => ({ default: m.AboutPage })));
+const DocumentsPage = lazy(() => import('@/pages/public/Documents').then(m => ({ default: m.DocumentsPage })));
+const MembershipPage = lazy(() => import('@/pages/public/Membership').then(m => ({ default: m.MembershipPage })));
+const JoinPage = lazy(() => import('@/pages/public/membership/Join').then(m => ({ default: m.JoinPage })));
+const MembersPage = lazy(() => import('@/pages/public/Members').then(m => ({ default: m.MembersPage })));
+const FAQPage = lazy(() => import('@/pages/public/FAQ').then(m => ({ default: m.FAQPage })));
+const NewsPage = lazy(() => import('@/pages/public/News').then(m => ({ default: m.NewsPage })));
+const EventsPage = lazy(() => import('@/pages/public/Events').then(m => ({ default: m.EventsPage })));
+const StandardsPage = lazy(() => import('@/pages/public/Standards').then(m => ({ default: m.StandardsPage })));
+const EducationPage = lazy(() => import('@/pages/public/Education').then(m => ({ default: m.EducationPage })));
+const ProgramsPage = lazy(() => import('@/pages/public/education/Programs').then(m => ({ default: m.ProgramsPage })));
+const CertificationPage = lazy(() => import('@/pages/public/education/Certification').then(m => ({ default: m.CertificationPage })));
+const CalendarPage = lazy(() => import('@/pages/public/education/Calendar').then(m => ({ default: m.CalendarPage })));
+const ResearchPage = lazy(() => import('@/pages/public/Research').then(m => ({ default: m.ResearchPage })));
+const ResearchArticlePage = lazy(() => import('@/pages/public/ResearchArticle').then(m => ({ default: m.ResearchArticlePage })));
+
+// Lazy loading для governance страниц
+const GovernanceCodePage = lazy(() => import('@/pages/public/governance/Code').then(m => ({ default: m.GovernanceCodePage })));
+const DirectorsCertificationPage = lazy(() => import('@/pages/public/governance/DirectorsCertification').then(m => ({ default: m.DirectorsCertificationPage })));
+const DirectorsDatabasePage = lazy(() => import('@/pages/public/governance/DirectorsDatabase').then(m => ({ default: m.DirectorsDatabasePage })));
+const GovernanceScorecardPage = lazy(() => import('@/pages/public/governance/Scorecard').then(m => ({ default: m.GovernanceScorecardPage })));
+const DirectorsCommunityPage = lazy(() => import('@/pages/public/governance/DirectorsCommunity').then(m => ({ default: m.DirectorsCommunityPage })));
+
+// Lazy loading для auth страниц
+const LoginPage = lazy(() => import('@/pages/auth/Login').then(m => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('@/pages/auth/Register').then(m => ({ default: m.RegisterPage })));
+const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPassword').then(m => ({ default: m.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import('@/pages/auth/ResetPassword').then(m => ({ default: m.ResetPasswordPage })));
+
+// Lazy loading для dashboard страниц
+const DashboardPage = lazy(() => import('@/pages/dashboard/Dashboard').then(m => ({ default: m.DashboardPage })));
+const ProfilePage = lazy(() => import('@/pages/dashboard/Profile').then(m => ({ default: m.ProfilePage })));
+const AdminDashboardPage = lazy(() => import('@/pages/dashboard/AdminDashboard').then(m => ({ default: m.AdminDashboardPage })));
+const PaymentsPage = lazy(() => import('@/pages/dashboard/Payments').then(m => ({ default: m.PaymentsPage })));
+const DashboardDocumentsPage = lazy(() => import('@/pages/dashboard/Documents').then(m => ({ default: m.DocumentsPage })));
+const CertificatesPage = lazy(() => import('@/pages/dashboard/Certificates').then(m => ({ default: m.CertificatesPage })));
+const DashboardEducationPage = lazy(() => import('@/pages/dashboard/Education').then(m => ({ default: m.EducationPage })));
+const MediaManagerPage = lazy(() => import('@/pages/dashboard/MediaManager').then(m => ({ default: m.MediaManagerPage })));
+const PartnersManagerPage = lazy(() => import('@/pages/dashboard/PartnersManager').then(m => ({ default: m.PartnersManagerPage })));
+const SettingsManagerPage = lazy(() => import('@/pages/dashboard/SettingsManager').then(m => ({ default: m.SettingsManagerPage })));
+const NewsManagerPage = lazy(() => import('@/pages/dashboard/NewsManager').then(m => ({ default: m.NewsManagerPage })));
+const EventsManagerPage = lazy(() => import('@/pages/dashboard/EventsManager').then(m => ({ default: m.EventsManagerPage })));
+const MembersManagerPage = lazy(() => import('@/pages/dashboard/MembersManager').then(m => ({ default: m.MembersManagerPage })));
+
+// Lazy loading для legal и error страниц
+const PrivacyPage = lazy(() => import('@/pages/legal/Privacy').then(m => ({ default: m.PrivacyPage })));
+const TermsPage = lazy(() => import('@/pages/legal/Terms').then(m => ({ default: m.TermsPage })));
+const NotFoundPage = lazy(() => import('@/pages/NotFound').then(m => ({ default: m.NotFoundPage })));
+const Forbidden403Page = lazy(() => import('@/pages/errors/Forbidden403').then(m => ({ default: m.Forbidden403Page })));
 
 function App() {
   // Enable hash navigation (scroll to element with id matching hash)
