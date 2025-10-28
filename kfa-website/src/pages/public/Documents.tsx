@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { DocumentsSection } from '@/components/sections/about/DocumentsSection';
 import { FileText, Shield, Award, BookOpen } from 'lucide-react';
+import { SEO } from '@/components/seo';
 
 function DocumentsHeroSection() {
   const { t } = useTranslation('documents');
@@ -79,6 +80,13 @@ function DocumentsHeroSection() {
 export function DocumentsPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Документы"
+        description="Учредительные документы, устав, положения, регламенты и отчеты Кыргызского Финансового Альянса. Нормативная база и официальная документация"
+        url="https://kfa.kg/documents"
+        keywords="документы КФА, устав, положения, регламенты, отчеты, нормативная база"
+        image="https://kfa.kg/images/documents-og.png"
+      />
       <DocumentsHeroSection />
       <DocumentsSection />
     </div>

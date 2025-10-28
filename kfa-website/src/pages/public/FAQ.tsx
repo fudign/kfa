@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { ChevronDown, HelpCircle, BookOpen, Users, CreditCard, Award } from 'lucide-react';
+import { SEO } from '@/components/seo';
+import { generateFAQSchema } from '@/lib/seo/structuredData';
 
 function FAQHeroSection() {
   const { t } = useTranslation('faq');
@@ -175,8 +177,41 @@ function FAQSection() {
 }
 
 export function FAQPage() {
+  const { t } = useTranslation('faq');
+
+  // Generate FAQ structured data from translations
+  const faqItems = [
+    // General questions
+    ...['q1', 'q2', 'q3', 'q4'].map((q) => ({
+      question: t(`categories.general.items.${q}.question`),
+      answer: t(`categories.general.items.${q}.answer`),
+    })),
+    // Membership questions
+    ...['q1', 'q2', 'q3', 'q4', 'q5'].map((q) => ({
+      question: t(`categories.membership.items.${q}.question`),
+      answer: t(`categories.membership.items.${q}.answer`),
+    })),
+    // Fees questions
+    ...['q1', 'q2', 'q3'].map((q) => ({
+      question: t(`categories.fees.items.${q}.question`),
+      answer: t(`categories.fees.items.${q}.answer`),
+    })),
+    // Certification questions
+    ...['q1', 'q2', 'q3', 'q4'].map((q) => ({
+      question: t(`categories.certification.items.${q}.question`),
+      answer: t(`categories.certification.items.${q}.answer`),
+    })),
+  ];
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Часто задаваемые вопросы"
+        description="Ответы на часто задаваемые вопросы о членстве, взносах, сертификации и деятельности Кыргызского Финансового Альянса"
+        url="https://kfa.kg/faq"
+        keywords="FAQ, вопросы и ответы, членство КФА, взносы, сертификация, требования"
+        structuredData={generateFAQSchema(faqItems)}
+      />
       <FAQHeroSection />
       <FAQSection />
     </div>

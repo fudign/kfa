@@ -1,5 +1,6 @@
 import { Users } from 'lucide-react';
 import { MembersCatalog } from '@/components/members/MembersCatalog';
+import { SEO } from '@/components/seo';
 
 function MembersHeroSection() {
   return (
@@ -36,6 +37,13 @@ function MembersHeroSection() {
 export function MembersPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Члены КФА"
+        description="Каталог членов Кыргызского Финансового Альянса - профессиональные участники рынка ценных бумаг Кыргызстана. Брокеры, дилеры, управляющие компании"
+        url="https://kfa.kg/members"
+        keywords="члены КФА, участники рынка, брокеры, дилеры, управляющие компании, профессиональные участники"
+        image="https://kfa.kg/images/members-og.png"
+      />
       <MembersHeroSection />
       <MembersCatalog />
     </div>

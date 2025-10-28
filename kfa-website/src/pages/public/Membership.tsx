@@ -3,6 +3,7 @@ import { MembershipTypesSection } from '@/components/sections/membership/Members
 import { JoinProcessSection } from '@/components/sections/membership/JoinProcessSection';
 import { RequirementsSection } from '@/components/sections/membership/RequirementsSection';
 import { MembershipBenefitsSection } from '@/components/sections/MembershipBenefitsSection';
+import { SEO } from '@/components/seo';
 
 function MembershipHeroSection() {
   const { t } = useTranslation('membership');
@@ -59,6 +60,13 @@ function MembershipHeroSection() {
 export function MembershipPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Членство"
+        description="Станьте членом Кыргызского Финансового Альянса. Типы членства, требования, преимущества и процесс вступления для профессиональных участников рынка"
+        url="https://kfa.kg/membership"
+        keywords="членство КФА, вступление, требования, преимущества, взносы, участники рынка ценных бумаг"
+        image="https://kfa.kg/images/membership-og.png"
+      />
       <MembershipHeroSection />
       <div id="fees">
         <MembershipTypesSection />

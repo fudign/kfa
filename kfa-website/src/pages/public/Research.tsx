@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { PublicationsSection } from '@/components/sections/research/PublicationsSection';
 import { MarketDataSection } from '@/components/sections/research/MarketDataSection';
 import { ResearchAreasSection } from '@/components/sections/research/ResearchAreasSection';
+import { SEO } from '@/components/seo';
 
 function ResearchHeroSection() {
   const { t } = useTranslation('research');
@@ -64,6 +65,13 @@ function ResearchHeroSection() {
 export function ResearchPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Исследования и аналитика"
+        description="Аналитические материалы, исследования рынка ценных бумаг, методологии оценки рисков и публикации Кыргызского Финансового Альянса. Данные и статистика финансового рынка"
+        url="https://kfa.kg/research"
+        keywords="исследования КФА, аналитика, рыночные данные, статистика, публикации, анализ рынка ценных бумаг"
+        image="https://kfa.kg/images/research-og.png"
+      />
       <ResearchHeroSection />
       <MarketDataSection />
       <PublicationsSection />

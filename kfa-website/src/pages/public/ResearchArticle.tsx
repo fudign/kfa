@@ -5,6 +5,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { ArrowLeft, Calendar, User, FileText, Download } from 'lucide-react';
 import { LazyMermaidDiagram } from '@/components/common/LazyMermaidDiagram';
+import { SEO } from '@/components/seo';
+import { generateArticleSchema } from '@/lib/seo/structuredData';
 
 interface ArticleMetadata {
   id: string;
@@ -149,6 +151,35 @@ export function ResearchArticlePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white dark:from-neutral-900 dark:to-neutral-900">
+      <SEO
+        title={article.title}
+        description={`${article.category} • ${article.author} • ${formatDate(article.date)} • ${article.pages} страниц`}
+        url={`https://kfa.kg/research/${slug}`}
+        keywords={`${article.category}, исследование КФА, аналитика, ${article.author}`}
+        type="article"
+        article={{
+          publishedTime: article.date,
+          author: article.author,
+          section: article.category,
+          tags: [article.category, 'Исследования', 'КФА'],
+        }}
+        structuredData={generateArticleSchema({
+          headline: article.title,
+          description: `${article.category} - ${article.author}`,
+          image: 'https://kfa.kg/images/research-og.png',
+          datePublished: article.date,
+          dateModified: article.date,
+          author: {
+            name: article.author,
+            url: 'https://kfa.kg',
+          },
+          publisher: {
+            name: 'Кыргызский Финансовый Альянс',
+            url: 'https://kfa.kg',
+            logo: 'https://kfa.kg/logo.png',
+          },
+        })}
+      />
       {/* Header */}
       <div className="border-b border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
         <div className="container max-w-7xl py-8">

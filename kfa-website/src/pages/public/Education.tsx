@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ProgramsOverviewSection } from '@/components/sections/education/ProgramsOverviewSection';
 import { CertificationOverviewSection } from '@/components/sections/education/CertificationOverviewSection';
 import { UpcomingEventsSection } from '@/components/sections/education/UpcomingEventsSection';
+import { SEO } from '@/components/seo';
 
 function EducationHeroSection() {
   const { t } = useTranslation('education');
@@ -72,6 +73,13 @@ function EducationHeroSection() {
 export function EducationPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Образование и сертификация"
+        description="Образовательные программы, курсы подготовки и профессиональная сертификация для участников рынка ценных бумаг от КФА. Повышение квалификации и развитие компетенций"
+        url="https://kfa.kg/education"
+        keywords="образование КФА, сертификация, обучение, курсы, повышение квалификации, профессиональное развитие"
+        image="https://kfa.kg/images/education-og.png"
+      />
       <EducationHeroSection />
       <ProgramsOverviewSection />
       <CertificationOverviewSection />

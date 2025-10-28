@@ -4,6 +4,7 @@ import { StandardsListSection } from '@/components/sections/standards/StandardsL
 import { EthicsCodeSection } from '@/components/sections/standards/EthicsCodeSection';
 import { QualityControlSection } from '@/components/sections/standards/QualityControlSection';
 import { DisputeResolutionSection } from '@/components/sections/standards/DisputeResolutionSection';
+import { SEO } from '@/components/seo';
 
 function StandardsHeroSection() {
   const { t } = useTranslation('standards');
@@ -69,6 +70,13 @@ function StandardsHeroSection() {
 export function StandardsPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Стандарты и этика"
+        description="Профессиональные стандарты, кодекс этики, контроль качества и урегулирование споров в Кыргызском Финансовом Альянсе. Саморегулирование рынка ценных бумаг"
+        url="https://kfa.kg/standards"
+        keywords="стандарты КФА, кодекс этики, контроль качества, саморегулирование, профессиональная деятельность"
+        image="https://kfa.kg/images/standards-og.png"
+      />
       <StandardsHeroSection />
       <StandardsListSection />
       <EthicsCodeSection />
