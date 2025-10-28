@@ -291,12 +291,7 @@ export default defineConfig({
         manualChunks: (id) => {
           // Core vendors
           if (id.includes('node_modules')) {
-            // React core
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
-
-            // Heavy libraries - separate chunks for lazy loading
+            // Heavy libraries - check FIRST before React to avoid conflicts
             if (id.includes('mermaid')) {
               return 'vendor-mermaid';
             }
@@ -310,14 +305,44 @@ export default defineConfig({
               return 'vendor-d3';
             }
 
-            // Markdown rendering
+            // Markdown rendering (contains 'react-markdown')
             if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype')) {
               return 'vendor-markdown';
             }
 
-            // Charts
+            // Charts (contains 'recharts')
             if (id.includes('recharts')) {
               return 'vendor-charts';
+            }
+
+            // Forms (contains 'react-hook-form')
+            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+              return 'vendor-forms';
+            }
+
+            // State management (contains 'react-query')
+            if (id.includes('zustand') || id.includes('@tanstack/react-query') || id.includes('@tanstack/react-table')) {
+              return 'vendor-state';
+            }
+
+            // Animation (contains 'framer-motion')
+            if (id.includes('framer-motion')) {
+              return 'vendor-animation';
+            }
+
+            // Icons (contains 'lucide-react')
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+
+            // i18n (contains 'react-i18next')
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'vendor-i18n';
+            }
+
+            // React Helmet (contains 'react-helmet')
+            if (id.includes('react-helmet')) {
+              return 'vendor-helmet';
             }
 
             // UI components
@@ -325,24 +350,18 @@ export default defineConfig({
               return 'vendor-ui';
             }
 
-            // Forms
-            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
-              return 'vendor-forms';
-            }
-
-            // State management
-            if (id.includes('zustand') || id.includes('@tanstack/react-query')) {
-              return 'vendor-state';
-            }
-
-            // Animation
-            if (id.includes('framer-motion')) {
-              return 'vendor-animation';
-            }
-
-            // Icons
-            if (id.includes('lucide-react')) {
-              return 'vendor-icons';
+            // React core - check LAST with exact matches to avoid catching react-* libraries
+            if (
+              id.includes('/react/') ||
+              id.includes('/react-dom/') ||
+              id.includes('/react-router-dom/') ||
+              id.includes('/react-router/') ||
+              id.endsWith('/react') ||
+              id.endsWith('/react-dom') ||
+              id.endsWith('/react-router-dom') ||
+              id.endsWith('/react-router')
+            ) {
+              return 'vendor-react';
             }
 
             // Other node_modules
