@@ -3,6 +3,8 @@ import { MissionSection } from '@/components/sections/about/MissionSection';
 import { HistoryTimeline } from '@/components/sections/about/HistoryTimeline';
 import { TeamSection } from '@/components/sections/about/TeamSection';
 import { DocumentsSection } from '@/components/sections/about/DocumentsSection';
+import { SEO } from '@/components/seo';
+import { generateOrganizationSchema } from '@/lib/seo/structuredData';
 
 function AboutHeroSection() {
   const { t } = useTranslation('about');
@@ -53,6 +55,13 @@ function AboutHeroSection() {
 export function AboutPage() {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="О нас"
+        description="История, миссия и цели Кыргызского Финансового Альянса - саморегулируемой организации профессиональных участников рынка ценных бумаг"
+        url="https://kfa.kg/about"
+        keywords="КФА, о нас, история, миссия, команда, саморегулируемая организация"
+        structuredData={generateOrganizationSchema()}
+      />
       <AboutHeroSection />
       <MissionSection />
       <HistoryTimeline />

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { SEO } from '@/components/seo';
 
 interface Event {
   id: number;
@@ -119,6 +120,13 @@ export function EventsPage() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Мероприятия"
+        description="Предстоящие события, конференции, семинары и тренинги от Кыргызского Финансового Альянса. Профессиональное развитие для участников рынка"
+        url="https://kfa.kg/events"
+        keywords="мероприятия КФА, конференции, семинары, обучение, тренинги, финансовый рынок"
+        image="https://kfa.kg/images/events-og.png"
+      />
       <EventsHeroSection />
 
       <section className="bg-gradient-to-b from-primary-50 to-white px-4 py-12 dark:from-neutral-800 dark:to-neutral-900 md:py-16 lg:py-24">

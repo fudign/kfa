@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Search, ArrowRight } from 'lucide-react';
+import { SEO } from '@/components/seo';
 
 interface NewsArticle {
   id: number;
@@ -128,6 +129,13 @@ export function NewsPage() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Новости"
+        description="Актуальные новости, события и аналитика фондового рынка Кыргызстана. Регулирование, международное сотрудничество, образовательные программы КФА"
+        url="https://kfa.kg/news"
+        keywords="новости КФА, фондовый рынок, ценные бумаги, регулирование, аналитика, финансы Кыргызстан"
+        image="https://kfa.kg/images/news-og.png"
+      />
       <NewsHeroSection />
 
       <section className="bg-white px-4 py-8 dark:bg-neutral-900 md:py-12">
