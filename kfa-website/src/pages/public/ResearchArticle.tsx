@@ -177,6 +177,7 @@ export function ResearchArticlePage() {
             name: 'Кыргызский Финансовый Альянс',
             url: 'https://kfa.kg',
             logo: 'https://kfa.kg/logo.png',
+            description: 'Саморегулируемая организация профессиональных участников рынка ценных бумаг',
           },
         })}
       />
