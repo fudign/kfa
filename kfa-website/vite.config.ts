@@ -291,7 +291,22 @@ export default defineConfig({
         manualChunks: (id) => {
           // Core vendors
           if (id.includes('node_modules')) {
-            // Heavy libraries - check FIRST before React to avoid conflicts
+            // React core - check FIRST with exact matches
+            // This ensures React loads before any React-dependent libraries
+            if (
+              id.includes('/react/') ||
+              id.includes('/react-dom/') ||
+              id.includes('/react-router-dom/') ||
+              id.includes('/react-router/') ||
+              id.endsWith('/react') ||
+              id.endsWith('/react-dom') ||
+              id.endsWith('/react-router-dom') ||
+              id.endsWith('/react-router')
+            ) {
+              return 'vendor-react';
+            }
+
+            // Heavy libraries - separate chunks for lazy loading
             if (id.includes('mermaid')) {
               return 'vendor-mermaid';
             }
@@ -350,22 +365,8 @@ export default defineConfig({
               return 'vendor-ui';
             }
 
-            // React core - check LAST with exact matches to avoid catching react-* libraries
-            if (
-              id.includes('/react/') ||
-              id.includes('/react-dom/') ||
-              id.includes('/react-router-dom/') ||
-              id.includes('/react-router/') ||
-              id.endsWith('/react') ||
-              id.endsWith('/react-dom') ||
-              id.endsWith('/react-router-dom') ||
-              id.endsWith('/react-router')
-            ) {
-              return 'vendor-react';
-            }
-
-            // Other node_modules
-            return 'vendor';
+            // Other node_modules - don't bundle into single chunk
+            // Let Vite handle them individually or with app code
           }
         },
       },
