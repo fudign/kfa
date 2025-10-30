@@ -14,8 +14,22 @@ export function useRoleRedirect() {
    * Перенаправить пользователя после успешного логина
    * Использует location.state.from если доступно, иначе домашнюю страницу роли
    */
-  const redirectAfterLogin = useCallback(() => {
-    if (!user) return;
+  const redirectAfterLogin = useCallback(async () => {
+    // Ожидаем обновления user с ретраями (для разных браузеров)
+    let currentUser = useAuthStore.getState().user;
+    let retries = 0;
+    const maxRetries = 10;
+
+    while (!currentUser && retries < maxRetries) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+      currentUser = useAuthStore.getState().user;
+      retries++;
+    }
+
+    if (!currentUser) {
+      console.warn('useRoleRedirect: user is null after retries, cannot redirect');
+      return;
+    }
 
     // Проверяем, откуда пришел пользователь
     const from = (location.state as any)?.from?.pathname;
@@ -27,22 +41,17 @@ export function useRoleRedirect() {
     }
 
     // Иначе перенаправляем на домашнюю страницу роли
-    const roleHome = getRoleHomePage(user.role);
+    const roleHome = getRoleHomePage(currentUser.role);
     navigate(roleHome, { replace: true });
-  }, [user, location.state, navigate]);
+  }, [location.state, navigate]);
 
   /**
    * Получить URL домашней страницы для роли
+   * Все пользователи после логина идут на /dashboard/
    */
   const getRoleHomePage = (role: 'admin' | 'member' | 'user' | 'guest'): string => {
-    const roleRoutes: Record<string, string> = {
-      admin: '/dashboard/admin',
-      member: '/dashboard',
-      user: '/dashboard/profile',
-      guest: '/dashboard/profile',
-    };
-
-    return roleRoutes[role] || '/';
+    // Все роли идут на общую страницу dashboard
+    return '/dashboard/';
   };
 
   /**

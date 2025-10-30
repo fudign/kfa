@@ -23,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Log all API requests in development
         $middleware->appendToGroup('api', \App\Http\Middleware\LogApiRequests::class);
+
+        // Security headers для защиты от XSS и других атак
+        $middleware->appendToGroup('api', \App\Http\Middleware\SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

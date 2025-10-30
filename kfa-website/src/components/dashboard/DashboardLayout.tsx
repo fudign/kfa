@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   User,
@@ -30,33 +30,97 @@ interface NavItem {
   to: string;
   icon: typeof LayoutDashboard;
   label: string;
+  // RBAC: требуемые роли или права доступа
+  roles?: string[];
+  permissions?: string[];
+  requireAllPermissions?: boolean;
 }
 
+// Основные пункты меню для всех авторизованных пользователей
 const navItems: NavItem[] = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Обзор' },
-  { to: '/dashboard/profile', icon: User, label: 'Профиль' },
-  { to: '/dashboard/payments', icon: CreditCard, label: 'Платежи' },
-  { to: '/dashboard/documents', icon: FileText, label: 'Документы' },
-  { to: '/dashboard/certificates', icon: Award, label: 'Сертификаты' },
-  { to: '/dashboard/education', icon: BookOpen, label: 'Обучение' },
+  {
+    to: '/dashboard',
+    icon: LayoutDashboard,
+    label: 'Обзор',
+    // Доступно всем авторизованным
+  },
+  {
+    to: '/dashboard/profile',
+    icon: User,
+    label: 'Профиль',
+    // Доступно всем авторизованным
+  },
+  {
+    to: '/dashboard/payments',
+    icon: CreditCard,
+    label: 'Платежи',
+    roles: ['admin', 'member'],
+  },
+  {
+    to: '/dashboard/documents',
+    icon: FileText,
+    label: 'Документы',
+    roles: ['admin', 'member'],
+  },
+  {
+    to: '/dashboard/certificates',
+    icon: Award,
+    label: 'Сертификаты',
+    roles: ['admin', 'member'],
+  },
+  {
+    to: '/dashboard/education',
+    icon: BookOpen,
+    label: 'Обучение',
+    roles: ['admin', 'member'],
+  },
 ];
 
-// Admin CMS navigation items
-const adminNavItems: NavItem[] = [
-  { to: '/dashboard/news', icon: Newspaper, label: 'Новости' },
-  { to: '/dashboard/events', icon: Calendar, label: 'События' },
-  { to: '/dashboard/members', icon: UserCheck, label: 'Участники' },
-  { to: '/dashboard/media', icon: Image, label: 'Медиафайлы' },
-  { to: '/dashboard/partners', icon: Users, label: 'Партнеры' },
-  { to: '/dashboard/settings', icon: Settings, label: 'Настройки' },
+// Пункты меню управления контентом (CMS)
+const cmsNavItems: NavItem[] = [
+  {
+    to: '/dashboard/news',
+    icon: Newspaper,
+    label: 'Новости',
+    permissions: ['content.view'],
+  },
+  {
+    to: '/dashboard/events',
+    icon: Calendar,
+    label: 'События',
+    permissions: ['events.view'],
+  },
+  {
+    to: '/dashboard/members',
+    icon: UserCheck,
+    label: 'Участники',
+    permissions: ['members.view'],
+  },
+  {
+    to: '/dashboard/media',
+    icon: Image,
+    label: 'Медиафайлы',
+    permissions: ['media.view'],
+  },
+  {
+    to: '/dashboard/partners',
+    icon: Users,
+    label: 'Партнеры',
+    permissions: ['partners.view'],
+  },
+  {
+    to: '/dashboard/settings',
+    icon: Settings,
+    label: 'Настройки',
+    permissions: ['settings.view'],
+  },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const user = useAuthStore((state) => state.user);
-
-  const isAdmin = user?.role === 'admin';
+  const { user, logout, hasAnyRole, hasAnyPermission, hasAllPermissions } = useAuthStore();
 
   const isActive = (path: string) => {
     if (path === '/dashboard') {
@@ -64,6 +128,49 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     }
     return location.pathname.startsWith(path);
   };
+
+  // Функция проверки доступа к пункту меню
+  const hasAccess = (item: NavItem): boolean => {
+    // Если не указаны требования - доступно всем
+    if (!item.roles && !item.permissions) {
+      return true;
+    }
+
+    // Проверка по ролям
+    if (item.roles && item.roles.length > 0) {
+      if (!hasAnyRole(item.roles)) {
+        return false;
+      }
+    }
+
+    // Проверка по правам доступа
+    if (item.permissions && item.permissions.length > 0) {
+      if (item.requireAllPermissions) {
+        return hasAllPermissions(item.permissions);
+      } else {
+        return hasAnyPermission(item.permissions);
+      }
+    }
+
+    return true;
+  };
+
+  // Функция выхода из системы
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/auth/login', { replace: true });
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Даже если API запрос не удался, всё равно редиректим
+      navigate('/auth/login', { replace: true });
+    }
+  };
+
+  // Фильтруем пункты меню по правам доступа
+  const visibleNavItems = navItems.filter(hasAccess);
+  const visibleCmsItems = cmsNavItems.filter(hasAccess);
+  const showCmsSection = visibleCmsItems.length > 0;
 
   return (
     <div className="flex h-screen bg-neutral-50 dark:bg-neutral-900">
@@ -86,8 +193,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto p-4">
+            {/* Основное меню */}
             <ul className="space-y-1">
-              {navItems.map((item) => {
+              {visibleNavItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.to}>
@@ -108,8 +216,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               })}
             </ul>
 
-            {/* Admin CMS Section */}
-            {isAdmin && (
+            {/* CMS Section - отображается только если есть права */}
+            {showCmsSection && (
               <>
                 <div className="my-4 border-t border-neutral-200 dark:border-neutral-700"></div>
                 <div className="mb-2 px-4">
@@ -118,7 +226,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </p>
                 </div>
                 <ul className="space-y-1">
-                  {adminNavItems.map((item) => {
+                  {visibleCmsItems.map((item) => {
                     const Icon = item.icon;
                     return (
                       <li key={item.to}>
@@ -144,13 +252,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Bottom Actions */}
           <div className="border-t border-neutral-200 p-4 dark:border-neutral-700">
-            <Link
-              to="/auth/login"
-              className="flex items-center gap-3 rounded-lg px-4 py-3 text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700"
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700"
             >
               <LogOut className="h-5 w-5" />
               <span className="font-medium">Выйти</span>
-            </Link>
+            </button>
           </div>
         </div>
       </aside>

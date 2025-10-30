@@ -15,29 +15,19 @@ const navigationLinks = [
   {
     titleKey: 'services',
     links: [
-      { labelKey: 'certification', href: '/education/certification' },
+      { labelKey: 'membership', href: '/membership' },
       { labelKey: 'education', href: '/education' },
+      { labelKey: 'certification', href: '/education/certification' },
       { labelKey: 'standards', href: '/standards' },
-      { labelKey: 'research', href: '/research' },
+      { labelKey: 'directors_database', href: '/governance/directors-database' },
     ],
   },
   {
     titleKey: 'governance',
     links: [
       { labelKey: 'code', href: '/governance/code' },
-      { labelKey: 'directors', href: '/governance/directors' },
-      { labelKey: 'database', href: '/governance/directors-database' },
-      { labelKey: 'scorecard', href: '/governance/scorecard' },
+      { labelKey: 'directors_program', href: '/governance/directors' },
       { labelKey: 'community', href: '/governance/community' },
-    ],
-  },
-  {
-    titleKey: 'membership',
-    links: [
-      { labelKey: 'benefits', href: '/membership#benefits' },
-      { labelKey: 'join', href: '/membership/join' },
-      { labelKey: 'members', href: '/members' },
-      { labelKey: 'fees', href: '/membership#fees' },
     ],
   },
   {

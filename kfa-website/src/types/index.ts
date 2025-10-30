@@ -127,3 +127,6 @@ export interface PaginatedResponse<T> {
 }
 
 export type Locale = 'ru' | 'ky' | 'en';
+
+// Re-export news types
+export * from './news';

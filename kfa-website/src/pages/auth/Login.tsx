@@ -1,15 +1,51 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle, UserCog, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Logo } from '@/components/ui/Logo';
 import { useAuthStore } from '@/stores/authStore';
-import { useRoleRedirect } from '@/hooks/useRoleRedirect';
+
+// Тестовые аккаунты для режима разработки
+const DEV_ACCOUNTS = [
+  {
+    role: 'Admin',
+    email: 'admin@kfa.kg',
+    password: 'password',
+    description: 'Полный доступ ко всем функциям',
+    color: 'from-red-500 to-red-600',
+    icon: '👑',
+  },
+  {
+    role: 'Editor',
+    email: 'editor@kfa.kg',
+    password: 'password',
+    description: 'Создание и редактирование контента',
+    color: 'from-blue-500 to-blue-600',
+    icon: '✍️',
+  },
+  {
+    role: 'Moderator',
+    email: 'moderator@kfa.kg',
+    password: 'password',
+    description: 'Модерация контента и пользователей',
+    color: 'from-green-500 to-green-600',
+    icon: '🛡️',
+  },
+  {
+    role: 'Member',
+    email: 'member@kfa.kg',
+    password: 'password',
+    description: 'Просмотр контента и базовые функции',
+    color: 'from-purple-500 to-purple-600',
+    icon: '👤',
+  },
+];
 
 export function LoginPage() {
   const { t } = useTranslation('auth');
   const login = useAuthStore((state) => state.login);
-  const { redirectAfterLogin } = useRoleRedirect();
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +55,15 @@ export function LoginPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // Автоматическое перенаправление при изменении user
+  useEffect(() => {
+    if (user) {
+      // Принудительное перенаправление через window.location
+      console.log('[Login] User detected, redirecting to dashboard');
+      window.location.href = '/dashboard';
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,8 +96,7 @@ export function LoginPage() {
         password: formData.password,
       });
 
-      // Перенаправляем пользователя в зависимости от роли
-      redirectAfterLogin();
+      // useEffect автоматически перенаправит после изменения user
     } catch (error: any) {
       // Handle API errors
       const apiErrors: Record<string, string> = {};
@@ -76,6 +120,28 @@ export function LoginPage() {
     }
   };
 
+  // Быстрый вход для режима разработки
+  const handleQuickLogin = async (email: string, password: string) => {
+    setErrors({});
+    setIsLoading(true);
+
+    try {
+      await login({ email, password });
+
+      // useEffect автоматически перенаправит после изменения user
+    } catch (error: any) {
+      const apiErrors: Record<string, string> = {};
+      if (error.response?.data?.message) {
+        apiErrors.email = error.response.data.message;
+      } else {
+        apiErrors.email = 'Ошибка подключения. Попробуйте позже.';
+      }
+      setErrors(apiErrors);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800">
       <div className="container flex min-h-screen items-center justify-center px-4 py-8 md:py-12">
@@ -90,6 +156,51 @@ export function LoginPage() {
             </h1>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 md:text-base">{t('login.subtitle')}</p>
           </div>
+
+          {/* Dev Mode Quick Login */}
+          {import.meta.env.DEV && (
+            <div className="mb-4 rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/30">
+              <div className="mb-3 flex items-center gap-2">
+                <Zap className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <h3 className="font-semibold text-amber-900 dark:text-amber-100">
+                  Быстрый вход (Dev Mode)
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {DEV_ACCOUNTS.map((account) => (
+                  <button
+                    key={account.role}
+                    type="button"
+                    onClick={() => handleQuickLogin(account.email, account.password)}
+                    disabled={isLoading}
+                    className={`group relative overflow-hidden rounded-lg bg-gradient-to-r ${account.color} p-3 text-left text-white shadow-md transition-all hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50`}
+                  >
+                    <div className="relative z-10">
+                      <div className="mb-1 flex items-center gap-2">
+                        <span className="text-xl">{account.icon}</span>
+                        <span className="font-bold">{account.role}</span>
+                      </div>
+                      <p className="mb-2 text-xs opacity-90">{account.description}</p>
+                      <div className="space-y-0.5 text-xs opacity-75">
+                        <div className="flex items-center gap-1">
+                          <Mail className="h-3 w-3" />
+                          <span className="font-mono">{account.email}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Lock className="h-3 w-3" />
+                          <span className="font-mono">{account.password}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 bg-white opacity-0 transition-opacity group-hover:opacity-10"></div>
+                  </button>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-amber-700 dark:text-amber-300">
+                💡 Кликните на роль для автоматического входа
+              </p>
+            </div>
+          )}
 
           {/* Login Form */}
           <div className="rounded-kfa border border-neutral-200 bg-white p-5 shadow-kfa-lg dark:border-neutral-700 dark:bg-neutral-900 md:p-8">

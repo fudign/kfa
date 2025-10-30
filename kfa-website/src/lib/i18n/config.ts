@@ -29,7 +29,7 @@ i18n
       useSuspense: true,
     },
 
-    ns: ['common', 'home', 'about', 'membership', 'standards', 'education', 'research', 'auth'],
+    ns: ['common', 'home', 'about', 'membership', 'join', 'standards', 'education', 'research', 'auth', 'documents', 'faq', 'privacy', 'terms'],
     defaultNS: 'common',
   });
 

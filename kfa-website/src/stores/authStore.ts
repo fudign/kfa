@@ -123,13 +123,27 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error('Logout error:', error);
         } finally {
-          // Clear auth data regardless of API call result
+          // Полная очистка всех данных авторизации
+          // 1. Очистка localStorage
           localStorage.removeItem('auth_token');
           localStorage.removeItem('user');
+          localStorage.removeItem('kfa-auth-storage');
+
+          // 2. Очистка sessionStorage
+          sessionStorage.clear();
+
+          // 3. Очистка cookies (если есть)
+          document.cookie.split(';').forEach(cookie => {
+            const [name] = cookie.split('=');
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+          });
+
+          // 4. Сброс состояния store
           set({
             user: null,
             token: null,
             isAuthenticated: false,
+            isLoading: false,
             error: null,
           });
         }

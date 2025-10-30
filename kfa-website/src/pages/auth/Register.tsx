@@ -46,6 +46,8 @@ export function RegisterPage() {
       newErrors.password = 'Введите пароль';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Минимум 8 символов';
+    } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Пароль должен содержать хотя бы одну букву и одну цифру';
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Пароли не совпадают';

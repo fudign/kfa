@@ -15,7 +15,10 @@ export function ThemeToggle() {
       {themes.map(({ value, icon: Icon, label }) => (
         <button
           key={value}
-          onClick={() => setTheme(value)}
+          onClick={() => {
+            console.log(`🎨 Переключение темы на: ${value}`);
+            setTheme(value);
+          }}
           className={`relative rounded-md px-3 py-2 text-sm font-medium transition-all ${
             theme === value
               ? 'bg-white text-primary-700 shadow-sm dark:bg-neutral-700 dark:text-primary-300'

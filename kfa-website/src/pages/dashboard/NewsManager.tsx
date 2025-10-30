@@ -13,11 +13,7 @@ import {
   Trash2,
   X,
   Save,
-  Eye,
-  EyeOff,
-  Archive,
   CheckCircle,
-  XCircle,
   Image as ImageIcon
 } from 'lucide-react';
 
@@ -37,6 +33,7 @@ export function NewsManagerPage() {
     content: '',
     excerpt: '',
     image: '',
+    featured_image_id: null as number | null,
     status: 'draft' as 'draft' | 'published' | 'archived',
     featured: false,
     published_at: '',
@@ -107,10 +104,17 @@ export function NewsManagerPage() {
     }
 
     try {
-      const dataToSubmit = {
+      const dataToSubmit: any = {
         ...formData,
         slug: formData.slug || generateSlug(formData.title),
       };
+
+      // Очистить пустые строки и заменить их на null
+      Object.keys(dataToSubmit).forEach(key => {
+        if (dataToSubmit[key] === '') {
+          dataToSubmit[key] = null;
+        }
+      });
 
       if (editingNews) {
         await newsAPI.update(editingNews.id, dataToSubmit);
@@ -121,7 +125,7 @@ export function NewsManagerPage() {
       setShowForm(false);
       setEditingNews(null);
       resetForm();
-      loadNews(currentPage);
+      await loadNews(currentPage);
     } catch (error: any) {
       if (error.response?.data?.errors) {
         setFormErrors(error.response.data.errors);
@@ -147,7 +151,8 @@ export function NewsManagerPage() {
       slug: item.slug || '',
       content: item.content || '',
       excerpt: item.excerpt || '',
-      image: item.image || '',
+      image: item.featured_image?.url || item.image || '',
+      featured_image_id: item.featured_image?.id || null,
       status: item.status as 'draft' | 'published' | 'archived' || 'draft',
       featured: item.featured || false,
       published_at: item.published_at || '',
@@ -161,9 +166,9 @@ export function NewsManagerPage() {
       return;
     }
 
-    try {
+    try{
       await newsAPI.delete(id);
-      loadNews(currentPage);
+      await loadNews(currentPage);
     } catch (error) {
       console.error('Error deleting news:', error);
     }
@@ -172,10 +177,18 @@ export function NewsManagerPage() {
   const handleMediaSelect = (media: Media | Media[]) => {
     if (Array.isArray(media)) {
       if (media.length > 0) {
-        setFormData({ ...formData, image: media[0].url });
+        setFormData({
+          ...formData,
+          image: media[0].url,
+          featured_image_id: media[0].id
+        });
       }
     } else {
-      setFormData({ ...formData, image: media.url });
+      setFormData({
+        ...formData,
+        image: media.url,
+        featured_image_id: media.id
+      });
     }
     setShowMediaPicker(false);
   };
@@ -187,6 +200,7 @@ export function NewsManagerPage() {
       content: '',
       excerpt: '',
       image: '',
+      featured_image_id: null,
       status: 'draft',
       featured: false,
       published_at: '',
@@ -200,7 +214,7 @@ export function NewsManagerPage() {
     resetForm();
   };
 
-  if (!can('manage_news')) {
+  if (!can('content.view')) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
@@ -298,9 +312,9 @@ export function NewsManagerPage() {
                       <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            {item.image && (
+                            {(item.featured_image?.url || item.image) && (
                               <img
-                                src={item.image}
+                                src={item.featured_image?.url || item.image}
                                 alt={item.title}
                                 className="w-12 h-12 rounded object-cover"
                               />
@@ -422,9 +436,11 @@ export function NewsManagerPage() {
                   <input
                     type="text"
                     value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const newTitle = e.target.value;
+                      const autoSlug = !editingNews ? generateSlug(newTitle) : formData.slug;
+                      setFormData({ ...formData, title: newTitle, slug: autoSlug });
+                    }}
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
                       formErrors.title
                         ? 'border-red-500'
@@ -534,12 +550,20 @@ export function NewsManagerPage() {
                     <p className="mt-1 text-sm text-red-500">{formErrors.image}</p>
                   )}
                   {formData.image && (
-                    <div className="mt-2">
+                    <div className="mt-2 relative inline-block">
                       <img
                         src={formData.image}
                         alt="Preview"
                         className="w-32 h-32 rounded object-cover"
                       />
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, image: '', featured_image_id: null })}
+                        className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg"
+                        title="Удалить изображение"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </div>
                   )}
                 </div>

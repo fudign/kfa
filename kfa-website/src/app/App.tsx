@@ -80,107 +80,122 @@ function App() {
       >
         <Routes>
         {/* Protected Dashboard Routes - without Header & Footer */}
-        <Route
-          path="/dashboard/admin"
-          element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminDashboardPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* Главная страница dashboard - доступна всем авторизованным */}
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'member']}>
+            <ProtectedRoute requireAuth={true}>
               <DashboardPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Профиль - доступен всем авторизованным */}
         <Route
           path="/dashboard/profile"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requireAuth={true}>
               <ProfilePage />
             </ProtectedRoute>
           }
         />
+
+        {/* Платежи - только для admin и member */}
         <Route
           path="/dashboard/payments"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'member']}>
+            <ProtectedRoute requireRole={['admin', 'member']}>
               <PaymentsPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Документы - только для admin и member */}
         <Route
           path="/dashboard/documents"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'member']}>
+            <ProtectedRoute requireRole={['admin', 'member']}>
               <DashboardDocumentsPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Сертификаты - только для admin и member */}
         <Route
           path="/dashboard/certificates"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'member']}>
+            <ProtectedRoute requireRole={['admin', 'member']}>
               <CertificatesPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Обучение - только для admin и member */}
         <Route
           path="/dashboard/education"
           element={
-            <ProtectedRoute allowedRoles={['admin', 'member']}>
+            <ProtectedRoute requireRole={['admin', 'member']}>
               <DashboardEducationPage />
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/dashboard/media"
-          element={
-            <ProtectedRoute requirePermission={['media.view', 'media.upload', 'media.delete']}>
-              <MediaManagerPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/partners"
-          element={
-            <ProtectedRoute requirePermission={['partners.view', 'partners.create', 'partners.update', 'partners.delete']}>
-              <PartnersManagerPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/settings"
-          element={
-            <ProtectedRoute requirePermission={['settings.view', 'settings.update']}>
-              <SettingsManagerPage />
-            </ProtectedRoute>
-          }
-        />
+
+        {/* Управление новостями - требуется право content.view */}
         <Route
           path="/dashboard/news"
           element={
-            <ProtectedRoute requirePermission={['content.view', 'content.create', 'content.update', 'content.delete']}>
+            <ProtectedRoute requirePermission="content.view">
               <NewsManagerPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Управление событиями - требуется право events.view */}
         <Route
           path="/dashboard/events"
           element={
-            <ProtectedRoute requirePermission={['events.view', 'events.create', 'events.update', 'events.delete']}>
+            <ProtectedRoute requirePermission="events.view">
               <EventsManagerPage />
             </ProtectedRoute>
           }
         />
+
+        {/* Управление участниками - требуется право members.view */}
         <Route
           path="/dashboard/members"
           element={
-            <ProtectedRoute requirePermission={['members.view', 'members.create', 'members.update', 'members.delete']}>
+            <ProtectedRoute requirePermission="members.view">
               <MembersManagerPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Управление медиафайлами - требуется право media.view */}
+        <Route
+          path="/dashboard/media"
+          element={
+            <ProtectedRoute requirePermission="media.view">
+              <MediaManagerPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Управление партнерами - требуется право partners.view */}
+        <Route
+          path="/dashboard/partners"
+          element={
+            <ProtectedRoute requirePermission="partners.view">
+              <PartnersManagerPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Настройки - требуется право settings.view */}
+        <Route
+          path="/dashboard/settings"
+          element={
+            <ProtectedRoute requirePermission="settings.view">
+              <SettingsManagerPage />
             </ProtectedRoute>
           }
         />

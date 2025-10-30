@@ -1,5 +1,4 @@
-import { Media } from './media';
-import { User } from './auth';
+import { Media } from './index';
 
 export type NewsStatus =
   | 'draft'
@@ -73,12 +72,21 @@ export interface NewsStats {
 
 export interface PaginatedNewsResponse {
   data: News[];
-  current_page: number;
-  last_page: number;
-  per_page: number;
-  total: number;
-  from: number;
-  to: number;
+  links: {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number | null;
+    last_page: number;
+    path: string;
+    per_page: number;
+    to: number | null;
+    total: number;
+  };
 }
 
 // Helper функции для работы со статусами

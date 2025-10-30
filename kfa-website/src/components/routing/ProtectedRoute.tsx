@@ -40,9 +40,7 @@ export function ProtectedRoute({
   const {
     isAuthenticated,
     user,
-    hasRole,
     hasAnyRole,
-    hasPermission,
     hasAnyPermission,
     hasAllPermissions
   } = useAuthStore();
@@ -91,17 +89,9 @@ export function ProtectedRoute({
 
 /**
  * Получить домашнюю страницу для роли
+ * Все пользователи после логина идут на /dashboard/
  */
 function getRoleHomePage(role: 'admin' | 'member' | 'user' | 'guest'): string {
-  switch (role) {
-    case 'admin':
-      return '/dashboard/admin';
-    case 'member':
-      return '/dashboard';
-    case 'guest':
-    case 'user':
-      return '/dashboard/profile';
-    default:
-      return '/';
-  }
+  // Все роли идут на общую страницу dashboard
+  return '/dashboard/';
 }

@@ -40,47 +40,43 @@ export function Header() {
       title: t('nav.membership'),
       href: '/membership',
       submenu: [
-        { title: 'Преимущества', href: '/membership#benefits' },
-        { title: 'Как вступить', href: '/membership/join' },
-        { title: 'Члены КФА', href: '/members' },
-        { title: 'Взносы', href: '/membership#fees' },
+        { title: 'Преимущества и вступление', href: '/membership', description: 'Как стать членом КФА' },
+        { title: 'Члены КФА', href: '/members', description: 'База участников' },
+        { title: 'Взносы', href: '/membership#fees', description: 'Условия членства' },
       ],
     },
     {
-      title: t('nav.standards'),
-      href: '/standards',
-    },
-    {
-      title: t('nav.education'),
+      title: 'Обучение и стандарты',
       href: '/education',
       submenu: [
-        { title: 'Программы обучения', href: '/education/programs' },
-        { title: 'Сертификация', href: '/education/certification' },
-        { title: 'Календарь курсов', href: '/education/calendar' },
+        { title: 'Программы обучения', href: '/education/programs', description: 'Курсы и тренинги' },
+        { title: 'Сертификация', href: '/education/certification', description: 'Получение сертификатов' },
+        { title: 'Календарь курсов', href: '/education/calendar', description: 'Расписание мероприятий' },
+        { title: 'Стандарты КФА', href: '/standards', description: 'Профессиональные стандарты' },
       ],
     },
     {
       title: 'Корпоративное управление',
       href: '/governance/code',
       submenu: [
-        { title: 'Кодекс корпоративного управления', href: '/governance/code', description: 'Стандарты и практики КФА 2024' },
-        { title: 'Программа сертификации директоров', href: '/governance/directors', description: 'Профессиональная подготовка директоров' },
-        { title: 'База независимых директоров', href: '/governance/directors-database', description: 'Поиск квалифицированных директоров' },
-        { title: 'Governance Scorecard', href: '/governance/scorecard', description: 'Самооценка практик управления' },
-        { title: 'Сообщество директоров', href: '/governance/community', description: 'Профессиональная сеть директоров' },
+        { title: 'Кодекс и сертификация', href: '/governance/code', description: 'Стандарты и обучение директоров' },
+        { title: 'База и оценка директоров', href: '/governance/directors-database', description: 'Поиск директоров и Scorecard' },
+        { title: 'Сообщество директоров', href: '/governance/community', description: 'Профессиональная сеть' },
       ],
     },
     {
-      title: t('nav.research'),
-      href: '/research',
-    },
-    {
-      title: t('nav.news'),
+      title: 'Информация',
       href: '/news',
+      submenu: [
+        { title: 'Новости', href: '/news', description: 'Актуальные события' },
+        { title: 'Мероприятия', href: '/events', description: 'Предстоящие события' },
+        { title: 'Исследования', href: '/research', description: 'Аналитика и публикации' },
+        { title: 'FAQ', href: '/faq', description: 'Часто задаваемые вопросы' },
+      ],
     },
     {
-      title: t('nav.events'),
-      href: '/events',
+      title: 'Контакты',
+      href: '/about#contacts',
     },
   ];
 
@@ -88,7 +84,13 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-neutral-800 dark:bg-neutral-900/95">
       <div className="container flex h-20 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link
+          to="/"
+          className="flex items-center"
+          onClick={(e) => {
+            console.log('🔵 Клик на логотип КФА');
+          }}
+        >
           <Logo height={48} className="transition-opacity hover:opacity-90" />
         </Link>
 
@@ -123,13 +125,7 @@ export function Header() {
           {isAuthenticated && user ? (
             <div className="hidden items-center gap-2 md:flex">
               <Link
-                to={
-                  user.role === 'admin'
-                    ? '/dashboard/admin'
-                    : user.role === 'member'
-                    ? '/dashboard'
-                    : '/dashboard/profile'
-                }
+                to="/dashboard/"
                 className="flex items-center gap-2 rounded-lg border border-primary-200 px-3 py-2 text-sm font-medium text-primary-700 transition-all hover:bg-primary-50 dark:border-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/20"
               >
                 <LayoutDashboard className="h-4 w-4" />
@@ -195,13 +191,7 @@ export function Header() {
             {isAuthenticated && user ? (
               <div className="space-y-2 border-t border-neutral-200 pt-4 dark:border-neutral-800">
                 <Link
-                  to={
-                    user.role === 'admin'
-                      ? '/dashboard/admin'
-                      : user.role === 'member'
-                      ? '/dashboard'
-                      : '/dashboard/profile'
-                  }
+                  to="/dashboard/"
                   className="flex items-center gap-2 rounded-lg border border-primary-200 px-4 py-3 text-sm font-medium text-primary-700 transition-all hover:bg-primary-50 dark:border-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/20"
                   onClick={() => setMobileMenuOpen(false)}
                 >

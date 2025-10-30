@@ -57,15 +57,29 @@ export function MediaPicker({
     }
   }, [searchTerm, accept]);
 
+  // Load media when modal opens
   useEffect(() => {
     if (isOpen) {
       loadMedia();
     }
-  }, [isOpen, loadMedia]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
+  // Reload media when search term or accept type changes
   useEffect(() => {
-    setSelected(selectedIds);
-  }, [selectedIds]);
+    if (isOpen) {
+      loadMedia();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, accept]);
+
+  // Update selected items only when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSelected(selectedIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleFileSelect = () => {
     fileInputRef.current?.click();
