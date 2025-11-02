@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "membership": "Membership",
+    "standards": "Standards",
+    "education": "Education",
+    "research": "Research",
+    "events": "Events",
+    "news": "News",
+    "resources": "Resources",
+    "login": "Login",
+    "language": "Language"
+  },
+  "footer": {
+    "brandName": "KFA",
+    "brandTagline": "Kyrgyz Financial Alliance",
+    "contact": {
+      "address": "Bishkek, Moskovskaya St. 189, BC \"Avangard\", 5th floor"
+    },
+    "copyright": "Kyrgyz Financial Alliance. All rights reserved.",
+    "legal": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "sitemap": "Sitemap"
+    },
+    "nav": {
+      "about": {
+        "title": "About Us",
+        "links": {
+          "mission": "Mission",
+          "history": "History",
+          "team": "Team",
+          "documents": "Documents"
+        }
+      },
+      "services": {
+        "title": "Services",
+        "links": {
+          "certification": "Certification",
+          "education": "Education",
+          "standards": "Standards",
+          "research": "Research"
+        }
+      },
+      "membership": {
+        "title": "Membership",
+        "links": {
+          "benefits": "Benefits",
+          "join": "Join",
+          "members": "Members",
+          "fees": "Fees"
+        }
+      },
+      "resources": {
+        "title": "Resources",
+        "links": {
+          "news": "News",
+          "events": "Events",
+          "research": "Research",
+          "faq": "FAQ"
+        }
+      }
+    }
+  },
+  "common": {
+    "readMore": "Read more",
+    "learnMore": "Learn more",
+    "viewAll": "View all",
+    "download": "Download",
+    "share": "Share",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "noResults": "No results found",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit"
+  }
+}

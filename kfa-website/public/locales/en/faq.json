@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Answers to the most popular questions about the Kyrgyz Financial Alliance"
+  },
+  "categories": {
+    "general": {
+      "title": "General Questions",
+      "items": {
+        "q1": {"question": "What is the Kyrgyz Financial Alliance?", "answer": "KFA is a professional association of financiers in Kyrgyzstan, created to develop the financial sector, improve qualifications, and protect the interests of Alliance members."},
+        "q2": {"question": "When was KFA founded?", "answer": "The Kyrgyz Financial Alliance was founded in 2014 by a group of leading financial specialists."},
+        "q3": {"question": "What is KFA's mission?", "answer": "Our mission is to promote the development of Kyrgyzstan's financial sector through staff professionalization, practice standardization, and ethical norms promotion."},
+        "q4": {"question": "How to contact KFA?", "answer": "You can contact us via email: info@kfa.kg, phone: +996 (312) 12-34-56, or visit our office at: Bishkek, Moskovskaya St. 189, BC 'Avangard', 5th floor."}
+      }
+    },
+    "membership": {
+      "title": "Membership",
+      "items": {
+        "q1": {"question": "Who can become a KFA member?", "answer": "KFA members can be individuals (financial specialists) and legal entities (financial organizations) that meet the Charter requirements."},
+        "q2": {"question": "What documents are needed to join?", "answer": "For individual membership: application, passport copy, resume, recommendation letters (2). For corporate: application, constituent documents, licenses."},
+        "q3": {"question": "How long does application review take?", "answer": "Application review takes up to 30 business days. After approval, you will receive a notification with further instructions."},
+        "q4": {"question": "Can membership be suspended?", "answer": "Yes, KFA members can temporarily suspend membership for up to 1 year while retaining status for valid reasons."},
+        "q5": {"question": "What are the membership benefits?", "answer": "Access to professional network, training programs, certification, event participation, consulting support, enhanced professional status."}
+      }
+    },
+    "fees": {
+      "title": "Fees and Payment",
+      "items": {
+        "q1": {"question": "What is the joining fee?", "answer": "Joining fee: individual members - 5,000 som, corporate - 25,000 som, institutional - 50,000 som."},
+        "q2": {"question": "How often to pay fees?", "answer": "Annual membership fees are paid once a year. First payment upon joining, subsequent - by January 31 each year."},
+        "q3": {"question": "What payment methods are available?", "answer": "Payment via bank transfer, payment systems, or cash at KFA office. Payment details sent after application approval."}
+      }
+    },
+    "certification": {
+      "title": "Certification",
+      "items": {
+        "q1": {"question": "What certification programs does KFA offer?", "answer": "KFA offers certification in: Financial Analyst (CFA), Risk Management (FRM), Corporate Finance (CF), Financial Planning (CFP)."},
+        "q2": {"question": "How long does training take?", "answer": "Program duration varies from 3 to 12 months depending on level and certification direction."},
+        "q3": {"question": "Are KFA certificates internationally recognized?", "answer": "Yes, our programs are accredited by international organizations, and certificates are recognized in CIS countries and abroad."},
+        "q4": {"question": "Do I need to be a KFA member for certification?", "answer": "No, certification programs are available to everyone, but KFA members get a 20% discount on training."}
+      }
+    }
+  },
+  "contact": {
+    "title": "Didn't find the answer to your question?",
+    "description": "Contact us and we will be happy to answer all your questions",
+    "emailButton": "Send Email",
+    "phoneButton": "Call Us"
+  }
+}

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование Авторизации KFA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .result.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            display: block;
+        }
+
+        .result pre {
+            margin-top: 10px;
+            background: rgba(0,0,0,0.05);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .saved-token {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .saved-token strong {
+            color: #856404;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge.weak {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge.strong {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 Тестирование Системы Авторизации</h1>
+            <p>KFA Platform - Проверка безопасности и функциональности</p>
+        </div>
+
+        <div class="content">
+            <!-- Тест 1: Слабый пароль (только буквы) -->
+            <div class="test-section">
+                <h2>Тест 1: Слабый пароль (только буквы) <span class="badge weak">ДОЛЖЕН ОТКЛОНИТЬ</span></h2>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="test1-email" value="test1@kfa-test.kg">
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="test1-password" value="password">
+                </div>
+                <button onclick="testRegister(1, 'test1')">Протестировать</button>
+                <div id="test1-result" class="result"></div>
+            </div>
+
+            <!-- Тест 2: Слабый пароль (только цифры) -->
+            <div class="test-section">
+                <h2>Тест 2: Слабый пароль (только цифры) <span class="badge weak">ДОЛЖЕН ОТКЛОНИТЬ</span></h2>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="test2-email" value="test2@kfa-test.kg">
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="test2-password" value="12345678">
+                </div>
+                <button onclick="testRegister(2, 'test2')">Протестировать</button>
+                <div id="test2-result" class="result"></div>
+            </div>
+
+            <!-- Тест 3: Сильный пароль -->
+            <div class="test-section">
+                <h2>Тест 3: Сильный пароль <span class="badge strong">ДОЛЖЕН ПРИНЯТЬ</span></h2>
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="test3-name" value="Тестовый Пользователь">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="test3-email" value="">
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="test3-password" value="MyPass2024">
+                </div>
+                <button onclick="testRegister(3, 'test3')">Зарегистрировать</button>
+                <div id="test3-result" class="result"></div>
+            </div>
+
+            <!-- Тест 4: Вход в систему -->
+            <div class="test-section">
+                <h2>Тест 4: Вход в систему</h2>
+                <div id="saved-token-login" class="saved-token" style="display:none;">
+                    <strong>💾 Сохранен токен из регистрации</strong>
+                    <p id="saved-email-display" style="margin-top:5px;font-size:14px;"></p>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="test4-email" value="">
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="test4-password" value="MyPass2024">
+                </div>
+                <button onclick="testLogin()">Войти</button>
+                <div id="test4-result" class="result"></div>
+            </div>
+
+            <!-- Тест 5: Проверка токена -->
+            <div class="test-section">
+                <h2>Тест 5: Получение данных пользователя с токеном</h2>
+                <div id="saved-token-display" class="saved-token" style="display:none;">
+                    <strong>💾 Сохраненный токен:</strong>
+                    <p id="token-value" style="margin-top:5px;font-family:monospace;font-size:12px;word-break:break-all;"></p>
+                </div>
+                <button onclick="testGetUser()">Получить данные</button>
+                <div id="test5-result" class="result"></div>
+            </div>
+
+            <!-- Тест 6: Выход -->
+            <div class="test-section">
+                <h2>Тест 6: Выход из системы</h2>
+                <button onclick="testLogout()">Выйти</button>
+                <div id="test6-result" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        let savedToken = null;
+        let savedEmail = null;
+
+        // Генерация случайного email
+        function randomEmail() {
+            return `test.${Date.now()}@kfa-test.kg`;
+        }
+
+        // При загрузке страницы - генерируем email для теста 3
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('test3-email').value = randomEmail();
+        });
+
+        // Тест регистрации
+        async function testRegister(testNum, prefix) {
+            const resultDiv = document.getElementById(`${prefix}-result`);
+            const email = document.getElementById(`${prefix}-email`).value;
+            const password = document.getElementById(`${prefix}-password`).value;
+            const name = document.getElementById(`${prefix}-name`)?.value || 'Test User';
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '⏳ Отправка запроса...';
+
+            try {
+                const response = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password,
+                        password_confirmation: password,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Успешная регистрация
+                    if (testNum === 3) {
+                        resultDiv.className = 'result success';
+                        resultDiv.innerHTML = `
+                            <strong>✅ ТЕСТ ПРОЙДЕН: Регистрация успешна!</strong>
+                            <p>Email: ${data.user.email}</p>
+                            <p>User ID: ${data.user.id}</p>
+                            <p>Токен получен и сохранен</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                        // Сохраняем токен для следующих тестов
+                        savedToken = data.token;
+                        savedEmail = email;
+                        document.getElementById('test4-email').value = email;
+                        document.getElementById('saved-token-login').style.display = 'block';
+                        document.getElementById('saved-email-display').textContent = `Email: ${email}`;
+                        updateTokenDisplay();
+                    } else {
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML = `
+                            <strong>❌ ТЕСТ ПРОВАЛЕН: Слабый пароль был принят!</strong>
+                            <p>Система должна была отклонить этот пароль</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    }
+                } else {
+                    // Ошибка регистрации
+                    if (testNum === 3) {
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML = `
+                            <strong>❌ ТЕСТ ПРОВАЛЕН: Не удалось зарегистрировать</strong>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    } else {
+                        resultDiv.className = 'result success';
+                        const errorMsg = data.errors?.password?.[0] || data.message || 'Пароль отклонен';
+                        resultDiv.innerHTML = `
+                            <strong>✅ ТЕСТ ПРОЙДЕН: Слабый пароль отклонен!</strong>
+                            <p>Ошибка: ${errorMsg}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        `;
+                    }
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ ОШИБКА ПОДКЛЮЧЕНИЯ</strong>
+                    <p>${error.message}</p>
+                    <p>Убедитесь, что backend запущен: php artisan serve</p>
+                `;
+            }
+        }
+
+        // Тест входа
+        async function testLogin() {
+            const resultDiv = document.getElementById('test4-result');
+            const email = document.getElementById('test4-email').value;
+            const password = document.getElementById('test4-password').value;
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '⏳ Отправка запроса...';
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ ТЕСТ ПРОЙДЕН: Вход выполнен успешно!</strong>
+                        <p>Email: ${data.user.email}</p>
+                        <p>User ID: ${data.user.id}</p>
+                        <p>Токен получен и сохранен</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    savedToken = data.token;
+                    savedEmail = email;
+                    updateTokenDisplay();
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ ТЕСТ ПРОВАЛЕН: Вход не выполнен</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ ОШИБКА ПОДКЛЮЧЕНИЯ</strong>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+
+        // Тест получения данных пользователя
+        async function testGetUser() {
+            const resultDiv = document.getElementById('test5-result');
+
+            if (!savedToken) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<strong>❌ Сначала выполните регистрацию или вход!</strong>';
+                return;
+            }
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '⏳ Отправка запроса...';
+
+            try {
+                const response = await fetch(`${API_BASE}/user`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${savedToken}`,
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ ТЕСТ ПРОЙДЕН: Данные получены!</strong>
+                        <p>Имя: ${data.data.name}</p>
+                        <p>Email: ${data.data.email}</p>
+                        <p>Роли: ${data.data.roles?.join(', ') || 'нет'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ ТЕСТ ПРОВАЛЕН: Не удалось получить данные</strong>
+                        <p>Возможно, токен истек или недействителен</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ ОШИБКА ПОДКЛЮЧЕНИЯ</strong>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+
+        // Тест выхода
+        async function testLogout() {
+            const resultDiv = document.getElementById('test6-result');
+
+            if (!savedToken) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<strong>❌ Сначала выполните вход!</strong>';
+                return;
+            }
+
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '⏳ Отправка запроса...';
+
+            try {
+                const response = await fetch(`${API_BASE}/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${savedToken}`,
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ ТЕСТ ПРОЙДЕН: Выход выполнен!</strong>
+                        <p>Токен был удален. Попробуйте получить данные пользователя - должна быть ошибка.</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    // Токен остается для проверки, что он не работает
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ ТЕСТ ПРОВАЛЕН: Выход не выполнен</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ ОШИБКА ПОДКЛЮЧЕНИЯ</strong>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+
+        // Обновить отображение сохраненного токена
+        function updateTokenDisplay() {
+            if (savedToken) {
+                document.getElementById('saved-token-display').style.display = 'block';
+                document.getElementById('token-value').textContent = savedToken;
+            }
+        }
+    </script>
+</body>
+</html>

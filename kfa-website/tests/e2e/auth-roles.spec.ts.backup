@@ -1,0 +1,359 @@
+import { test, expect } from '@playwright/test';
+
+const API_URL = 'http://localhost/api';
+const APP_URL = 'http://localhost:3000';
+
+const testAccounts = {
+  user: { email: 'user@kfa.kg', password: 'password', role: 'user' },
+  member: { email: 'member@kfa.kg', password: 'password', role: 'member' },
+  admin: { email: 'admin@kfa.kg', password: 'password', role: 'admin' }
+};
+
+test.describe('Authentication and Role-Based Access Control', () => {
+
+  test('should register a new user with default role', async ({ request }) => {
+    const response = await request.post(`${API_URL}/register`, {
+      data: {
+        name: testUsers.user.name,
+        email: testUsers.user.email,
+        password: testUsers.user.password,
+        password_confirmation: testUsers.user.password,
+      }
+    });
+
+    expect(response.status()).toBe(201);
+    const data = await response.json();
+
+    expect(data).toHaveProperty('user');
+    expect(data).toHaveProperty('token');
+    expect(data.user.email).toBe(testUsers.user.email);
+    expect(data.user.role).toBe('user'); // Default role
+  });
+
+  test('should register a new member with member role', async ({ request }) => {
+    const response = await request.post(`${API_URL}/register`, {
+      data: {
+        name: testUsers.member.name,
+        email: testUsers.member.email,
+        password: testUsers.member.password,
+        password_confirmation: testUsers.member.password,
+        role: 'member'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+    const data = await response.json();
+
+    expect(data.user.email).toBe(testUsers.member.email);
+    expect(data.user.role).toBe('member');
+  });
+
+  test('should register a new admin with admin role', async ({ request }) => {
+    const response = await request.post(`${API_URL}/register`, {
+      data: {
+        name: testUsers.admin.name,
+        email: testUsers.admin.email,
+        password: testUsers.admin.password,
+        password_confirmation: testUsers.admin.password,
+        role: 'admin'
+      }
+    });
+
+    expect(response.status()).toBe(201);
+    const data = await response.json();
+
+    expect(data.user.email).toBe(testUsers.admin.email);
+    expect(data.user.role).toBe('admin');
+  });
+
+  test('should login with correct credentials', async ({ request }) => {
+    // First register
+    await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Login Test User',
+        email: generateEmail('login'),
+        password: 'password123',
+        password_confirmation: 'password123',
+      }
+    });
+
+    // Then login
+    const response = await request.post(`${API_URL}/login`, {
+      data: {
+        email: testUsers.user.email,
+        password: testUsers.user.password
+      }
+    });
+
+    expect(response.status()).toBe(200);
+    const data = await response.json();
+
+    expect(data).toHaveProperty('user');
+    expect(data).toHaveProperty('token');
+  });
+
+  test('should fail login with incorrect credentials', async ({ request }) => {
+    const response = await request.post(`${API_URL}/login`, {
+      data: {
+        email: 'nonexistent@example.com',
+        password: 'wrongpassword'
+      }
+    });
+
+    expect(response.status()).toBe(422);
+  });
+
+  test('should get user info with valid token', async ({ request }) => {
+    // Register and login
+    const registerResponse = await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Token Test User',
+        email: generateEmail('token'),
+        password: 'password123',
+        password_confirmation: 'password123',
+      }
+    });
+
+    const { token } = await registerResponse.json();
+
+    // Get user info
+    const response = await request.get(`${API_URL}/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    expect(response.status()).toBe(200);
+    const data = await response.json();
+    expect(data).toHaveProperty('email');
+  });
+
+  test('should deny access without authentication', async ({ request }) => {
+    const response = await request.get(`${API_URL}/user`);
+    expect(response.status()).toBe(401);
+  });
+});
+
+test.describe('Role-Based Authorization', () => {
+
+  let userToken: string;
+  let memberToken: string;
+  let adminToken: string;
+
+  test.beforeAll(async ({ request }) => {
+    // Register users with different roles
+    const userResponse = await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Role Test User',
+        email: generateEmail('role-user'),
+        password: 'password123',
+        password_confirmation: 'password123',
+        role: 'user'
+      }
+    });
+    userToken = (await userResponse.json()).token;
+
+    const memberResponse = await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Role Test Member',
+        email: generateEmail('role-member'),
+        password: 'password123',
+        password_confirmation: 'password123',
+        role: 'member'
+      }
+    });
+    memberToken = (await memberResponse.json()).token;
+
+    const adminResponse = await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Role Test Admin',
+        email: generateEmail('role-admin'),
+        password: 'password123',
+        password_confirmation: 'password123',
+        role: 'admin'
+      }
+    });
+    adminToken = (await adminResponse.json()).token;
+  });
+
+  test('user role can READ news', async ({ request }) => {
+    const response = await request.get(`${API_URL}/news`, {
+      headers: {
+        'Authorization': `Bearer ${userToken}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(response.status()).toBe(200);
+  });
+
+  test('user role CANNOT CREATE news', async ({ request }) => {
+    const response = await request.post(`${API_URL}/news`, {
+      headers: {
+        'Authorization': `Bearer ${userToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'Test News',
+        slug: 'test-news',
+        content: 'Test content'
+      }
+    });
+    expect(response.status()).toBe(403);
+    const data = await response.json();
+    expect(data.message).toContain('Forbidden');
+  });
+
+  test('member role CAN CREATE news', async ({ request }) => {
+    const response = await request.post(`${API_URL}/news`, {
+      headers: {
+        'Authorization': `Bearer ${memberToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'Member News',
+        slug: `member-news-${Date.now()}`,
+        content: 'Test content by member'
+      }
+    });
+    expect(response.status()).toBe(201);
+  });
+
+  test('member role CANNOT DELETE news', async ({ request }) => {
+    // First create a news item as member
+    const createResponse = await request.post(`${API_URL}/news`, {
+      headers: {
+        'Authorization': `Bearer ${memberToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'News to Delete',
+        slug: `news-to-delete-${Date.now()}`,
+        content: 'This will be deleted'
+      }
+    });
+    const newsId = (await createResponse.json()).id;
+
+    // Try to delete as member
+    const deleteResponse = await request.delete(`${API_URL}/news/${newsId}`, {
+      headers: {
+        'Authorization': `Bearer ${memberToken}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(deleteResponse.status()).toBe(403);
+  });
+
+  test('admin role CAN DELETE news', async ({ request }) => {
+    // First create a news item as admin
+    const createResponse = await request.post(`${API_URL}/news`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'Admin News to Delete',
+        slug: `admin-news-to-delete-${Date.now()}`,
+        content: 'This will be deleted by admin'
+      }
+    });
+    const newsId = (await createResponse.json()).id;
+
+    // Delete as admin
+    const deleteResponse = await request.delete(`${API_URL}/news/${newsId}`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(deleteResponse.status()).toBe(200);
+  });
+
+  test('admin role has full CRUD access', async ({ request }) => {
+    // Create
+    const createResponse = await request.post(`${API_URL}/events`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'Admin Event',
+        slug: `admin-event-${Date.now()}`,
+        description: 'Admin created event',
+        starts_at: new Date().toISOString()
+      }
+    });
+    expect(createResponse.status()).toBe(201);
+    const eventId = (await createResponse.json()).id;
+
+    // Read
+    const readResponse = await request.get(`${API_URL}/events/${eventId}`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(readResponse.status()).toBe(200);
+
+    // Update
+    const updateResponse = await request.put(`${API_URL}/events/${eventId}`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        title: 'Updated Admin Event',
+        slug: `updated-admin-event-${Date.now()}`,
+        description: 'Updated by admin',
+        starts_at: new Date().toISOString()
+      }
+    });
+    expect(updateResponse.status()).toBe(200);
+
+    // Delete
+    const deleteResponse = await request.delete(`${API_URL}/events/${eventId}`, {
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(deleteResponse.status()).toBe(200);
+  });
+
+  test('logout invalidates token', async ({ request }) => {
+    // Register and get token
+    const registerResponse = await request.post(`${API_URL}/register`, {
+      data: {
+        name: 'Logout Test User',
+        email: generateEmail('logout'),
+        password: 'password123',
+        password_confirmation: 'password123',
+      }
+    });
+    const { token } = await registerResponse.json();
+
+    // Logout
+    const logoutResponse = await request.post(`${API_URL}/logout`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(logoutResponse.status()).toBe(200);
+
+    // Try to use token after logout
+    const userResponse = await request.get(`${API_URL}/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
+    expect(userResponse.status()).toBe(401);
+  });
+});

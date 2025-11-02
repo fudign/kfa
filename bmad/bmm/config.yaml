@@ -1,0 +1,9 @@
+# BMM Module Configuration
+# Generated manually
+# Version: 6.0.0-alpha.0
+# Date: 2025-11-02
+
+module_name: bmm
+module_version: 6.0.0-alpha.0
+output_folder: "{project-root}/docs"
+project_name: "KFA Website"

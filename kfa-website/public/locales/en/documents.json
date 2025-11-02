@@ -1,0 +1,24 @@
+{
+  "hero": {
+    "title": "KFA Documents and Regulations",
+    "subtitle": "Review official documents governing the activities of the Kyrgyz Financial Alliance"
+  },
+  "features": {
+    "charter": {
+      "title": "Charter",
+      "description": "Founding documents"
+    },
+    "regulations": {
+      "title": "Regulations",
+      "description": "Rules and procedures"
+    },
+    "standards": {
+      "title": "Standards",
+      "description": "Professional standards"
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "Annual and quarterly reports"
+    }
+  }
+}

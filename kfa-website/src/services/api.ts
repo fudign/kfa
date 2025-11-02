@@ -1,0 +1,254 @@
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost/api';
+
+export const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  },
+});
+
+// Request interceptor to add auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Unauthorized - clear token and redirect to login
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Authentication API
+export const authAPI = {
+  register: async (data: { name: string; email: string; password: string; password_confirmation: string }) => {
+    const response = await api.post('/register', data);
+    return response.data;
+  },
+
+  login: async (credentials: { email: string; password: string }) => {
+    const response = await api.post('/login', credentials);
+    return response.data;
+  },
+
+  logout: async () => {
+    const response = await api.post('/logout');
+    return response.data;
+  },
+
+  getUser: async () => {
+    const response = await api.get('/user');
+    return response.data;
+  },
+};
+
+// Members API
+export const membersAPI = {
+  getAll: async () => {
+    const response = await api.get('/members');
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/members/${id}`);
+    return response.data;
+  },
+
+  create: async (data: any) => {
+    const response = await api.post('/members', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: any) => {
+    const response = await api.put(`/members/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/members/${id}`);
+    return response.data;
+  },
+};
+
+// News API - использует новый NewsService с полной функциональностью
+export { NewsService as newsAPI } from './api/news';
+
+// Events API
+export const eventsAPI = {
+  getAll: async () => {
+    const response = await api.get('/events');
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/events/${id}`);
+    return response.data;
+  },
+
+  create: async (data: any) => {
+    const response = await api.post('/events', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: any) => {
+    const response = await api.put(`/events/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/events/${id}`);
+    return response.data;
+  },
+};
+
+// Programs API
+export const programsAPI = {
+  getAll: async () => {
+    const response = await api.get('/programs');
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/programs/${id}`);
+    return response.data;
+  },
+
+  create: async (data: any) => {
+    const response = await api.post('/programs', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: any) => {
+    const response = await api.put(`/programs/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/programs/${id}`);
+    return response.data;
+  },
+};
+
+// Media API
+export const mediaAPI = {
+  getAll: async (params?: { type?: string; collection?: string; search?: string; per_page?: number }) => {
+    const response = await api.get('/media', { params });
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/media/${id}`);
+    return response.data;
+  },
+
+  upload: async (file: File, collection?: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (collection) {
+      formData.append('collection', collection);
+    }
+
+    const response = await api.post('/media', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/media/${id}`);
+    return response.data;
+  },
+};
+
+// Partners API
+export const partnersAPI = {
+  getAll: async (params?: { status?: string; category?: string; featured?: boolean; search?: string; per_page?: number }) => {
+    const response = await api.get('/partners', { params });
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/partners/${id}`);
+    return response.data;
+  },
+
+  create: async (data: {
+    name: string;
+    description?: string;
+    logo?: string;
+    website?: string;
+    email?: string;
+    phone?: string;
+    category: 'platinum' | 'gold' | 'silver' | 'bronze' | 'other';
+    status: 'active' | 'inactive';
+    is_featured?: boolean;
+    display_order?: number;
+    social_links?: Record<string, string>;
+  }) => {
+    const response = await api.post('/partners', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: Partial<{
+    name: string;
+    description?: string;
+    logo?: string;
+    website?: string;
+    email?: string;
+    phone?: string;
+    category: 'platinum' | 'gold' | 'silver' | 'bronze' | 'other';
+    status: 'active' | 'inactive';
+    is_featured?: boolean;
+    display_order?: number;
+    social_links?: Record<string, string>;
+  }>) => {
+    const response = await api.put(`/partners/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/partners/${id}`);
+    return response.data;
+  },
+};
+
+// Settings API
+export const settingsAPI = {
+  getAll: async (category?: string) => {
+    const params = category ? { category } : undefined;
+    const response = await api.get('/settings', { params });
+    return response.data;
+  },
+
+  getPublic: async () => {
+    const response = await api.get('/settings/public');
+    return response.data;
+  },
+
+  update: async (settings: Array<{ key: string; value: any }>) => {
+    const response = await api.put('/settings', { settings });
+    return response.data;
+  },
+};

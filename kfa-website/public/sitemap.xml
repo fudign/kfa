@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://kfa.kg/</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/about</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/about" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/about" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/about" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/news</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/news" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/news" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/news" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/news" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/events</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/events" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/events" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/events" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/events" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/membership</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/membership" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/membership" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/membership" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/membership" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/membership/join</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/membership/join" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/membership/join" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/membership/join" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/membership/join" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/members</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/members" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/members" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/members" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/members" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/documents</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/documents" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/documents" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/documents" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/documents" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/standards</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/standards" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/standards" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/standards" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/standards" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/education</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/education" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/education" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/education" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/education" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/education/programs</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/education/programs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/education/programs" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/education/programs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/education/programs" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/education/certification</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/education/certification" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/education/certification" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/education/certification" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/education/certification" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/education/calendar</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/education/calendar" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/education/calendar" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/education/calendar" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/education/calendar" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/research</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/research" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/research" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/research" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/research" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/faq</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/faq" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/faq" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/faq" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/faq" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/privacy</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/privacy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/privacy" />
+  </url>
+  <url>
+    <loc>https://kfa.kg/terms</loc>
+    <lastmod>2025-10-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <!-- Альтернативные языки -->
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kfa.kg/ru/terms" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kfa.kg/en/terms" />
+    <xhtml:link rel="alternate" hreflang="ky" href="https://kfa.kg/ky/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kfa.kg/terms" />
+  </url>
+</urlset>

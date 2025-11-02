@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tools/cli/bmad-cli.js:*)",
+      "Bash(test:*)",
+      "Bash(node test-yaml-builder.js:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(php -r \"copy(''https://getcomposer.org/installer'', ''composer-setup.php'');\")",
+      "Bash(php:*)",
+      "Bash(php -r:*)",
+      "WebFetch(domain:kfa-website.vercel.app)",
+      "Bash(rsync:*)",
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git config:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "hero": {"title": "Privacy Policy", "subtitle": "We take the protection of your personal data seriously", "lastUpdated": "Last Updated"},
+  "sections": {
+    "collection": {"title": "Information Collection", "content": "We collect information you provide during registration, KFA membership application, event participation, or service use. This includes: full name, contact details (email, phone), professional activity, education, and work experience information."},
+    "usage": {"title": "Information Usage", "content": "Collected information is used for: membership application processing, providing educational and consulting services, organizing events and communications, improving service quality, and legal compliance."},
+    "protection": {"title": "Data Protection", "content": "We apply modern technical and organizational security measures to protect your personal data from unauthorized access, modification, disclosure, or destruction. Only authorized personnel have data access."},
+    "rights": {"title": "Your Rights", "content": "You have the right to: access your personal data, request correction of inaccurate data, request data deletion (except where required by law), withdraw consent for data processing, and file a complaint with the supervisory authority."},
+    "cookies": {"title": "Cookies and Tracking", "content": "We use cookies to improve website functionality, analyze traffic, and personalize content. You can manage cookie settings in your browser. Disabling cookies may limit site functionality."}
+  },
+  "contact": {"title": "Privacy Contacts", "description": "If you have questions about our privacy policy or data processing, contact us:"}
+}

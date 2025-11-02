@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 213 71% 25%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 45 93% 53%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 213 71% 25%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 45 93% 53%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Кастомные анимации для КФА */
+.spotlight {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(
+    circle,
+    rgba(212, 175, 55, 0.3) 0%,
+    transparent 60%
+  );
+  filter: blur(100px);
+  animation: spotlight 2s ease 0.75s 1 forwards;
+  pointer-events: none;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Кастомный scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a3a6b;
+  border-radius: 6px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #152e56;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Focus styles для accessibility */
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Mermaid diagram styles */
+.mermaid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Improve text rendering in diagrams */
+.mermaid-container text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+}
+
+/* Smooth transitions for interactive elements */
+.mermaid-container .node,
+.mermaid-container .edge,
+.mermaid-container rect,
+.mermaid-container circle {
+  transition: all 0.2s ease;
+}
+
+/* Zoomed modal styles - Full screen */
+/* Ensure SVG renders correctly when scaled */
+.mermaid-container svg,
+.mermaid-zoomed svg {
+  display: block;
+}
+
+/* Ensure diagrams are accessible */
+.mermaid-container svg[role="img"] {
+  overflow: visible;
+}
+
+/* Better spacing for diagram labels */
+.mermaid-container .label {
+  padding: 4px 8px;
+}
+
+/* Responsive diagram sizing */
+@media (max-width: 768px) {
+  .mermaid-container svg {
+    font-size: 12px;
+  }
+
+  .mermaid-container text {
+    font-size: 12px;
+  }
+}
+
+/* Enhanced typography for research articles */
+.prose {
+  /* Better line height for readability */
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.prose h1 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.prose h2 {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e2e8f0;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.dark .prose h2 {
+  border-top-color: #334155;
+}
+
+.prose h3 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.prose h4 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.prose blockquote {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  line-height: 1.75;
+}
+
+.prose table {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.prose pre {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Add visual separation between major sections */
+.prose > * + h2 {
+  margin-top: 5rem;
+}
+
+.prose > * + h3 {
+  margin-top: 3.5rem;
+}
+
+/* Better spacing for lists */
+.prose ul > li > p,
+.prose ol > li > p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Improved table typography */
+.prose td,
+.prose th {
+  line-height: 1.6;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Better spacing for inline code */
+.prose :not(pre) > code {
+  padding: 0.2em 0.4em;
+  font-size: 0.875em;
+}
+
+/* Add breathing room around images */
+.prose img {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+}
+
+/* Strong emphasis with better spacing */
+.prose strong {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
