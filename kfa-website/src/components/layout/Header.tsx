@@ -30,48 +30,35 @@ export function Header() {
       title: t('nav.about'),
       href: '/about',
       submenu: [
-        { title: 'Миссия', href: '/about#mission', description: 'Наша цель и ценности' },
-        { title: 'История', href: '/about#history', description: 'Путь развития КФА' },
-        { title: 'Команда', href: '/about#team', description: 'Руководство и эксперты' },
+        { title: 'О КФА', href: '/about', description: 'Миссия, история и команда' },
         { title: 'Документы', href: '/documents', description: 'Устав и регламенты' },
+        { title: 'Стандарты', href: '/standards', description: 'Профессиональные стандарты' },
       ],
     },
     {
       title: t('nav.membership'),
       href: '/membership',
       submenu: [
-        { title: 'Преимущества и вступление', href: '/membership', description: 'Как стать членом КФА' },
-        { title: 'Члены КФА', href: '/members', description: 'База участников' },
-        { title: 'Взносы', href: '/membership#fees', description: 'Условия членства' },
+        { title: 'Вступление', href: '/membership', description: 'Как стать членом КФА' },
+        { title: 'Наши члены', href: '/members', description: 'База участников' },
       ],
     },
     {
-      title: 'Обучение и стандарты',
+      title: 'Обучение',
       href: '/education',
       submenu: [
-        { title: 'Программы обучения', href: '/education/programs', description: 'Курсы и тренинги' },
+        { title: 'Программы', href: '/education/programs', description: 'Курсы и тренинги' },
         { title: 'Сертификация', href: '/education/certification', description: 'Получение сертификатов' },
-        { title: 'Календарь курсов', href: '/education/calendar', description: 'Расписание мероприятий' },
-        { title: 'Стандарты КФА', href: '/standards', description: 'Профессиональные стандарты' },
+        { title: 'Корпоративное управление', href: '/governance/code', description: 'Обучение директоров' },
       ],
     },
     {
-      title: 'Корпоративное управление',
-      href: '/governance/code',
-      submenu: [
-        { title: 'Кодекс и сертификация', href: '/governance/code', description: 'Стандарты и обучение директоров' },
-        { title: 'База и оценка директоров', href: '/governance/directors-database', description: 'Поиск директоров и Scorecard' },
-        { title: 'Сообщество директоров', href: '/governance/community', description: 'Профессиональная сеть' },
-      ],
-    },
-    {
-      title: 'Информация',
+      title: 'Новости',
       href: '/news',
       submenu: [
         { title: 'Новости', href: '/news', description: 'Актуальные события' },
         { title: 'Мероприятия', href: '/events', description: 'Предстоящие события' },
         { title: 'Исследования', href: '/research', description: 'Аналитика и публикации' },
-        { title: 'FAQ', href: '/faq', description: 'Часто задаваемые вопросы' },
       ],
     },
     {
