@@ -89,7 +89,7 @@ export function Header() {
         {/* Right Section */}
         <div className="flex items-center gap-4">
           {/* Language Selector */}
-          <div className="hidden items-center gap-1 md:flex">
+          <div className="hidden items-center gap-1 md:flex" data-testid="language-switcher">
             {languages.map((lang) => (
               <button
                 key={lang.code}
