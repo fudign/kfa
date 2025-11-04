@@ -1,4 +1,4 @@
-import { Moon, Sun, Monitor } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 
 export function ThemeToggle() {
@@ -7,7 +7,6 @@ export function ThemeToggle() {
   const themes = [
     { value: 'light', icon: Sun, label: 'Светлая' },
     { value: 'dark', icon: Moon, label: 'Темная' },
-    { value: 'system', icon: Monitor, label: 'Системная' },
   ] as const;
 
   return (
