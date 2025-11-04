@@ -49,8 +49,9 @@ export function useRoleRedirect() {
    * Получить URL домашней страницы для роли
    * Все пользователи после логина идут на /dashboard/
    */
-  const getRoleHomePage = (role: 'admin' | 'member' | 'user' | 'guest'): string => {
+  const getRoleHomePage = (_role: 'admin' | 'member' | 'user' | 'guest'): string => {
     // Все роли идут на общую страницу dashboard
+    // Параметр _role зарезервирован для будущего использования
     return '/dashboard/';
   };
 

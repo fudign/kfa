@@ -87,7 +87,7 @@ export function Header() {
         <Link
           to="/"
           className="flex items-center"
-          onClick={(e) => {
+          onClick={() => {
             console.log('🔵 Клик на логотип КФА');
           }}
         >

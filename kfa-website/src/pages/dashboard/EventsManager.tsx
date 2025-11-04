@@ -8,7 +8,6 @@ import { eventsSchema } from '@/schemas/events.schema';
 import {
   Plus,
   Search,
-  Filter,
   Edit,
   Trash2,
   X,
@@ -149,7 +148,7 @@ export function EventsManagerPage() {
     setShowForm(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string | number) => {
     if (!confirm('Вы уверены, что хотите удалить это мероприятие?')) {
       return;
     }
@@ -307,13 +306,13 @@ export function EventsManagerPage() {
                         <td className="px-6 py-4">
                           <span className="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
                             <Calendar className="w-4 h-4" />
-                            {new Date(item.starts_at).toLocaleDateString('ru-RU', {
+                            {item.starts_at ? new Date(item.starts_at).toLocaleDateString('ru-RU', {
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric',
                               hour: '2-digit',
                               minute: '2-digit'
-                            })}
+                            }) : item.date ? new Date(item.date).toLocaleDateString('ru-RU') : 'Дата не указана'}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right space-x-2">

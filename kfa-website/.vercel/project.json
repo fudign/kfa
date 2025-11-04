@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_7GbQSLii8AfZzwMgCu3VK7sggKTW",
+  "orgId": "team_MIrfz8ka8iHFnudMpHYvlwlU",
+  "projectName": "kfa-website",
+  "settings": {
+    "createdAt": 1761829651143,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
+}

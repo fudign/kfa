@@ -1,48 +1,62 @@
 # Dependencies
 node_modules/
-vendor/
+pnpm-lock.yaml
+bun.lock
+deno.lock
+pnpm-workspace.yaml
+package-lock.json
 
-# Environment files
-.env
-.env.local
-.env.*.local
 
-# Build outputs
-dist/
-build/
-dev-dist/
-
-# Cache
-.cache/
-.vite/
-.turbo/
-
-# Database
-*.sqlite
-*.db
-
-# Composer
-composer.phar
+test-output/*
+coverage/
 
 # Logs
+logs/
 *.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# OS files
+# Build output
+build/*.txt
+
+# Environment variables
+.env
+
+# System files
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Development tools and configs
+.prettierrc
 
-# Laravel
-kfa-backend/kfa-api/storage/
-kfa-backend/kfa-api/bootstrap/cache/
+# IDE and editor configs
+.windsurf/
+.trae/
+.bmad*/.cursor/
 
-# Backup folders
-*-backup-*/
+# AI assistant files
+CLAUDE.md
+.ai/*
+cursor
+.gemini
+.mcp.json
+CLAUDE.local.md
+.serena/
+
+# Project-specific
+.bmad-core
+.bmad-creator-tools
+test-project-install/*
+sample-project/*
+flattened-codebase.xml
+*.stats.md
+.internal-docs/
+#UAT template testing output files
+tools/template-test-generator/test-scenarios/
+
+# Bundler temporary files
+.bundler-temp/
+
+# Test Install Output
+
+z*/
+nul

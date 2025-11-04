@@ -43,7 +43,6 @@ const ResetPasswordPage = lazy(() => import('@/pages/auth/ResetPassword').then(m
 // Lazy loading для dashboard страниц
 const DashboardPage = lazy(() => import('@/pages/dashboard/Dashboard').then(m => ({ default: m.DashboardPage })));
 const ProfilePage = lazy(() => import('@/pages/dashboard/Profile').then(m => ({ default: m.ProfilePage })));
-const AdminDashboardPage = lazy(() => import('@/pages/dashboard/AdminDashboard').then(m => ({ default: m.AdminDashboardPage })));
 const PaymentsPage = lazy(() => import('@/pages/dashboard/Payments').then(m => ({ default: m.PaymentsPage })));
 const DashboardDocumentsPage = lazy(() => import('@/pages/dashboard/Documents').then(m => ({ default: m.DocumentsPage })));
 const CertificatesPage = lazy(() => import('@/pages/dashboard/Certificates').then(m => ({ default: m.CertificatesPage })));

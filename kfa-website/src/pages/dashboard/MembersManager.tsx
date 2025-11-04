@@ -170,7 +170,7 @@ export function MembersManagerPage() {
     setShowForm(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string | number) => {
     if (!confirm('Вы уверены, что хотите удалить этого участника?')) {
       return;
     }

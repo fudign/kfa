@@ -49,7 +49,7 @@ interface Event {
   organizer?: Organization;
 }
 
-interface WebSite {
+export interface WebSite {
   name: string;
   url: string;
   potentialAction?: {

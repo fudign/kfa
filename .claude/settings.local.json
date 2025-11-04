@@ -14,7 +14,11 @@
       "Bash(npm run dev:*)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(vercel --version:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

@@ -91,7 +91,8 @@ export function ProtectedRoute({
  * Получить домашнюю страницу для роли
  * Все пользователи после логина идут на /dashboard/
  */
-function getRoleHomePage(role: 'admin' | 'member' | 'user' | 'guest'): string {
+function getRoleHomePage(_role: 'admin' | 'member' | 'user' | 'guest'): string {
   // Все роли идут на общую страницу dashboard
+  // Параметр _role зарезервирован для будущего использования
   return '/dashboard/';
 }

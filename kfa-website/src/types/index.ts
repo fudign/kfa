@@ -1,7 +1,7 @@
 // Global TypeScript types for KFA Website
 
 export interface Member {
-  id: string;
+  id: string | number;
   name: string;
   logo: string;
   type: 'broker' | 'dealer' | 'manager' | 'exchange' | 'depository';
@@ -9,10 +9,17 @@ export interface Member {
   website: string;
   licenseNumber: string;
   description?: string;
+  email?: string;
+  company?: string;
+  position?: string;
+  phone?: string;
+  photo?: string;
+  bio?: string;
+  joined_at?: string;
 }
 
 export interface Event {
-  id: string;
+  id: string | number;
   title: string;
   description: string;
   date: string;
@@ -21,10 +28,14 @@ export interface Event {
   registrationOpen: boolean;
   capacity?: number;
   registeredCount?: number;
+  slug?: string;
+  starts_at?: string;
+  ends_at?: string;
+  image?: string;
 }
 
 export interface NewsItem {
-  id: string;
+  id: string | number;
   title: string;
   excerpt: string;
   content: string;
@@ -48,6 +59,7 @@ export interface User {
   is_moderator: boolean;
   is_editor: boolean;
   is_member: boolean;
+  role?: 'admin' | 'member' | 'user' | 'guest';  // Для обратной совместимости
 }
 
 export interface Media {
@@ -73,6 +85,8 @@ export interface Media {
   uploaded_by: number;
   created_at: string;
   updated_at: string;
+  alt_text?: string;
+  description?: string;
 }
 
 export interface Partner {

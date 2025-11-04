@@ -64,12 +64,12 @@ export const authAPI = {
 
 // Members API
 export const membersAPI = {
-  getAll: async () => {
-    const response = await api.get('/members');
+  getAll: async (params?: { page?: number; search?: string; type?: string; status?: string; per_page?: number }) => {
+    const response = await api.get('/members', { params });
     return response.data;
   },
 
-  getById: async (id: number) => {
+  getById: async (id: string | number) => {
     const response = await api.get(`/members/${id}`);
     return response.data;
   },
@@ -79,12 +79,12 @@ export const membersAPI = {
     return response.data;
   },
 
-  update: async (id: number, data: any) => {
+  update: async (id: string | number, data: any) => {
     const response = await api.put(`/members/${id}`, data);
     return response.data;
   },
 
-  delete: async (id: number) => {
+  delete: async (id: string | number) => {
     const response = await api.delete(`/members/${id}`);
     return response.data;
   },
@@ -95,12 +95,12 @@ export { NewsService as newsAPI } from './api/news';
 
 // Events API
 export const eventsAPI = {
-  getAll: async () => {
-    const response = await api.get('/events');
+  getAll: async (params?: { page?: number; search?: string; status?: string; type?: string; per_page?: number }) => {
+    const response = await api.get('/events', { params });
     return response.data;
   },
 
-  getById: async (id: number) => {
+  getById: async (id: string | number) => {
     const response = await api.get(`/events/${id}`);
     return response.data;
   },
@@ -110,12 +110,12 @@ export const eventsAPI = {
     return response.data;
   },
 
-  update: async (id: number, data: any) => {
+  update: async (id: string | number, data: any) => {
     const response = await api.put(`/events/${id}`, data);
     return response.data;
   },
 
-  delete: async (id: number) => {
+  delete: async (id: string | number) => {
     const response = await api.delete(`/events/${id}`);
     return response.data;
   },
@@ -156,7 +156,7 @@ export const mediaAPI = {
     return response.data;
   },
 
-  getById: async (id: number) => {
+  getById: async (id: string | number) => {
     const response = await api.get(`/media/${id}`);
     return response.data;
   },
@@ -176,7 +176,12 @@ export const mediaAPI = {
     return response.data;
   },
 
-  delete: async (id: number) => {
+  update: async (id: string | number, data: { filename?: string; alt_text?: string; description?: string }) => {
+    const response = await api.put(`/media/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: string | number) => {
     const response = await api.delete(`/media/${id}`);
     return response.data;
   },

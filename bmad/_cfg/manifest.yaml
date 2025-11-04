@@ -6,7 +6,6 @@ modules:
   - core
   - bmb
   - bmd
-  - bmm
 ides:
   - claude-code
   - codex
