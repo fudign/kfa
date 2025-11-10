@@ -8,11 +8,13 @@
 ## ✅ Что готово
 
 ### 1. Docker Infrastructure
+
 - ✅ `docker-compose.yml` - Полная конфигурация (Laravel + PostgreSQL + Redis + Mailpit)
 - ✅ `.env` - Настроено для PostgreSQL и Redis
 - ✅ `composer.json` - Laravel 11 + Sanctum зависимости
 
 ### 2. Установочные скрипты
+
 - ✅ `install-laravel.ps1` - PowerShell скрипт (рекомендуется)
 - ✅ `setup.sh` - Bash скрипт для установки внутри контейнера
 - ✅ Полная документация в README.md
@@ -24,7 +26,7 @@ kfa-backend/
 └── kfa-api/
     ├── docker-compose.yml        ✅ Docker конфигурация
     ├── .env                       ✅ Переменные окружения
-    ├── composer.json              ✅ Laravel зависимости  
+    ├── composer.json              ✅ Laravel зависимости
     ├── install-laravel.ps1        ✅ PowerShell установка
     ├── setup.sh                   ✅ Bash установка
     └── README.md                  ✅ Документация
@@ -37,6 +39,7 @@ kfa-backend/
 **Git Bash + Docker + Windows пути = несовместимость**
 
 Git Bash неправильно преобразует пути для Docker на Windows:
+
 ```
 /e/CODE/... → C:/Program Files/Git/... ❌
 ```
@@ -109,6 +112,7 @@ kfa-api/
 ```
 
 **Установленные пакеты:**
+
 - Laravel Framework ^11.0
 - Laravel Sanctum ^4.0 (API токены)
 - PostgreSQL драйвер
@@ -116,6 +120,7 @@ kfa-api/
 - Development tools
 
 **Docker Services (порты):**
+
 - laravel: 80 (API)
 - pgsql: 5432 (PostgreSQL)
 - redis: 6379 (Redis)
@@ -155,6 +160,7 @@ docker-compose exec laravel php artisan make:controller Api/EventController --ap
 ### 4. Настроить API routes
 
 Редактировать `routes/api.php`:
+
 ```php
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MemberController;
@@ -172,6 +178,7 @@ Route::middleware('auth:sanctum')->group(function () {
 ### 5. Настроить CORS для frontend
 
 `config/cors.php`:
+
 ```php
 'allowed_origins' => ['http://localhost:3000'],
 'supports_credentials' => true,
@@ -182,12 +189,14 @@ Route::middleware('auth:sanctum')->group(function () {
 ## 🎯 Roadmap
 
 **Сейчас:**
+
 - ✅ Docker инфраструктура
 - ✅ Конфигурация
 - ✅ Установочные скрипты
 - ⏳ Laravel проект (требуется запуск install-laravel.ps1)
 
 **Далее:**
+
 1. База данных (миграции, модели)
 2. API (контроллеры, роуты, middleware)
 3. Аутентификация (Sanctum токены)
@@ -196,7 +205,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 ---
 
-**Готов к установке!** 
+**Готов к установке!**
 
 Выполните `.\install-laravel.ps1` в PowerShell для начала.
 

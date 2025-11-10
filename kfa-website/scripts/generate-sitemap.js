@@ -160,7 +160,7 @@ ${pages
     <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en${page.url}" />
     <xhtml:link rel="alternate" hreflang="ky" href="${BASE_URL}/ky${page.url}" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${page.url}" />
-  </url>`
+  </url>`,
   )
   .join('\n')}
 </urlset>`;

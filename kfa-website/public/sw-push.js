@@ -74,21 +74,19 @@ self.addEventListener('notificationclick', (event) => {
 
   // Открываем URL
   event.waitUntil(
-    clients
-      .matchAll({ type: 'window', includeUncontrolled: true })
-      .then((clientList) => {
-        // Проверяем, есть ли уже открытое окно с этим URL
-        for (const client of clientList) {
-          if (client.url === urlToOpen && 'focus' in client) {
-            return client.focus();
-          }
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // Проверяем, есть ли уже открытое окно с этим URL
+      for (const client of clientList) {
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
         }
+      }
 
-        // Если нет, открываем новое окно
-        if (clients.openWindow) {
-          return clients.openWindow(urlToOpen);
-        }
-      })
+      // Если нет, открываем новое окно
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    }),
   );
 });
 
@@ -109,7 +107,7 @@ self.addEventListener('notificationclose', (event) => {
       }),
     }).catch((error) => {
       console.error('[SW] Analytics error:', error);
-    })
+    }),
   );
 });
 
@@ -132,6 +130,6 @@ self.addEventListener('pushsubscriptionchange', (event) => {
       })
       .catch((error) => {
         console.error('[SW] Push resubscription failed:', error);
-      })
+      }),
   );
 });

@@ -13,7 +13,7 @@ content = content.replace(
         password: testAccounts.user.password
       }
     });
-    const { token } = await loginResponse.json();`
+    const { token } = await loginResponse.json();`,
 );
 
 fs.writeFileSync('tests/e2e/auth-roles.spec.ts', content, 'utf8');

@@ -57,12 +57,12 @@ features/
 // Цвета
 const colors = {
   primary: {
-    main: '#1A3A6B',    // Основной синий
+    main: '#1A3A6B', // Основной синий
     light: '#3387cf',
     dark: '#0a172b',
   },
   accent: {
-    main: '#D4AF37',    // Золотой
+    main: '#D4AF37', // Золотой
     light: '#efc75f',
     dark: '#7f6921',
   },
@@ -76,25 +76,25 @@ const typography = {
     mono: 'JetBrains Mono',
   },
   fontSize: {
-    xs: '0.75rem',      // 12px
-    sm: '0.875rem',     // 14px
-    base: '1rem',       // 16px
-    lg: '1.125rem',     // 18px
-    xl: '1.25rem',      // 20px
-    '2xl': '1.5rem',    // 24px
-    '3xl': '1.875rem',  // 30px
-    '4xl': '2.25rem',   // 36px
+    xs: '0.75rem', // 12px
+    sm: '0.875rem', // 14px
+    base: '1rem', // 16px
+    lg: '1.125rem', // 18px
+    xl: '1.25rem', // 20px
+    '2xl': '1.5rem', // 24px
+    '3xl': '1.875rem', // 30px
+    '4xl': '2.25rem', // 36px
   },
 };
 
 // Spacing
 const spacing = {
-  xs: '0.25rem',    // 4px
-  sm: '0.5rem',     // 8px
-  md: '1rem',       // 16px
-  lg: '1.5rem',     // 24px
-  xl: '2rem',       // 32px
-  '2xl': '3rem',    // 48px
+  xs: '0.25rem', // 4px
+  sm: '0.5rem', // 8px
+  md: '1rem', // 16px
+  lg: '1.5rem', // 24px
+  xl: '2rem', // 32px
+  '2xl': '3rem', // 48px
 };
 
 // Breakpoints
@@ -109,18 +109,18 @@ const breakpoints = {
 
 ### Component Library
 
-| Компонент | Источник | Назначение |
-|-----------|----------|------------|
-| Button | shadcn/ui | Кнопки с вариантами |
-| Card | shadcn/ui | Карточки контента |
-| Form | shadcn/ui | Формы с валидацией |
-| Table | shadcn/ui + TanStack | Таблицы с сортировкой |
-| Dialog | shadcn/ui | Модальные окна |
-| Select | shadcn/ui | Выпадающие списки |
-| Tabs | shadcn/ui | Вкладки |
-| Spotlight | Aceternity | Hero эффекты |
-| CardStack | Aceternity | Анимированные карточки |
-| GlareCard | Aceternity | Hover эффекты |
+| Компонент | Источник             | Назначение             |
+| --------- | -------------------- | ---------------------- |
+| Button    | shadcn/ui            | Кнопки с вариантами    |
+| Card      | shadcn/ui            | Карточки контента      |
+| Form      | shadcn/ui            | Формы с валидацией     |
+| Table     | shadcn/ui + TanStack | Таблицы с сортировкой  |
+| Dialog    | shadcn/ui            | Модальные окна         |
+| Select    | shadcn/ui            | Выпадающие списки      |
+| Tabs      | shadcn/ui            | Вкладки                |
+| Spotlight | Aceternity           | Hero эффекты           |
+| CardStack | Aceternity           | Анимированные карточки |
+| GlareCard | Aceternity           | Hover эффекты          |
 
 ### Accessibility Standards
 
@@ -223,9 +223,7 @@ function Component() {
   return (
     <div>
       <h1>{t('hero.title')}</h1>
-      <button onClick={() => i18n.changeLanguage('en')}>
-        English
-      </button>
+      <button onClick={() => i18n.changeLanguage('en')}>English</button>
     </div>
   );
 }
@@ -313,12 +311,12 @@ const DashboardPage = lazy(() => import('@/pages/member/Dashboard'));
 
 ### Performance Metrics
 
-| Метрика | Target | Excellent |
-|---------|--------|-----------|
-| LCP (Largest Contentful Paint) | < 2.5s | < 1.5s |
-| FID (First Input Delay) | < 100ms | < 50ms |
-| CLS (Cumulative Layout Shift) | < 0.1 | < 0.05 |
-| TTI (Time to Interactive) | < 3.5s | < 2.5s |
+| Метрика                        | Target  | Excellent |
+| ------------------------------ | ------- | --------- |
+| LCP (Largest Contentful Paint) | < 2.5s  | < 1.5s    |
+| FID (First Input Delay)        | < 100ms | < 50ms    |
+| CLS (Cumulative Layout Shift)  | < 0.1   | < 0.05    |
+| TTI (Time to Interactive)      | < 3.5s  | < 2.5s    |
 
 ## 📱 Responsive Design
 

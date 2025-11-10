@@ -12,12 +12,14 @@
 This document provides the detailed epic breakdown for **KFA API Completion & Frontend Integration**, expanding on the high-level epic list in the [PRD](./prd-kfa-api-completion.md).
 
 Each epic includes:
+
 - Expanded goal and value proposition
 - Complete story breakdown with user stories
 - Acceptance criteria for each story
 - Story sequencing and dependencies
 
 **Epic Sequencing Principles:**
+
 - Epic 1 establishes database foundation
 - Subsequent epics build progressively, each delivering significant end-to-end value
 - Stories within epics are vertically sliced and sequentially ordered
@@ -46,6 +48,7 @@ Each epic includes:
 **So that** member data can be properly stored and queried
 
 **Acceptance Criteria:**
+
 1. Migration file `add_fields_to_members_table.php` includes all fields: name, email, company, position, photo, bio, joined_at
 2. Email field has unique constraint
 3. Photo and bio fields are nullable
@@ -54,6 +57,7 @@ Each epic includes:
 6. `php artisan migrate:status` shows migration as executed
 
 **Technical Notes:**
+
 - File location: `database/migrations/2025_11_02_000001_add_fields_to_members_table.php`
 - Use `Schema::table()` to modify existing table
 - Test rollback with `migrate:rollback`
@@ -69,6 +73,7 @@ Each epic includes:
 **So that** news articles can be stored with proper metadata and relationships
 
 **Acceptance Criteria:**
+
 1. Migration includes fields: title, slug, content, excerpt, image, published_at, author_id
 2. Slug field has unique constraint
 3. Excerpt and image fields are nullable
@@ -77,6 +82,7 @@ Each epic includes:
 6. Migration runs successfully
 
 **Technical Notes:**
+
 - Use `$table->foreignId('author_id')->constrained('users')->onDelete('cascade')`
 - published_at nullable to support draft articles
 
@@ -91,6 +97,7 @@ Each epic includes:
 **So that** events can be scheduled and managed properly
 
 **Acceptance Criteria:**
+
 1. Migration includes fields: title, slug, description, location, starts_at, ends_at, capacity, image
 2. Slug field has unique constraint
 3. Capacity and image are nullable
@@ -100,6 +107,7 @@ Each epic includes:
 7. Migration runs successfully
 
 **Technical Notes:**
+
 - Use `CHECK` constraint for date validation in PostgreSQL
 - Consider timezone handling for starts_at/ends_at
 
@@ -114,6 +122,7 @@ Each epic includes:
 **So that** educational programs can store structured data
 
 **Acceptance Criteria:**
+
 1. Migration includes fields: title, slug, description, duration, level, price, image, syllabus
 2. Level field uses enum with values: beginner, intermediate, advanced
 3. Syllabus field is JSONB type (PostgreSQL)
@@ -122,6 +131,7 @@ Each epic includes:
 6. Migration runs successfully
 
 **Technical Notes:**
+
 - Use `$table->enum('level', ['beginner', 'intermediate', 'advanced'])`
 - Use `$table->jsonb('syllabus')->nullable()` for PostgreSQL
 
@@ -136,6 +146,7 @@ Each epic includes:
 **So that** I can confirm the schema is correct before building API
 
 **Acceptance Criteria:**
+
 1. All 4 migrations execute without errors
 2. Database tables inspected and verified to have correct columns
 3. Indexes verified using `\d table_name` in psql
@@ -145,6 +156,7 @@ Each epic includes:
 7. Seeders can insert test data into all tables
 
 **Technical Notes:**
+
 - Use `php artisan migrate:fresh` for clean run
 - Create simple seeder to test data insertion
 - Document any issues in technical decisions log
@@ -172,6 +184,7 @@ Each epic includes:
 **So that** I can access member-only features
 
 **Acceptance Criteria:**
+
 1. POST /api/register endpoint accepts: name, email, password, password_confirmation
 2. RegisterRequest validation class created with rules:
    - name: required, string, max:255
@@ -185,6 +198,7 @@ Each epic includes:
 8. Duplicate email returns appropriate error
 
 **Technical Notes:**
+
 - File: `app/Http/Controllers/Api/AuthController.php`
 - Request: `app/Http/Requests/Auth/RegisterRequest.php`
 - Use `Hash::make()` for password
@@ -201,6 +215,7 @@ Each epic includes:
 **So that** I can access my account and protected resources
 
 **Acceptance Criteria:**
+
 1. POST /api/login endpoint accepts: email, password
 2. LoginRequest validation class created
 3. User retrieved by email from database
@@ -211,6 +226,7 @@ Each epic includes:
 8. Multiple logins create separate tokens
 
 **Technical Notes:**
+
 - Validate credentials without exposing which field is wrong (security)
 - Consider rate limiting (story 2.5)
 
@@ -225,6 +241,7 @@ Each epic includes:
 **So that** my session is terminated and token is revoked
 
 **Acceptance Criteria:**
+
 1. POST /api/logout endpoint requires authentication
 2. Endpoint protected by `auth:sanctum` middleware
 3. Current access token is revoked (deleted from database)
@@ -233,6 +250,7 @@ Each epic includes:
 6. Logout does not affect other active sessions (other tokens remain valid)
 
 **Technical Notes:**
+
 - Use `auth()->user()->currentAccessToken()->delete()`
 - Test with multiple active sessions
 
@@ -247,6 +265,7 @@ Each epic includes:
 **So that** I can display my profile information
 
 **Acceptance Criteria:**
+
 1. GET /api/user endpoint requires authentication
 2. Protected by `auth:sanctum` middleware
 3. Returns current authenticated user data (200 status)
@@ -255,6 +274,7 @@ Each epic includes:
 6. Expired token returns 401
 
 **Technical Notes:**
+
 - Use `auth()->user()` to get current user
 - Create `app/Http/Resources/UserResource.php` for response transformation
 
@@ -269,6 +289,7 @@ Each epic includes:
 **So that** we prevent brute force attacks and abuse
 
 **Acceptance Criteria:**
+
 1. Register endpoint limited to 5 requests per minute per IP
 2. Login endpoint limited to 5 requests per minute per IP
 3. Other API endpoints limited to 60 requests per minute for authenticated users
@@ -277,6 +298,7 @@ Each epic includes:
 6. Custom throttle group 'auth' created
 
 **Technical Notes:**
+
 - Use Laravel's built-in throttling: `Route::middleware(['throttle:auth'])`
 - Define throttle groups in RouteServiceProvider or Kernel
 
@@ -303,6 +325,7 @@ Each epic includes:
 **So that** unauthenticated users can register and login
 
 **Acceptance Criteria:**
+
 1. `routes/api.php` file has public routes section
 2. POST /api/register route points to AuthController@register
 3. POST /api/login route points to AuthController@login
@@ -311,6 +334,7 @@ Each epic includes:
 6. Routes accessible via `php artisan route:list`
 
 **Technical Notes:**
+
 ```php
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -327,6 +351,7 @@ Route::post('/login', [AuthController::class, 'login']);
 **So that** authenticated users can access CRUD operations
 
 **Acceptance Criteria:**
+
 1. Protected routes group created with `auth:sanctum` middleware
 2. Logout and user endpoints configured in protected group
 3. apiResource routes created for: members, news, events, programs
@@ -335,6 +360,7 @@ Route::post('/login', [AuthController::class, 'login']);
 6. Attempting access without token returns 401
 
 **Technical Notes:**
+
 ```php
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -355,6 +381,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** the API is secure and well-structured
 
 **Acceptance Criteria:**
+
 1. Routes organized into logical groups (public, authenticated)
 2. CORS middleware applied to all API routes
 3. JSON response middleware ensures proper content-type
@@ -363,6 +390,7 @@ Route::middleware('auth:sanctum')->group(function () {
 6. Middleware stack documented
 
 **Technical Notes:**
+
 - Verify `api` middleware group in `app/Http/Kernel.php` includes CORS
 - Ensure all responses return JSON
 
@@ -377,6 +405,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I can verify routing is working before controller implementation
 
 **Acceptance Criteria:**
+
 1. Postman/Insomnia collection created with all 23 endpoints
 2. Public routes (register, login) return correct responses or 500 errors (controllers not implemented yet)
 3. Protected routes without token return 401
@@ -385,6 +414,7 @@ Route::middleware('auth:sanctum')->group(function () {
 6. Collection exported and saved to repo
 
 **Technical Notes:**
+
 - Create `postman/kfa-api.postman_collection.json`
 - Document token usage in collection variables
 
@@ -411,6 +441,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I can maintain the member directory
 
 **Acceptance Criteria:**
+
 1. MemberController implements all 5 methods: index, store, show, update, destroy
 2. index() returns paginated members with search capability
 3. store() creates member with validation (StoreMemberRequest)
@@ -422,6 +453,7 @@ Route::middleware('auth:sanctum')->group(function () {
 9. All endpoints return proper HTTP status codes
 
 **Technical Notes:**
+
 - Validation: email unique, name required, company required
 - Store photos in `storage/app/public/members/`
 - Use `Member::paginate(15)` for index
@@ -437,6 +469,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I can keep members informed with latest updates
 
 **Acceptance Criteria:**
+
 1. NewsController implements all CRUD methods
 2. index() returns published news for public, all news for authenticated users
 3. Automatic slug generation from title using `Str::slug()`
@@ -448,6 +481,7 @@ Route::middleware('auth:sanctum')->group(function () {
 9. NewsResource includes author details
 
 **Technical Notes:**
+
 - Use `News::with('author')->paginate()`
 - Store images in `storage/app/public/news/`
 - published_at nullable for draft support
@@ -463,6 +497,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** members can discover and register for events
 
 **Acceptance Criteria:**
+
 1. EventController implements all CRUD methods
 2. index() supports filtering by date range (?from=date&to=date)
 3. Events ordered by starts_at ascending
@@ -473,6 +508,7 @@ Route::middleware('auth:sanctum')->group(function () {
 8. Query optimization with indexes
 
 **Technical Notes:**
+
 - Use Carbon for date comparisons
 - Consider adding `scope` for upcoming events
 - Store images in `storage/app/public/events/`
@@ -488,6 +524,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** members can browse and enroll in courses
 
 **Acceptance Criteria:**
+
 1. ProgramController implements all CRUD methods
 2. index() supports filtering by level (?level=intermediate)
 3. Level field validated as enum (beginner, intermediate, advanced)
@@ -497,6 +534,7 @@ Route::middleware('auth:sanctum')->group(function () {
 7. ProgramResource formats JSON fields correctly
 
 **Technical Notes:**
+
 - Validate syllabus structure if needed
 - Price stored as `decimal(10,2)`
 - Store images in `storage/app/public/programs/`
@@ -512,6 +550,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** validation is reusable and maintainable
 
 **Acceptance Criteria:**
+
 1. FormRequest classes created for all resources:
    - StoreMemberRequest, UpdateMemberRequest
    - StoreNewsRequest, UpdateNewsRequest
@@ -524,6 +563,7 @@ Route::middleware('auth:sanctum')->group(function () {
 6. 422 responses return structured error messages
 
 **Technical Notes:**
+
 - Location: `app/Http/Requests/{Resource}/`
 - Use `sometimes` rule for update operations
 - Custom messages via `messages()` method
@@ -539,6 +579,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** images are securely stored and accessible
 
 **Acceptance Criteria:**
+
 1. File upload validation: max size, allowed types (jpeg, jpg, png, gif)
 2. Files stored using Laravel's Storage facade
 3. Symbolic link created from public to storage
@@ -548,6 +589,7 @@ Route::middleware('auth:sanctum')->group(function () {
 7. Proper error handling for upload failures
 
 **Technical Notes:**
+
 - Run `php artisan storage:link` for symbolic link
 - Use `$request->file('image')->store('folder', 'public')`
 - Max size: 2MB
@@ -576,16 +618,18 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** the React frontend can communicate with the API
 
 **Acceptance Criteria:**
+
 1. `config/cors.php` configured with correct settings
 2. Allowed origins includes: http://localhost:3000 (dev) and production domain
-3. Allowed methods: all (*)
-4. Allowed headers: all (*)
+3. Allowed methods: all (\*)
+4. Allowed headers: all (\*)
 5. Supports credentials: true (for Sanctum)
-6. Paths includes: api/*, sanctum/csrf-cookie
+6. Paths includes: api/\*, sanctum/csrf-cookie
 7. CORS middleware active in `app/Http/Kernel.php`
 8. Environment variable FRONTEND_URL used for configuration
 
 **Technical Notes:**
+
 ```php
 'allowed_origins' => [
     env('FRONTEND_URL', 'http://localhost:3000'),
@@ -604,6 +648,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I can proceed with API integration
 
 **Acceptance Criteria:**
+
 1. Simple fetch request from React app succeeds
 2. Preflight OPTIONS requests handled correctly
 3. Authorization headers accepted
@@ -612,6 +657,7 @@ Route::middleware('auth:sanctum')->group(function () {
 6. Test from both http://localhost:3000 and actual frontend
 
 **Technical Notes:**
+
 - Use browser DevTools Network tab to inspect
 - Check for Access-Control-Allow-Origin header in responses
 - Test with and without authentication
@@ -627,6 +673,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** the API is protected from common attacks
 
 **Acceptance Criteria:**
+
 1. Security headers middleware created
 2. Headers added:
    - X-Frame-Options: DENY
@@ -638,6 +685,7 @@ Route::middleware('auth:sanctum')->group(function () {
 5. No impact on CORS functionality
 
 **Technical Notes:**
+
 - Create middleware: `php artisan make:middleware SecurityHeaders`
 - Register in `$middleware` array in Kernel.php
 
@@ -664,6 +712,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** all API calls are consistent and maintainable
 
 **Acceptance Criteria:**
+
 1. File created: `kfa-website/src/services/api.ts`
 2. Axios instance configured with base URL from env
 3. Request interceptor adds Authorization header with token
@@ -678,6 +727,7 @@ Route::middleware('auth:sanctum')->group(function () {
 7. Error handling with proper error types
 
 **Technical Notes:**
+
 - Use `import.meta.env.VITE_API_URL` for base URL
 - Token stored in localStorage
 - Response interceptor clears token on 401
@@ -693,6 +743,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I can access the platform
 
 **Acceptance Criteria:**
+
 1. Register page calls authService.register()
 2. Success stores token in localStorage
 3. User redirected to dashboard after successful login
@@ -705,6 +756,7 @@ Route::middleware('auth:sanctum')->group(function () {
 10. Loading states during API calls
 
 **Technical Notes:**
+
 - Update `src/store/authStore.ts`
 - Use React Router's `Navigate` for redirects
 - Clear Zustand state on logout
@@ -720,6 +772,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I have up-to-date information
 
 **Acceptance Criteria:**
+
 1. Dashboard fetches real news from newsService.getAll()
 2. Events calendar fetches from eventService.getAll()
 3. Programs list fetches from programService.getAll()
@@ -732,6 +785,7 @@ Route::middleware('auth:sanctum')->group(function () {
 10. Pagination works correctly
 
 **Technical Notes:**
+
 - Use React Query or manual useEffect
 - Update stores: newsStore, eventStore, programStore, memberStore
 
@@ -746,6 +800,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** I understand what's happening
 
 **Acceptance Criteria:**
+
 1. Toast/notification library integrated (e.g., react-hot-toast)
 2. Success messages shown for: create, update, delete operations
 3. Error messages shown for API failures
@@ -758,6 +813,7 @@ Route::middleware('auth:sanctum')->group(function () {
 10. Optimistic updates where appropriate
 
 **Technical Notes:**
+
 - Install react-hot-toast or similar
 - Create reusable error handler function
 - Show validation errors per-field
@@ -773,6 +829,7 @@ Route::middleware('auth:sanctum')->group(function () {
 **So that** the application uses real backend data
 
 **Acceptance Criteria:**
+
 1. All Zustand stores updated to fetch from API
 2. Mock data removed from stores
 3. Store actions call API service methods
@@ -785,6 +842,7 @@ Route::middleware('auth:sanctum')->group(function () {
 10. All components render correctly with real data
 
 **Technical Notes:**
+
 - Update: authStore, memberStore, newsStore, eventStore, programStore
 - Keep persistence for auth state only
 - Test with empty database and populated database

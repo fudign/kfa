@@ -1,4 +1,5 @@
 # Architecture Review & Technical Specification
+
 ## KFA API Completion Project
 
 **Document Version**: 1.0
@@ -27,6 +28,7 @@
 ## 1. Executive Summary
 
 ### 1.1 Architecture Goals
+
 - Complete API layer without disrupting existing frontend
 - Implement secure authentication using Laravel Sanctum
 - Enable CRUD operations for Members, News, Events, Programs
@@ -34,6 +36,7 @@
 - Ensure scalability and maintainability
 
 ### 1.2 Key Architectural Decisions
+
 1. **Sanctum over Passport** - SPA authentication, simpler setup
 2. **Repository Pattern** - Future-proof for testing and swapping data sources
 3. **Service Layer** - Business logic separation from controllers
@@ -41,6 +44,7 @@
 5. **FormRequest Validation** - Dedicated validation classes
 
 ### 1.3 Architecture Compliance
+
 - ✅ RESTful API design principles
 - ✅ Laravel best practices and conventions
 - ✅ SOLID principles
@@ -123,6 +127,7 @@
 ### 2.2 Existing Components Assessment
 
 #### ✅ Strengths
+
 1. **Modern Tech Stack** - Latest stable versions of all frameworks
 2. **Containerization** - Docker Compose for consistent environments
 3. **TypeScript Frontend** - Type safety and better DX
@@ -130,6 +135,7 @@
 5. **Internationalization** - Multi-language support ready
 
 #### ⚠️ Weaknesses
+
 1. **No API Implementation** - Controllers are empty shells
 2. **Missing Authentication** - No Sanctum integration
 3. **No CORS Config** - Frontend cannot communicate with backend
@@ -138,6 +144,7 @@
 6. **No Tests** - Zero test coverage
 
 #### 🎯 Opportunities
+
 1. Implement repository pattern for testability
 2. Add service layer for reusable business logic
 3. Create API resources for consistent responses
@@ -145,6 +152,7 @@
 5. Implement caching strategy
 
 #### 🚨 Threats
+
 1. Security vulnerabilities if validation not thorough
 2. Performance issues without proper indexing
 3. CORS misconfiguration could block frontend
@@ -313,39 +321,48 @@ kfa-backend/kfa-api/
 ### 4.2 Layer Responsibilities
 
 #### Controllers Layer
+
 **Responsibility**: HTTP request/response handling
 **Should**:
+
 - Receive HTTP requests
 - Delegate to services
 - Return HTTP responses
 - Handle exceptions
 
 **Should NOT**:
+
 - Contain business logic
 - Directly query database
 - Validate complex rules (use FormRequests)
 
 #### Service Layer
+
 **Responsibility**: Business logic execution
 **Should**:
+
 - Implement business rules
 - Coordinate between multiple models
 - Handle transactions
 - Process complex operations
 
 **Should NOT**:
+
 - Handle HTTP concerns
 - Directly return HTTP responses
 
 #### Model Layer
+
 **Responsibility**: Data representation
 **Should**:
+
 - Define relationships
 - Define casts and accessors
 - Define scopes
 - Handle model events
 
 **Should NOT**:
+
 - Contain business logic
 - Handle HTTP requests
 
@@ -454,6 +471,7 @@ kfa-backend/kfa-api/
 ### 6.1 Database Schema
 
 #### Users Table
+
 ```sql
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
@@ -471,6 +489,7 @@ CREATE INDEX idx_users_email ON users(email);
 ```
 
 #### Members Table
+
 ```sql
 CREATE TABLE members (
     id BIGSERIAL PRIMARY KEY,
@@ -492,6 +511,7 @@ CREATE INDEX idx_members_joined_at ON members(joined_at);
 ```
 
 #### News Table
+
 ```sql
 CREATE TABLE news (
     id BIGSERIAL PRIMARY KEY,
@@ -517,6 +537,7 @@ CREATE INDEX idx_news_published_at_desc ON news(published_at DESC);
 ```
 
 #### Events Table
+
 ```sql
 CREATE TABLE events (
     id BIGSERIAL PRIMARY KEY,
@@ -542,6 +563,7 @@ CREATE INDEX idx_events_upcoming ON events(starts_at) WHERE starts_at > CURRENT_
 ```
 
 #### Programs Table
+
 ```sql
 CREATE TABLE programs (
     id BIGSERIAL PRIMARY KEY,
@@ -992,7 +1014,7 @@ const api: AxiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
 });
 
@@ -1005,7 +1027,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Response interceptor
@@ -1017,21 +1039,17 @@ api.interceptors.response.use(
       window.location.href = '/login';
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const authService = {
-  register: (data: { name: string; email: string; password: string; password_confirmation: string }) =>
-    api.post('/register', data),
+  register: (data: { name: string; email: string; password: string; password_confirmation: string }) => api.post('/register', data),
 
-  login: (data: { email: string; password: string }) =>
-    api.post('/login', data),
+  login: (data: { email: string; password: string }) => api.post('/login', data),
 
-  logout: () =>
-    api.post('/logout'),
+  logout: () => api.post('/logout'),
 
-  getUser: () =>
-    api.get('/user'),
+  getUser: () => api.get('/user'),
 };
 
 export const memberService = {
@@ -1145,6 +1163,7 @@ Laravel provides two authentication systems: Passport (OAuth2) and Sanctum (toke
 Use Sanctum for authentication.
 
 **Rationale**:
+
 - SPA-focused (perfect for React frontend)
 - Simpler setup and configuration
 - No OAuth2 complexity needed
@@ -1152,10 +1171,12 @@ Use Sanctum for authentication.
 - Official Laravel recommendation for SPAs
 
 **Consequences**:
-+ Simpler implementation
-+ Better performance
-+ Easier to maintain
-- No OAuth2 support (not needed for current scope)
+
+- Simpler implementation
+- Better performance
+- Easier to maintain
+
+* No OAuth2 support (not needed for current scope)
 
 ---
 
@@ -1171,16 +1192,19 @@ Controllers can become bloated with business logic.
 Introduce Service layer for business logic.
 
 **Rationale**:
+
 - Separation of concerns
 - Reusable business logic
 - Easier testing
 - Cleaner controllers
 
 **Consequences**:
-+ Better code organization
-+ Improved testability
-+ Reusable logic
-- Slightly more files to manage
+
+- Better code organization
+- Improved testability
+- Reusable logic
+
+* Slightly more files to manage
 
 ---
 
@@ -1196,16 +1220,19 @@ Need consistent, transformable API responses.
 Use Laravel API Resources for all responses.
 
 **Rationale**:
+
 - Consistent response format
 - Easy to modify output structure
 - Hide sensitive data
 - Versioning support
 
 **Consequences**:
-+ Consistent API responses
-+ Easy to version
-+ Better security
-- Additional abstraction layer
+
+- Consistent API responses
+- Easy to version
+- Better security
+
+* Additional abstraction layer
 
 ---
 
@@ -1221,15 +1248,18 @@ Project already using PostgreSQL.
 Continue with PostgreSQL.
 
 **Rationale**:
+
 - Already configured
 - Better JSON support (for program syllabus)
 - More robust ACID compliance
 - Better concurrency handling
 
 **Consequences**:
-+ Advanced features
-+ Better performance for complex queries
-- Slightly different SQL syntax
+
+- Advanced features
+- Better performance for complex queries
+
+* Slightly different SQL syntax
 
 ---
 
@@ -1238,6 +1268,7 @@ Continue with PostgreSQL.
 This architecture review and technical specification provides a comprehensive blueprint for completing the KFA API project. The design follows Laravel best practices, implements clean architecture principles, and ensures security, scalability, and maintainability.
 
 **Key Takeaways**:
+
 1. ✅ Use Sanctum for simple, secure SPA authentication
 2. ✅ Implement service layer for business logic
 3. ✅ Use API Resources for consistent responses

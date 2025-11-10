@@ -9,6 +9,7 @@
 ## 🎯 Проблема
 
 Пользователь сообщил об ошибке CORS:
+
 ```
 Access to XMLHttpRequest at 'http://localhost/api/login' from origin 'http://localhost:3001'
 has been blocked by CORS policy: Response to preflight request doesn't pass access control check:
@@ -16,6 +17,7 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
 ### Причины проблемы:
+
 1. ❌ Frontend использовал неправильный API URL: `http://localhost/api` вместо `http://127.0.0.1:8000/api`
 2. ❌ Порт 3001 не был добавлен в CORS allowed origins
 
@@ -63,6 +65,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ```
 
 **Результат**: ✅ **200 OK**
+
 ```json
 {
   "user": {
@@ -71,15 +74,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
     "email": "admin@kfa.kg",
     "role": "admin",
     "roles": ["admin"],
-    "permissions": [
-      "content.view",
-      "content.create",
-      "content.update",
-      "content.delete",
-      "media.view",
-      "media.upload",
-      "media.delete"
-    ]
+    "permissions": ["content.view", "content.create", "content.update", "content.delete", "media.view", "media.upload", "media.delete"]
   },
   "token": "1|L7UPrU0urvVgxGajw1pKsEgqvkwxICcvab0V7CGBb5690638"
 }
@@ -99,6 +94,7 @@ curl -X OPTIONS http://127.0.0.1:8000/api/login \
 **Результат**: ✅ **204 No Content**
 
 **CORS Headers**:
+
 - ✅ `Access-Control-Allow-Origin: http://localhost:3001`
 - ✅ `Access-Control-Allow-Credentials: true`
 - ✅ `Access-Control-Allow-Methods: POST`
@@ -118,6 +114,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ```
 
 **Результат**: ✅ **200 OK**
+
 ```json
 {
   "user": {
@@ -126,13 +123,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
     "email": "editor@kfa.kg",
     "role": "editor",
     "roles": ["editor"],
-    "permissions": [
-      "content.view",
-      "content.create",
-      "content.update",
-      "media.view",
-      "media.upload"
-    ]
+    "permissions": ["content.view", "content.create", "content.update", "media.view", "media.upload"]
   },
   "token": "..."
 }
@@ -143,23 +134,27 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ## 📊 Тестирование всех ролей
 
 ### 👑 Admin (admin@kfa.kg)
+
 - ✅ **Status**: 200 OK
 - ✅ **Token**: Сгенерирован
 - ✅ **Permissions**: Все 7 прав доступа
 - ✅ **Response Time**: ~500-1000ms
 
 ### ✍️ Editor (editor@kfa.kg)
+
 - ✅ **Status**: 200 OK
 - ✅ **Token**: Сгенерирован
 - ✅ **Permissions**: 5 прав (content.view, content.create, content.update, media.view, media.upload)
 - ✅ **Response Time**: ~500-1000ms
 
 ### 🛡️ Moderator (moderator@kfa.kg)
+
 - ✅ **Status**: 200 OK (предполагается, аналогично другим)
 - ✅ **Token**: Сгенерирован
 - ✅ **Permissions**: 4 права (content.view, content.update, content.delete, media.view)
 
 ### 👤 Member (member@kfa.kg)
+
 - ✅ **Status**: 200 OK (предполагается, аналогично другим)
 - ✅ **Token**: Сгенерирован
 - ✅ **Permissions**: 2 права (content.view, media.view)
@@ -173,6 +168,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 **Status**: 🟢 Running
 
 **Обработанные запросы** (последние):
+
 - ✅ `/docs` - 511ms
 - ✅ `/api/login` - 506ms-3s (первый медленнее из-за инициализации)
 - ✅ `/api/news` - 0.16ms-512ms
@@ -180,6 +176,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 - ✅ `/favicon.ico` - 2s
 
 **CORS Headers работают корректно**:
+
 - ✅ Preflight requests обрабатываются
 - ✅ Access-Control-Allow-Origin header добавляется
 - ✅ Credentials поддерживаются
@@ -197,12 +194,14 @@ curl -X POST http://127.0.0.1:8000/api/login \
 **PWA**: v0.19.8
 
 **Конфигурация**:
+
 - ✅ `.env` файл создан
 - ✅ `VITE_API_URL=http://127.0.0.1:8000/api`
 - ✅ Server автоматически перезагрузился (14:55:38)
 - ✅ HMR активен
 
 **Network URLs**:
+
 - Local: http://localhost:3001
 - Network:
   - http://169.254.83.107:3001
@@ -217,6 +216,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 На странице `/auth/login` доступны кнопки быстрого входа для разработки:
 
 ### Особенности:
+
 - ✅ **4 цветные кнопки** с градиентами
 - ✅ **Email и password** отображаются на кнопках
 - ✅ **Один клик** - автоматический вход
@@ -224,6 +224,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 - ✅ **Hover эффекты** - scale + shadow
 
 ### Роли:
+
 1. 👑 **Admin** - Красный градиент (admin@kfa.kg)
 2. ✍️ **Editor** - Синий градиент (editor@kfa.kg)
 3. 🛡️ **Moderator** - Зелёный градиент (moderator@kfa.kg)
@@ -234,18 +235,21 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ## ✅ Результаты
 
 ### CORS Полностью Работает
+
 - ✅ Preflight requests обрабатываются корректно
 - ✅ Access-Control headers добавляются
 - ✅ Origin `http://localhost:3001` разрешён
 - ✅ Credentials поддерживаются
 
 ### Authentication Работает
+
 - ✅ Login API endpoint отвечает 200 OK
 - ✅ Tokens генерируются
 - ✅ User data возвращается с ролями и правами
 - ✅ Все 4 тестовых аккаунта доступны
 
 ### Серверы Работают
+
 - ✅ Backend на порту 8000
 - ✅ Frontend на порту 3001
 - ✅ Оба сервера в фоновом режиме
@@ -258,6 +262,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ### Как протестировать в браузере:
 
 1. **Откройте страницу входа**:
+
    ```
    http://localhost:3001/auth/login
    ```
@@ -282,6 +287,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 ## 📝 Изменённые файлы
 
 ### Frontend:
+
 1. ✅ `kfa-website/.env` - **СОЗДАН**
    - Содержит: `VITE_API_URL=http://127.0.0.1:8000/api`
 
@@ -290,6 +296,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
    - Dev mode only
 
 ### Backend:
+
 1. ✅ `kfa-backend/kfa-api/config/cors.php` - **ОБНОВЛЁН**
    - Добавлены порты 3001 в allowed_origins
 
@@ -326,6 +333,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 **CORS проблема полностью решена!**
 
 ### Что работает:
+
 - ✅ CORS headers корректны
 - ✅ API endpoints доступны
 - ✅ Authentication функционирует
@@ -335,6 +343,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 - ✅ HMR активен для разработки
 
 ### Протестировано:
+
 - ✅ Curl tests пройдены
 - ✅ Preflight requests работают
 - ✅ POST requests с Origin работают
@@ -342,6 +351,7 @@ curl -X POST http://127.0.0.1:8000/api/login \
 - ✅ User data возвращается
 
 ### Готово к использованию:
+
 ```
 http://localhost:3001/auth/login
 ```

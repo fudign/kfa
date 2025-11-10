@@ -12,7 +12,7 @@ const API_BASE = 'http://localhost:8000/api';
 async function request(method, endpoint, data = null, token = null) {
   const headers = {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   };
 
   if (token) {
@@ -427,7 +427,7 @@ const tests = {
 };
 
 // Запуск тестов
-tests.runAll().catch(error => {
+tests.runAll().catch((error) => {
   console.error('Критическая ошибка:', error);
   process.exit(1);
 });

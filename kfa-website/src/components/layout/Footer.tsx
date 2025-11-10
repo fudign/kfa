@@ -71,12 +71,12 @@ export function Footer() {
     <footer className="bg-primary-900 text-white">
       <div className="container px-4 py-8 md:px-6 md:py-12 lg:py-16">
         {/* Main Footer Content */}
-        <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-6 lg:gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6 xl:gap-8">
           {/* Brand & Contact */}
-          <div className="md:col-span-2 lg:col-span-2">
+          <div className="sm:col-span-2 lg:col-span-2">
             <div className="mb-6">
               <Logo height={48} variant="light" />
-              <p className="mt-4 text-primary-200">
+              <p className="mt-4 text-sm leading-relaxed text-primary-200">
                 {t('footer.brandTagline')}
               </p>
             </div>
@@ -84,9 +84,9 @@ export function Footer() {
             {/* Contact Info */}
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-accent-400" />
-                <div>
-                  <p className="text-sm text-primary-100">
+                <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-400" />
+                <div className="min-w-0 flex-1">
+                  <p className="break-words text-sm leading-relaxed text-primary-100">
                     {t('footer.contact.address')}
                   </p>
                 </div>
@@ -95,7 +95,7 @@ export function Footer() {
                 <Phone className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
                   href="tel:+996312123456"
-                  className="text-sm text-primary-100 transition-colors hover:text-white"
+                  className="break-all text-sm text-primary-100 transition-colors hover:text-white"
                 >
                   +996 (312) 12-34-56
                 </a>
@@ -104,7 +104,7 @@ export function Footer() {
                 <Mail className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
                   href="mailto:info@kfa.kg"
-                  className="text-sm text-primary-100 transition-colors hover:text-white"
+                  className="break-all text-sm text-primary-100 transition-colors hover:text-white"
                 >
                   info@kfa.kg
                 </a>
@@ -121,7 +121,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-800 text-primary-200 transition-all hover:bg-accent-600 hover:text-white md:h-10 md:w-10"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-800 text-primary-200 transition-all hover:bg-accent-600 hover:text-white"
                     aria-label={social.name}
                   >
                     <Icon className="h-5 w-5" />
@@ -133,16 +133,16 @@ export function Footer() {
 
           {/* Navigation Links */}
           {navigationLinks.map((section) => (
-            <div key={section.titleKey}>
-              <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-accent-400 md:mb-4">
+            <div key={section.titleKey} className="min-w-0">
+              <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-400">
                 {t(`footer.nav.${section.titleKey}.title`)}
               </h4>
-              <ul className="space-y-2 md:space-y-3">
+              <ul className="space-y-2.5">
                 {section.links.map((link) => (
-                  <li key={link.labelKey}>
+                  <li key={link.labelKey} className="break-words">
                     <a
                       href={link.href}
-                      className="inline-block text-sm text-primary-200 transition-colors hover:text-white md:hover:underline"
+                      className="inline-block break-words text-sm leading-relaxed text-primary-200 transition-colors hover:text-white hover:underline"
                     >
                       {t(`footer.nav.${section.titleKey}.links.${link.labelKey}`)}
                     </a>
@@ -154,19 +154,28 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 border-t border-primary-800 pt-6 md:mt-12 md:pt-8">
+        <div className="mt-8 border-t border-primary-800 pt-6 md:mt-10 md:pt-8">
           <div className="flex flex-col items-center justify-between gap-4 text-sm text-primary-300 md:flex-row md:gap-6">
-            <p className="text-center md:text-left">
+            <p className="text-center text-xs md:text-left md:text-sm">
               &copy; {new Date().getFullYear()} {t('footer.copyright')}
             </p>
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <a href="/privacy" className="transition-colors hover:text-white hover:underline">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-6">
+              <a
+                href="/privacy"
+                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+              >
                 {t('footer.legal.privacy')}
               </a>
-              <a href="/terms" className="transition-colors hover:text-white hover:underline">
+              <a
+                href="/terms"
+                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+              >
                 {t('footer.legal.terms')}
               </a>
-              <a href="/sitemap" className="transition-colors hover:text-white hover:underline">
+              <a
+                href="/sitemap"
+                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+              >
                 {t('footer.legal.sitemap')}
               </a>
             </div>

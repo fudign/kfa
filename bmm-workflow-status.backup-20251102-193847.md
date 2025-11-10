@@ -49,18 +49,21 @@ _No completed stories yet_
 **Description**: Комплексный веб-сайт для Кыргызского Финансового Альянса - саморегулируемой организации профессиональных участников рынка ценных бумаг КР.
 
 **Tech Stack**:
+
 - Frontend: React + Vite + TypeScript + TailwindCSS
 - Backend: Laravel 11 + PHP 8.2+
 - Database: MySQL/PostgreSQL
 - Features: Authentication, RBAC, News System, CMS, Document Management
 
 **Current Status**:
+
 - Core features implemented (auth, news, RBAC)
 - Frontend and backend functional
 - Multiple integration reports available
 - Ready for analysis and improvement planning
 
 **Next Steps**:
+
 1. Phase 1: Analyze existing codebase and document architecture
 2. Phase 2: Create PRD for improvements/new features
 3. Phase 3: Architecture review and integration planning

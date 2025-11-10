@@ -1,13 +1,38 @@
 {
-  "hero": {"title": "Terms of Use", "subtitle": "Rules and conditions for using the KFA website and services", "lastUpdated": "Last Updated"},
-  "sections": {
-    "acceptance": {"title": "Acceptance of Terms", "content": "By using the Kyrgyz Financial Alliance website and services, you agree to these Terms of Use. If you disagree with any provisions, please do not use our services."},
-    "services": {"title": "Service Description", "content": "KFA provides professional services including: professional association membership, educational programs and certification, consulting services, event and conference organization, and access to research and analytics."},
-    "userResponsibilities": {"title": "User Responsibilities", "content": "You agree to: provide accurate and current information, comply with professional and ethical standards, not violate intellectual property rights, not use services for illegal purposes, and maintain account confidentiality."},
-    "prohibitedUse": {"title": "Prohibited Use", "content": "Prohibited activities include: posting illegal, offensive, or harmful content, attempting unauthorized system access, distributing viruses or malware, using automated data collection tools, and impersonating another person or organization."},
-    "termination": {"title": "Termination of Access", "content": "KFA reserves the right to suspend or terminate your service access in case of Terms violations, without prior notice and without refund for paid services."},
-    "liability": {"title": "Limitation of Liability", "content": "KFA provides services \"as is\" and is not liable for indirect, incidental, or punitive damages. Our liability is limited to the amount you paid for the specific service in the last 12 months."}
+  "hero": {
+    "title": "Terms of Use",
+    "subtitle": "Rules and conditions for using the KFA website and services",
+    "lastUpdated": "Last Updated"
   },
-  "notice": {"title": "Important Notice", "content": "KFA reserves the right to modify these Terms at any time. Continued use of services after changes constitutes your agreement to the new terms."},
-  "contact": {"title": "Legal Questions", "description": "For legal questions and matters related to these Terms, contact:"}
+  "sections": {
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "content": "By using the Kyrgyz Financial Alliance website and services, you agree to these Terms of Use. If you disagree with any provisions, please do not use our services."
+    },
+    "services": {
+      "title": "Service Description",
+      "content": "KFA provides professional services including: professional association membership, educational programs and certification, consulting services, event and conference organization, and access to research and analytics."
+    },
+    "userResponsibilities": {
+      "title": "User Responsibilities",
+      "content": "You agree to: provide accurate and current information, comply with professional and ethical standards, not violate intellectual property rights, not use services for illegal purposes, and maintain account confidentiality."
+    },
+    "prohibitedUse": {
+      "title": "Prohibited Use",
+      "content": "Prohibited activities include: posting illegal, offensive, or harmful content, attempting unauthorized system access, distributing viruses or malware, using automated data collection tools, and impersonating another person or organization."
+    },
+    "termination": {
+      "title": "Termination of Access",
+      "content": "KFA reserves the right to suspend or terminate your service access in case of Terms violations, without prior notice and without refund for paid services."
+    },
+    "liability": {
+      "title": "Limitation of Liability",
+      "content": "KFA provides services \"as is\" and is not liable for indirect, incidental, or punitive damages. Our liability is limited to the amount you paid for the specific service in the last 12 months."
+    }
+  },
+  "notice": {
+    "title": "Important Notice",
+    "content": "KFA reserves the right to modify these Terms at any time. Continued use of services after changes constitutes your agreement to the new terms."
+  },
+  "contact": { "title": "Legal Questions", "description": "For legal questions and matters related to these Terms, contact:" }
 }

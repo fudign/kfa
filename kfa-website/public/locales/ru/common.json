@@ -37,19 +37,19 @@
       "services": {
         "title": "Услуги",
         "links": {
-          "certification": "Сертификация",
+          "membership": "Членство",
           "education": "Обучение",
+          "certification": "Сертификация",
           "standards": "Стандарты",
-          "research": "Исследования"
+          "directors_database": "База директоров"
         }
       },
-      "membership": {
-        "title": "Членство",
+      "governance": {
+        "title": "Корпоративное управление",
         "links": {
-          "benefits": "Преимущества",
-          "join": "Вступить",
-          "members": "Члены КФА",
-          "fees": "Взносы"
+          "code": "Кодекс",
+          "directors_program": "Программа директоров",
+          "community": "Сообщество"
         }
       },
       "resources": {

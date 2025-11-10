@@ -10,11 +10,11 @@ function killPort(port) {
       // Windows
       try {
         const result = execSync(`netstat -ano | findstr :${port}`, { encoding: 'utf-8' });
-        const lines = result.split('\n').filter(line => line.includes('LISTENING'));
+        const lines = result.split('\n').filter((line) => line.includes('LISTENING'));
 
         if (lines.length > 0) {
           console.log(`Порт ${port} занят. Освобождаю...`);
-          lines.forEach(line => {
+          lines.forEach((line) => {
             const parts = line.trim().split(/\s+/);
             const pid = parts[parts.length - 1];
             if (pid && !isNaN(pid)) {
@@ -42,7 +42,7 @@ function killPort(port) {
 
         if (pids.length > 0) {
           console.log(`Порт ${port} занят. Освобождаю...`);
-          pids.forEach(pid => {
+          pids.forEach((pid) => {
             try {
               execSync(`kill -9 ${pid}`, { stdio: 'ignore' });
               console.log(`Процесс ${pid} завершен`);
@@ -70,5 +70,5 @@ if (ports.length === 0) {
   // По умолчанию освобождаем порт 3000
   killPort(3000);
 } else {
-  ports.forEach(port => killPort(port));
+  ports.forEach((port) => killPort(port));
 }

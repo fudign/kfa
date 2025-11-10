@@ -5,6 +5,7 @@
 Вся разработка завершена! Осталось только запустить.
 
 **Проверено:**
+
 - ✅ Node.js установлен (v23.6.0)
 - ✅ Все файлы созданы (22 файла)
 - ✅ Документация готова
@@ -19,16 +20,19 @@
 1. Откройте **PowerShell** (правой кнопкой → "Запуск от имени администратора")
 
 2. Перейдите в папку:
+
 ```powershell
 cd E:\CODE\kfa\BMAD-METHOD\kfa-backend\kfa-api
 ```
 
 3. Запустите установку:
+
 ```powershell
 .\setup-news-system.ps1
 ```
 
 Если появится ошибка политики выполнения:
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\setup-news-system.ps1
@@ -39,11 +43,13 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 1. Откройте **Командную строку** (cmd)
 
 2. Перейдите в папку:
+
 ```cmd
 cd E:\CODE\kfa\BMAD-METHOD\kfa-backend\kfa-api
 ```
 
 3. Запустите:
+
 ```cmd
 setup-news-system.bat
 ```
@@ -61,6 +67,7 @@ php artisan tinker
 ```
 
 В tinker выполните:
+
 ```php
 $admin = \Spatie\Permission\Models\Role::where('name', 'admin')->first();
 $admin->givePermissionTo(['content.view', 'content.create', 'content.update', 'content.delete', 'media.view', 'media.upload', 'media.delete']);
@@ -79,6 +86,7 @@ php artisan serve
 ```
 
 **Ожидаемый вывод:**
+
 ```
 Starting Laravel development server: http://127.0.0.1:8000
 ```
@@ -93,6 +101,7 @@ npm run dev
 ```
 
 **Ожидаемый вывод:**
+
 ```
 VITE ready in XXX ms
 Local:   http://localhost:5173/
@@ -150,6 +159,7 @@ curl http://localhost:8000/api/news
 ### Проблема: "PHP не найден"
 
 **Решение:**
+
 1. Установите PHP: https://windows.php.net/download/
 2. Или через Chocolatey: `choco install php`
 3. Перезапустите терминал
@@ -157,6 +167,7 @@ curl http://localhost:8000/api/news
 ### Проблема: "Миграции не выполняются"
 
 **Решение:**
+
 ```bash
 # Проверьте подключение к БД
 php artisan migrate:status
@@ -168,6 +179,7 @@ php artisan migrate:fresh --seed
 ### Проблема: "Cannot find module"
 
 **Решение:**
+
 ```bash
 cd kfa-website
 npm install
@@ -214,11 +226,13 @@ npm run dev
 ## 📚 ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ
 
 **Детальная документация:**
+
 - `START-HERE.md` - Краткая инструкция
 - `TESTING-PLAN.md` - Полный план тестирования
 - `NEWS-SYSTEM-SETUP.md` - Документация API
 
 **Скрипты:**
+
 - `setup-news-system.ps1` - PowerShell установка
 - `setup-news-system.bat` - CMD установка
 - `setup-news-system.sh` - Linux/Mac установка

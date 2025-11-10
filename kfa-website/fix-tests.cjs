@@ -13,7 +13,7 @@ let added = false;
 
 for (let i = 0; i < lines.length; i++) {
   newLines.push(lines[i]);
-  
+
   // Add after the line with the closing brace of testAccounts
   if (!added && lines[i].includes('};') && i > 0 && content.substring(0, content.indexOf(lines[i])).includes('testAccounts')) {
     newLines.push('');
@@ -36,7 +36,7 @@ content = content.replace(
         password: testAccounts.user.password
       }
     });
-    userToken`
+    userToken`,
 );
 
 content = content.replace(
@@ -47,7 +47,7 @@ content = content.replace(
         password: testAccounts.member.password
       }
     });
-    memberToken`
+    memberToken`,
 );
 
 content = content.replace(
@@ -58,7 +58,7 @@ content = content.replace(
         password: testAccounts.admin.password
       }
     });
-    adminToken`
+    adminToken`,
 );
 
 // 4. Fix HTTP status codes
@@ -70,13 +70,13 @@ content = content.replace('expect(createResponse.status()).toBe(201);  // Line 2
 content = content.replace(
   /const newsId = \(await createResponse\.json\(\)\)\.id;/g,
   `const createData = await createResponse.json();
-    const newsId = createData.data.id;`
+    const newsId = createData.data.id;`,
 );
 
 content = content.replace(
   /const eventId = \(await createResponse\.json\(\)\)\.id;/g,
   `const createData = await createResponse.json();
-    const eventId = createData.data.id;`
+    const eventId = createData.data.id;`,
 );
 
 // Write corrected file

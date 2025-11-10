@@ -3,6 +3,7 @@
 ## ✅ ЧТО БЫЛО РЕАЛИЗОВАНО
 
 ### Backend (Laravel) ✅
+
 - ✅ Модель News с полными связями (media, author)
 - ✅ Полиморфная связь News ↔ Media через таблицу `mediable`
 - ✅ NewsController с CRUD + управление медиа + модерация
@@ -15,6 +16,7 @@
 - ✅ Статистика по новостям
 
 ### Frontend (React + TypeScript) ✅
+
 - ✅ TypeScript типы для News (types/news.ts)
 - ✅ NewsService API client (services/api/news.ts)
 - ✅ NewsManager страница уже существует
@@ -37,6 +39,7 @@ php artisan migrate:fresh --seed
 ```
 
 **Созданные миграции:**
+
 - `2025_10_27_000001_update_mediable_table.php` - добавляет `type`, `order`, timestamps
 - `2025_10_27_000002_add_featured_image_id_to_news_table.php` - добавляет связь на главное изображение
 
@@ -55,6 +58,7 @@ php artisan migrate:fresh --seed
 ```
 
 Назначить разрешения роли можно через:
+
 ```bash
 php artisan tinker
 
@@ -99,11 +103,13 @@ npm run dev
 ### ШАГ 5: Доступ к NewsManager
 
 После запуска frontend откройте:
+
 ```
 http://localhost:5173/dashboard/news
 ```
 
 **Требуется:**
+
 - Авторизация (логин/пароль)
 - Права доступа (разрешение `content.view`)
 
@@ -112,6 +118,7 @@ http://localhost:5173/dashboard/news
 ## 📋 ДОСТУПНЫЕ API ENDPOINTS
 
 ### Публичные endpoints (без аутентификации)
+
 ```
 GET    /api/news              - Список новостей
 GET    /api/news/{id}         - Одна новость
@@ -120,6 +127,7 @@ GET    /api/news/{id}         - Одна новость
 ### Защищенные endpoints (требуют аутентификации)
 
 #### CRUD операции
+
 ```
 POST   /api/news              - Создать новость
 PUT    /api/news/{id}         - Обновить новость
@@ -127,6 +135,7 @@ DELETE /api/news/{id}         - Удалить новость
 ```
 
 #### Управление медиа
+
 ```
 POST   /api/news/{id}/media            - Прикрепить медиафайл
 DELETE /api/news/{id}/media/{mediaId}  - Открепить медиафайл
@@ -134,6 +143,7 @@ PUT    /api/news/{id}/media/reorder    - Изменить порядок
 ```
 
 #### Модерация (только админы)
+
 ```
 POST   /api/news/{id}/approve          - Одобрить
 POST   /api/news/{id}/reject           - Отклонить
@@ -144,6 +154,7 @@ POST   /api/news/{id}/archive          - Архивировать
 ```
 
 #### Статистика
+
 ```
 GET    /api/news/stats        - Статистика по новостям
 ```
@@ -173,16 +184,14 @@ const news = await NewsService.create({
 
 ```typescript
 // Загрузить несколько изображений
-const images = await Promise.all(
-  files.map(file => MediaService.upload(file, 'news-gallery'))
-);
+const images = await Promise.all(files.map((file) => MediaService.upload(file, 'news-gallery')));
 
 // Создать новость с галереей
 const news = await NewsService.create({
   title: 'Статья с галереей',
   content: 'Содержимое...',
   status: 'draft',
-  gallery_ids: images.map(img => img.id),
+  gallery_ids: images.map((img) => img.id),
 });
 ```
 
@@ -206,6 +215,7 @@ await NewsService.update(newsId, {
 ### Добавление новых статусов
 
 1. Обновите типы в `kfa-website/src/types/news.ts`:
+
 ```typescript
 export type NewsStatus =
   | 'draft'
@@ -216,6 +226,7 @@ export type NewsStatus =
 2. Обновите labels и colors там же
 
 3. Обновите валидацию в `StoreNewsRequest.php`:
+
 ```php
 'status' => 'nullable|in:draft,your_new_status,...',
 ```
@@ -223,11 +234,12 @@ export type NewsStatus =
 ### Изменение полей формы
 
 Обновите `NewsFormData` в `types/news.ts`:
+
 ```typescript
 export interface NewsFormData {
   title: string;
   // ... существующие поля
-  your_new_field: string;  // <-- новое поле
+  your_new_field: string; // <-- новое поле
 }
 ```
 
@@ -236,6 +248,7 @@ export interface NewsFormData {
 ### Настройка прав доступа
 
 В `routes/api.php` измените middleware:
+
 ```php
 Route::middleware(['auth:sanctum', 'permission:your_permission'])->group(function () {
     // ваши роуты
@@ -265,15 +278,19 @@ Route::middleware(['auth:sanctum', 'permission:your_permission'])->group(functio
 ## 🐛 УСТРАНЕНИЕ ПРОБЛЕМ
 
 ### Ошибка: "Table 'mediable' doesn't exist"
+
 ```bash
 php artisan migrate
 ```
 
 ### Ошибка: "Permission denied"
+
 Проверьте, что у пользователя есть разрешение `content.view` или выше.
 
 ### Изображения не отображаются
+
 Проверьте:
+
 ```bash
 # Создать символическую ссылку для storage
 php artisan storage:link
@@ -284,7 +301,9 @@ chmod -R 775 bootstrap/cache/
 ```
 
 ### CORS ошибки
+
 Обновите `config/cors.php`:
+
 ```php
 'paths' => ['api/*', 'sanctum/csrf-cookie'],
 'allowed_origins' => ['http://localhost:5173'],
@@ -295,6 +314,7 @@ chmod -R 775 bootstrap/cache/
 ## 📊 СТРУКТУРА ДАННЫХ
 
 ### Таблица `news`
+
 ```sql
 - id
 - title
@@ -312,6 +332,7 @@ chmod -R 775 bootstrap/cache/
 ```
 
 ### Таблица `mediable` (полиморфная связь)
+
 ```sql
 - media_id (FK на media.id)
 - mediable_id (FK на news.id или др.)
@@ -328,7 +349,9 @@ chmod -R 775 bootstrap/cache/
 ## ✨ ДОПОЛНИТЕЛЬНЫЕ ВОЗМОЖНОСТИ
 
 ### Планировщик публикаций
+
 Можно добавить команду в `app/Console/Kernel.php`:
+
 ```php
 $schedule->call(function () {
     News::where('status', 'pending')
@@ -338,14 +361,18 @@ $schedule->call(function () {
 ```
 
 ### Уведомления об изменении статуса
+
 Создать Event и Listener:
+
 ```bash
 php artisan make:event NewsStatusChanged
 php artisan make:listener SendNewsStatusNotification
 ```
 
 ### Версионирование новостей
+
 Установить пакет:
+
 ```bash
 composer require spatie/laravel-activitylog
 ```

@@ -12,9 +12,9 @@ date: system-generated
 
 # Project-specific variables (to be collected during workflow execution)
 project_name: ""
-project_type: ""  # website, app, platform, system
-industry: ""      # finance, healthcare, education, etc.
-validation_scope: "full"  # full, compliance-only, technical-only, gap-analysis-only
+project_type: "" # website, app, platform, system
+industry: "" # finance, healthcare, education, etc.
+validation_scope: "full" # full, compliance-only, technical-only, gap-analysis-only
 
 # Module path and component files
 installed_path: "{project-root}/bmad/bmb/workflows/audit-project-validation"

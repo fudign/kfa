@@ -70,6 +70,7 @@ npx web-push generate-vapid-keys
 ```
 
 Вывод:
+
 ```
 =======================================
 Public Key:
@@ -148,10 +149,12 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 app.use(bodyParser.json());
 
 // Routes
@@ -198,11 +201,7 @@ if (!vapidKeys.publicKey || !vapidKeys.privateKey || !vapidKeys.subject) {
 }
 
 // Настройка web-push
-webPush.setVapidDetails(
-  vapidKeys.subject,
-  vapidKeys.publicKey,
-  vapidKeys.privateKey
-);
+webPush.setVapidDetails(vapidKeys.subject, vapidKeys.publicKey, vapidKeys.privateKey);
 
 export { vapidKeys, webPush };
 ```
@@ -259,7 +258,7 @@ const SubscriptionSchema = new Schema<ISubscription>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model<ISubscription>('Subscription', SubscriptionSchema);
@@ -315,15 +314,9 @@ class PushService {
   /**
    * Отправить уведомление одному подписчику
    */
-  async sendToSubscription(
-    subscription: any,
-    payload: PushPayload
-  ): Promise<boolean> {
+  async sendToSubscription(subscription: any, payload: PushPayload): Promise<boolean> {
     try {
-      await webPush.sendNotification(
-        subscription,
-        JSON.stringify(payload)
-      );
+      await webPush.sendNotification(subscription, JSON.stringify(payload));
       return true;
     } catch (error: any) {
       console.error('Push send failed:', error);
@@ -356,9 +349,9 @@ class PushService {
               auth: sub.keys.auth,
             },
           },
-          payload
-        )
-      )
+          payload,
+        ),
+      ),
     );
 
     const success = results.filter((r) => r.status === 'fulfilled' && r.value).length;
@@ -390,9 +383,9 @@ class PushService {
               auth: sub.keys.auth,
             },
           },
-          payload
-        )
-      )
+          payload,
+        ),
+      ),
     );
 
     return results.some((r) => r.status === 'fulfilled' && r.value);
@@ -402,10 +395,7 @@ class PushService {
    * Деактивировать подписку
    */
   async deactivateSubscription(endpoint: string): Promise<void> {
-    await Subscription.findOneAndUpdate(
-      { endpoint },
-      { isActive: false }
-    );
+    await Subscription.findOneAndUpdate({ endpoint }, { isActive: false });
   }
 }
 
@@ -471,12 +461,7 @@ class NotificationService {
   /**
    * Отправить напоминание пользователю
    */
-  async sendReminder(
-    userId: string,
-    title: string,
-    time: string,
-    url: string
-  ) {
+  async sendReminder(userId: string, title: string, time: string, url: string) {
     const payload: PushPayload = {
       title: `⏰ Напоминание: ${title}`,
       body: `Событие начнется через ${time}`,
@@ -581,10 +566,7 @@ router.delete('/subscribe', async (req, res) => {
       return res.status(400).json({ error: 'Endpoint required' });
     }
 
-    await Subscription.findOneAndUpdate(
-      { endpoint },
-      { isActive: false }
-    );
+    await Subscription.findOneAndUpdate({ endpoint }, { isActive: false });
 
     res.json({
       success: true,
@@ -703,12 +685,14 @@ router.post('/subscribe', pushLimiter, async (req, res) => {
 ### 4. CORS настройка:
 
 ```typescript
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ['GET', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
 ```
 
 ---
@@ -743,7 +727,7 @@ services:
   push-server:
     build: .
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
       - NODE_ENV=production
       - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}

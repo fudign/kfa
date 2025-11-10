@@ -156,50 +156,51 @@ export function LoginPage() {
             <p className="text-sm text-neutral-600 dark:text-neutral-400 md:text-base">{t('login.subtitle')}</p>
           </div>
 
-          {/* Dev Mode Quick Login */}
-          {import.meta.env.DEV && (
-            <div className="mb-4 rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-950/30">
-              <div className="mb-3 flex items-center gap-2">
-                <Zap className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                <h3 className="font-semibold text-amber-900 dark:text-amber-100">
-                  Быстрый вход (Dev Mode)
-                </h3>
-              </div>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {DEV_ACCOUNTS.map((account) => (
-                  <button
-                    key={account.role}
-                    type="button"
-                    onClick={() => handleQuickLogin(account.email, account.password)}
-                    disabled={isLoading}
-                    className={`group relative overflow-hidden rounded-lg bg-gradient-to-r ${account.color} p-3 text-left text-white shadow-md transition-all hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50`}
-                  >
-                    <div className="relative z-10">
-                      <div className="mb-1 flex items-center gap-2">
-                        <span className="text-xl">{account.icon}</span>
-                        <span className="font-bold">{account.role}</span>
+          {/* Quick Login - Временно для разработки */}
+          <div className="mb-4 rounded-lg border-2 border-dashed border-orange-400 bg-orange-50 p-4 dark:border-orange-600 dark:bg-orange-950/40">
+            <div className="mb-3 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              <h3 className="font-semibold text-orange-900 dark:text-orange-100">
+                Быстрый вход (Временно для разработки)
+              </h3>
+            </div>
+            <div className="mb-2 rounded-md bg-orange-100 px-3 py-2 text-xs font-medium text-orange-800 dark:bg-orange-900/50 dark:text-orange-200">
+              ⚠️ Временный доступ для разработки. Будет отключен после завершения тестирования.
+            </div>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {DEV_ACCOUNTS.map((account) => (
+                <button
+                  key={account.role}
+                  type="button"
+                  onClick={() => handleQuickLogin(account.email, account.password)}
+                  disabled={isLoading}
+                  className={`group relative overflow-hidden rounded-lg bg-gradient-to-r ${account.color} p-3 text-left text-white shadow-md transition-all hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  <div className="relative z-10">
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="text-xl">{account.icon}</span>
+                      <span className="font-bold">{account.role}</span>
+                    </div>
+                    <p className="mb-2 text-xs opacity-90">{account.description}</p>
+                    <div className="space-y-0.5 text-xs opacity-75">
+                      <div className="flex items-center gap-1">
+                        <Mail className="h-3 w-3" />
+                        <span className="font-mono">{account.email}</span>
                       </div>
-                      <p className="mb-2 text-xs opacity-90">{account.description}</p>
-                      <div className="space-y-0.5 text-xs opacity-75">
-                        <div className="flex items-center gap-1">
-                          <Mail className="h-3 w-3" />
-                          <span className="font-mono">{account.email}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Lock className="h-3 w-3" />
-                          <span className="font-mono">{account.password}</span>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <Lock className="h-3 w-3" />
+                        <span className="font-mono">{account.password}</span>
                       </div>
                     </div>
-                    <div className="absolute inset-0 bg-white opacity-0 transition-opacity group-hover:opacity-10"></div>
-                  </button>
-                ))}
-              </div>
-              <p className="mt-3 text-xs text-amber-700 dark:text-amber-300">
-                💡 Кликните на роль для автоматического входа
-              </p>
+                  </div>
+                  <div className="absolute inset-0 bg-white opacity-0 transition-opacity group-hover:opacity-10"></div>
+                </button>
+              ))}
             </div>
-          )}
+            <p className="mt-3 text-xs text-orange-700 dark:text-orange-300">
+              💡 Кликните на роль для автоматического входа
+            </p>
+          </div>
 
           {/* Login Form */}
           <div className="rounded-kfa border border-neutral-200 bg-white p-5 shadow-kfa-lg dark:border-neutral-700 dark:bg-neutral-900 md:p-8">

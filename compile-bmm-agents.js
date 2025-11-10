@@ -3,11 +3,11 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const agentsDir = path.join(__dirname, 'bmad', 'bmm', 'agents');
-const yamlFiles = fs.readdirSync(agentsDir).filter(f => f.endsWith('.agent.yaml'));
+const yamlFiles = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.agent.yaml'));
 
 console.log(`Found ${yamlFiles.length} agent YAML files to compile...`);
 
-yamlFiles.forEach(yamlFile => {
+yamlFiles.forEach((yamlFile) => {
   const yamlPath = path.join(agentsDir, yamlFile);
   const mdFile = yamlFile.replace('.agent.yaml', '.md');
   const mdPath = path.join(agentsDir, mdFile);

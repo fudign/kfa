@@ -26,6 +26,7 @@
 ### 1.1 Функциональные требования
 
 **Управление медиа-файлами:**
+
 - ✅ Загрузка фото для новостей (JPG, PNG, WebP)
 - ✅ Загрузка логотипов с поддержкой SVG и PNG
 - ✅ Предпросмотр изображений перед загрузкой
@@ -34,6 +35,7 @@
 - ✅ Удаление неиспользуемых файлов
 
 **Управление партнерами и членами:**
+
 - ✅ Добавление новых партнеров/членов
 - ✅ Редактирование информации
 - ✅ Удаление записей
@@ -42,6 +44,7 @@
 - ✅ Контроль доступа по ролям
 
 **Управление настройками сайта:**
+
 - ✅ Общие настройки (название сайта, описание, контакты)
 - ✅ Настройки социальных сетей
 - ✅ SEO настройки (meta tags, Open Graph)
@@ -50,18 +53,19 @@
 
 ### 1.2 Роли пользователей
 
-| Роль | Описание | Права доступа |
-|------|----------|---------------|
-| **guest** | Гость (не авторизован) | Только публичный контент |
-| **member** | Член КФА | Личный кабинет, закрытые материалы |
-| **editor** | Редактор контента | Управление новостями, событиями, материалами |
-| **moderator** | Модератор | Управление членами, партнерами, модерация |
-| **admin** | Администратор | Полный доступ ко всей системе |
-| **super_admin** | Суперадминистратор | Управление администраторами, настройки системы |
+| Роль            | Описание               | Права доступа                                  |
+| --------------- | ---------------------- | ---------------------------------------------- |
+| **guest**       | Гость (не авторизован) | Только публичный контент                       |
+| **member**      | Член КФА               | Личный кабинет, закрытые материалы             |
+| **editor**      | Редактор контента      | Управление новостями, событиями, материалами   |
+| **moderator**   | Модератор              | Управление членами, партнерами, модерация      |
+| **admin**       | Администратор          | Полный доступ ко всей системе                  |
+| **super_admin** | Суперадминистратор     | Управление администраторами, настройки системы |
 
 ### 1.3 Текущее состояние проекта
 
 **Backend (Laravel 11):**
+
 - ✅ Базовая аутентификация (Laravel Sanctum)
 - ✅ Простая система ролей (admin, member, guest)
 - ✅ Миграции: users, members, news, events, programs
@@ -69,12 +73,14 @@
 - ✅ PostgreSQL + Redis
 
 **Frontend (React + TypeScript):**
+
 - ✅ 18 страниц (9 публичных, 4 auth, 5 dashboard)
 - ✅ Internationalization (RU/KY/EN)
 - ✅ TailwindCSS + shadcn/ui
 - ✅ Zustand для state management
 
 **Что нужно добавить:**
+
 - ❌ Расширенная система ролей (RBAC)
 - ❌ Система управления медиа-файлами
 - ❌ Административная панель для управления контентом
@@ -114,6 +120,7 @@ KFA Platform
 ### 2.2 Технологический стек
 
 **Backend:**
+
 - Laravel 11 + PostgreSQL
 - Laravel Sanctum (Auth)
 - spatie/laravel-permission (RBAC)
@@ -121,6 +128,7 @@ KFA Platform
 - Intervention Image (Image processing)
 
 **Frontend:**
+
 - React 18 + TypeScript
 - TailwindCSS + shadcn/ui
 - React Query (Server state)
@@ -134,6 +142,7 @@ KFA Platform
 ### 3.1 Database Schema
 
 #### Таблица `roles`
+
 ```php
 Schema::create('roles', function (Blueprint $table) {
     $table->id();
@@ -145,6 +154,7 @@ Schema::create('roles', function (Blueprint $table) {
 ```
 
 #### Таблица `permissions`
+
 ```php
 Schema::create('permissions', function (Blueprint $table) {
     $table->id();
@@ -157,6 +167,7 @@ Schema::create('permissions', function (Blueprint $table) {
 ```
 
 #### Таблица `role_has_permissions`
+
 ```php
 Schema::create('role_has_permissions', function (Blueprint $table) {
     $table->foreignId('role_id')->constrained()->onDelete('cascade');
@@ -166,6 +177,7 @@ Schema::create('role_has_permissions', function (Blueprint $table) {
 ```
 
 #### Таблица `model_has_roles`
+
 ```php
 Schema::create('model_has_roles', function (Blueprint $table) {
     $table->foreignId('role_id')->constrained()->onDelete('cascade');
@@ -177,6 +189,7 @@ Schema::create('model_has_roles', function (Blueprint $table) {
 ### 3.2 Permissions List
 
 **Категория: Users**
+
 - `view_users` - Просмотр пользователей
 - `create_users` - Создание пользователей
 - `edit_users` - Редактирование пользователей
@@ -184,6 +197,7 @@ Schema::create('model_has_roles', function (Blueprint $table) {
 - `manage_roles` - Управление ролями
 
 **Категория: Content**
+
 - `view_news` - Просмотр новостей
 - `create_news` - Создание новостей
 - `edit_news` - Редактирование новостей
@@ -195,6 +209,7 @@ Schema::create('model_has_roles', function (Blueprint $table) {
 - `delete_events` - Удаление событий
 
 **Категория: Members & Partners**
+
 - `view_members` - Просмотр членов
 - `create_members` - Добавление членов
 - `edit_members` - Редактирование членов
@@ -205,49 +220,52 @@ Schema::create('model_has_roles', function (Blueprint $table) {
 - `delete_partners` - Удаление партнеров
 
 **Категория: Media**
+
 - `view_media` - Просмотр медиа
 - `upload_media` - Загрузка медиа
 - `delete_media` - Удаление медиа
 - `manage_media` - Управление медиа-библиотекой
 
 **Категория: Settings**
+
 - `view_settings` - Просмотр настроек
 - `edit_settings` - Изменение настроек
 - `manage_system` - Управление системой
 
 ### 3.3 Role Permissions Matrix
 
-| Permission | Guest | Member | Editor | Moderator | Admin | Super Admin |
-|------------|-------|--------|--------|-----------|-------|-------------|
-| **Users** |
-| view_users | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| create_users | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| edit_users | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| delete_users | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| manage_roles | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| **Content** |
-| view_news | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| create_news | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| edit_news | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| delete_news | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| publish_news | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| **Members** |
-| view_members | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| create_members | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| edit_members | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| delete_members | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| **Media** |
-| view_media | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| upload_media | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| delete_media | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| **Settings** |
-| view_settings | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| edit_settings | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| manage_system | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Permission     | Guest | Member | Editor | Moderator | Admin | Super Admin |
+| -------------- | ----- | ------ | ------ | --------- | ----- | ----------- |
+| **Users**      |
+| view_users     | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| create_users   | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| edit_users     | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| delete_users   | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| manage_roles   | ❌    | ❌     | ❌     | ❌        | ❌    | ✅          |
+| **Content**    |
+| view_news      | ✅    | ✅     | ✅     | ✅        | ✅    | ✅          |
+| create_news    | ❌    | ❌     | ✅     | ✅        | ✅    | ✅          |
+| edit_news      | ❌    | ❌     | ✅     | ✅        | ✅    | ✅          |
+| delete_news    | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| publish_news   | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| **Members**    |
+| view_members   | ❌    | ✅     | ✅     | ✅        | ✅    | ✅          |
+| create_members | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| edit_members   | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| delete_members | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| **Media**      |
+| view_media     | ❌    | ❌     | ✅     | ✅        | ✅    | ✅          |
+| upload_media   | ❌    | ❌     | ✅     | ✅        | ✅    | ✅          |
+| delete_media   | ❌    | ❌     | ❌     | ✅        | ✅    | ✅          |
+| **Settings**   |
+| view_settings  | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| edit_settings  | ❌    | ❌     | ❌     | ❌        | ✅    | ✅          |
+| manage_system  | ❌    | ❌     | ❌     | ❌        | ❌    | ✅          |
 
 ### 3.4 Backend Implementation
 
 #### Middleware: CheckPermission
+
 ```php
 <?php
 // app/Http/Middleware/CheckPermission.php
@@ -274,6 +292,7 @@ class CheckPermission
 ```
 
 #### Model: User (Extended)
+
 ```php
 <?php
 // app/Models/User.php
@@ -315,6 +334,7 @@ class User extends Authenticatable
 ### 3.5 Frontend Implementation
 
 #### Hook: usePermissions
+
 ```typescript
 // src/hooks/usePermissions.ts
 
@@ -338,16 +358,12 @@ export function usePermissions(): UsePermissionsReturn {
 
   const hasAnyPermission = (permissions: string[]): boolean => {
     if (!user) return false;
-    return permissions.some((permission) =>
-      user.permissions?.includes(permission)
-    );
+    return permissions.some((permission) => user.permissions?.includes(permission));
   };
 
   const hasAllPermissions = (permissions: string[]): boolean => {
     if (!user) return false;
-    return permissions.every((permission) =>
-      user.permissions?.includes(permission)
-    );
+    return permissions.every((permission) => user.permissions?.includes(permission));
   };
 
   const hasRole = (role: string): boolean => {
@@ -371,6 +387,7 @@ export function usePermissions(): UsePermissionsReturn {
 ```
 
 #### Component: Can (Permission Guard)
+
 ```typescript
 // src/components/auth/Can.tsx
 
@@ -439,6 +456,7 @@ export function Can({
 ```
 
 #### Usage Example
+
 ```tsx
 import { Can } from '@/components/auth/Can';
 
@@ -473,6 +491,7 @@ function NewsManagement() {
 ### 4.1 Database Schema
 
 #### Таблица `media`
+
 ```php
 Schema::create('media', function (Blueprint $table) {
     $table->id();
@@ -492,6 +511,7 @@ Schema::create('media', function (Blueprint $table) {
 ```
 
 #### Таблица `mediable` (polymorphic)
+
 ```php
 Schema::create('mediable', function (Blueprint $table) {
     $table->foreignId('media_id')->constrained()->onDelete('cascade');
@@ -505,16 +525,19 @@ Schema::create('mediable', function (Blueprint $table) {
 ### 4.2 Supported File Types
 
 **Images:**
+
 - Formats: JPG, JPEG, PNG, WebP, GIF, SVG
 - Max size: 5MB (configurable)
 - Allowed for: News, Events, Members, Partners, Settings
 
 **Documents:**
+
 - Formats: PDF, DOC, DOCX, XLS, XLSX
 - Max size: 10MB (configurable)
 - Allowed for: News, Events, Programs
 
 **Archives:**
+
 - Formats: ZIP, RAR
 - Max size: 20MB (configurable)
 - Allowed for: specific content types
@@ -522,6 +545,7 @@ Schema::create('mediable', function (Blueprint $table) {
 ### 4.3 Image Processing
 
 **Автоматическая обработка при загрузке:**
+
 1. **Validation** - проверка типа, размера, dimensions
 2. **Optimization** - сжатие без потери качества (80-90%)
 3. **Thumbnails** - создание превью (200x200, 400x400, 800x800)
@@ -529,6 +553,7 @@ Schema::create('mediable', function (Blueprint $table) {
 5. **Storage** - сохранение в storage (local/s3)
 
 **Поддерживаемые размеры:**
+
 - `thumbnail` - 200x200 (квадрат)
 - `small` - 400x400 (квадрат)
 - `medium` - 800x600 (сохранение пропорций)
@@ -538,6 +563,7 @@ Schema::create('mediable', function (Blueprint $table) {
 ### 4.4 Backend Implementation
 
 #### Model: Media
+
 ```php
 <?php
 // app/Models/Media.php
@@ -629,6 +655,7 @@ class Media extends Model
 ```
 
 #### Service: MediaService
+
 ```php
 <?php
 // app/Services/MediaService.php
@@ -806,6 +833,7 @@ class MediaService
 ```
 
 #### Controller: MediaController
+
 ```php
 <?php
 // app/Http/Controllers/Api/MediaController.php
@@ -901,6 +929,7 @@ class MediaController extends Controller
 ### 4.5 Frontend Implementation
 
 #### Component: MediaUpload
+
 ```tsx
 // src/components/media/MediaUpload.tsx
 
@@ -970,7 +999,7 @@ export function MediaUpload({
         setUploading(false);
       }
     },
-    [onUploadComplete]
+    [onUploadComplete],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -993,10 +1022,8 @@ export function MediaUpload({
           {...getRootProps()}
           className={cn(
             'border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors',
-            isDragActive
-              ? 'border-primary bg-primary/5'
-              : 'border-gray-300 hover:border-primary',
-            uploading && 'opacity-50 cursor-not-allowed'
+            isDragActive ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary',
+            uploading && 'opacity-50 cursor-not-allowed',
           )}
         >
           <input {...getInputProps()} />
@@ -1010,12 +1037,8 @@ export function MediaUpload({
               <p className="text-lg font-medium">Отпустите файл здесь...</p>
             ) : (
               <div className="space-y-2">
-                <p className="text-lg font-medium">
-                  Перетащите файл сюда или нажмите для выбора
-                </p>
-                <p className="text-sm text-gray-500">
-                  Поддерживаются: JPG, PNG, WebP, SVG, GIF (до {maxSize / 1024 / 1024}MB)
-                </p>
+                <p className="text-lg font-medium">Перетащите файл сюда или нажмите для выбора</p>
+                <p className="text-sm text-gray-500">Поддерживаются: JPG, PNG, WebP, SVG, GIF (до {maxSize / 1024 / 1024}MB)</p>
               </div>
             )}
           </div>
@@ -1031,18 +1054,11 @@ export function MediaUpload({
         </div>
       ) : (
         <div className="relative border-2 border-primary rounded-lg p-4">
-          <button
-            onClick={clearPreview}
-            className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg hover:bg-gray-100"
-          >
+          <button onClick={clearPreview} className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg hover:bg-gray-100">
             <X className="w-4 h-4" />
           </button>
 
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-full h-48 object-contain rounded"
-          />
+          <img src={preview} alt="Preview" className="w-full h-48 object-contain rounded" />
 
           {uploading && (
             <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded">
@@ -1068,6 +1084,7 @@ export function MediaUpload({
 ```
 
 #### Component: MediaLibrary
+
 ```tsx
 // src/components/media/MediaLibrary.tsx
 
@@ -1144,11 +1161,7 @@ export function MediaLibrary({ onSelect, selectable = false }: MediaLibraryProps
           >
             <div className="aspect-square relative rounded overflow-hidden bg-gray-100">
               {media.mime_type.startsWith('image/') ? (
-                <img
-                  src={media.thumbnail_url}
-                  alt={media.filename}
-                  className="w-full h-full object-cover"
-                />
+                <img src={media.thumbnail_url} alt={media.filename} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <ImageIcon className="w-12 h-12 text-gray-400" />
@@ -1218,9 +1231,7 @@ export function MediaLibrary({ onSelect, selectable = false }: MediaLibraryProps
             </div>
             <div>
               <dt className="text-gray-500">Загружено</dt>
-              <dd className="font-medium">
-                {new Date(selectedMedia.created_at).toLocaleDateString('ru-RU')}
-              </dd>
+              <dd className="font-medium">{new Date(selectedMedia.created_at).toLocaleDateString('ru-RU')}</dd>
             </div>
             <div>
               <dt className="text-gray-500">Автор</dt>
@@ -1241,6 +1252,7 @@ export function MediaLibrary({ onSelect, selectable = false }: MediaLibraryProps
 ### 5.1 Database Schema Updates
 
 #### Обновление таблицы `members`
+
 ```php
 Schema::table('members', function (Blueprint $table) {
     $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
@@ -1255,6 +1267,7 @@ Schema::table('members', function (Blueprint $table) {
 ```
 
 #### Новая таблица `partners`
+
 ```php
 Schema::create('partners', function (Blueprint $table) {
     $table->id();
@@ -1279,6 +1292,7 @@ Schema::create('partners', function (Blueprint $table) {
 ### 5.2 Backend Implementation
 
 #### Model: Partner
+
 ```php
 <?php
 // app/Models/Partner.php
@@ -1356,6 +1370,7 @@ class Partner extends Model
 ```
 
 #### Controller: PartnerController
+
 ```php
 <?php
 // app/Http/Controllers/Api/PartnerController.php
@@ -1485,6 +1500,7 @@ class PartnerController extends Controller
 ### 5.3 Frontend Implementation
 
 #### Page: PartnersManagement
+
 ```tsx
 // src/pages/admin/PartnersManagement.tsx
 
@@ -1573,13 +1589,7 @@ export function PartnersManagement() {
         {data?.data.map((partner: Partner) => (
           <Card key={partner.id} className="p-4">
             <div className="flex items-start gap-4">
-              {partner.logo_url && (
-                <img
-                  src={partner.logo_url}
-                  alt={partner.name}
-                  className="w-20 h-20 object-contain rounded"
-                />
-              )}
+              {partner.logo_url && <img src={partner.logo_url} alt={partner.name} className="w-20 h-20 object-contain rounded" />}
 
               <div className="flex-1">
                 <div className="flex items-start justify-between">
@@ -1594,42 +1604,25 @@ export function PartnersManagement() {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => window.open(partner.website, '_blank')}
-                    >
+                    <Button size="sm" variant="outline" onClick={() => window.open(partner.website, '_blank')}>
                       <Eye className="w-4 h-4" />
                     </Button>
 
                     <Can permission="edit_partners">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEdit(partner)}
-                      >
+                      <Button size="sm" variant="outline" onClick={() => handleEdit(partner)}>
                         <Edit className="w-4 h-4" />
                       </Button>
                     </Can>
 
                     <Can permission="delete_partners">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDelete(partner.id)}
-                        className="text-red-600"
-                      >
+                      <Button size="sm" variant="outline" onClick={() => handleDelete(partner.id)} className="text-red-600">
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </Can>
                   </div>
                 </div>
 
-                {partner.description && (
-                  <p className="text-sm text-gray-600 mt-2">
-                    {partner.description}
-                  </p>
-                )}
+                {partner.description && <p className="text-sm text-gray-600 mt-2">{partner.description}</p>}
 
                 <div className="flex gap-4 mt-2 text-sm text-gray-500">
                   {partner.email && <span>{partner.email}</span>}
@@ -1701,6 +1694,7 @@ Admin Panel
 ### 6.2 UI Components Design System
 
 **Цветовая палитра:**
+
 ```typescript
 // tailwind.config.ts
 export default {
@@ -1758,6 +1752,7 @@ export default {
 ```
 
 **Typography:**
+
 - Headings: Inter Bold
 - Body: Inter Regular
 - Code: JetBrains Mono
@@ -1765,22 +1760,13 @@ export default {
 ### 6.3 Layout Components
 
 #### AdminLayout
+
 ```tsx
 // src/components/layout/AdminLayout.tsx
 
 import { ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  FileText,
-  Users,
-  Image,
-  Settings,
-  Menu,
-  X,
-  LogOut,
-  UserCircle
-} from 'lucide-react';
+import { LayoutDashboard, FileText, Users, Image, Settings, Menu, X, LogOut, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/stores/authStore';
 import { Can } from '@/components/auth/Can';
@@ -1846,12 +1832,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar backdrop */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {sidebarOpen && <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />}
 
       {/* Sidebar */}
       <aside
@@ -1866,10 +1847,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               <div className="w-8 h-8 bg-primary rounded-lg" />
               <span className="text-lg font-bold">КФА Admin</span>
             </Link>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="lg:hidden"
-            >
+            <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -1884,9 +1862,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.href}
                   to={item.href}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-primary text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                    isActive ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   {item.icon}
@@ -1917,11 +1893,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 <p className="text-xs text-gray-500 truncate">{user?.role}</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleLogout}
-            >
+            <Button variant="outline" className="w-full" onClick={handleLogout}>
               <LogOut className="w-4 h-4 mr-2" />
               Выйти
             </Button>
@@ -1934,25 +1906,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         {/* Header */}
         <header className="sticky top-0 z-30 h-16 bg-white border-b border-gray-200">
           <div className="flex items-center justify-between h-full px-6">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden"
-            >
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden">
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-4">
               {/* Breadcrumbs or page title */}
               <h1 className="text-xl font-semibold">
-                {navigation.find((item) => item.href === location.pathname)
-                  ?.title || 'Админ-панель'}
+                {navigation.find((item) => item.href === location.pathname)?.title || 'Админ-панель'}
               </h1>
             </div>
 
             {/* Header actions */}
-            <div className="flex items-center gap-4">
-              {/* Notifications, profile, etc. */}
-            </div>
+            <div className="flex items-center gap-4">{/* Notifications, profile, etc. */}</div>
           </div>
         </header>
 
@@ -1967,6 +1933,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 ### 6.4 Dashboard Components
 
 #### AdminDashboard
+
 ```tsx
 // src/pages/admin/Dashboard.tsx
 
@@ -2028,9 +1995,7 @@ export function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Панель управления</h1>
-        <p className="text-gray-500 mt-1">
-          Добро пожаловать в административную панель КФА
-        </p>
+        <p className="text-gray-500 mt-1">Добро пожаловать в административную панель КФА</p>
       </div>
 
       {/* Stats Grid */}
@@ -2043,19 +2008,13 @@ export function AdminDashboard() {
                 <p className="text-3xl font-bold mt-2">{stat.value}</p>
                 <p
                   className={`text-sm mt-2 ${
-                    stat.changeType === 'positive'
-                      ? 'text-green-600'
-                      : stat.changeType === 'negative'
-                      ? 'text-red-600'
-                      : 'text-gray-600'
+                    stat.changeType === 'positive' ? 'text-green-600' : stat.changeType === 'negative' ? 'text-red-600' : 'text-gray-600'
                   }`}
                 >
                   {stat.change}
                 </p>
               </div>
-              <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                {stat.icon}
-              </div>
+              <div className="p-3 bg-primary/10 text-primary rounded-lg">{stat.icon}</div>
             </div>
           </Card>
         ))}
@@ -2077,9 +2036,7 @@ export function AdminDashboard() {
       {/* Quick Actions */}
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4">Быстрые действия</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Quick action buttons */}
-        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">{/* Quick action buttons */}</div>
       </Card>
     </div>
   );
@@ -2093,6 +2050,7 @@ export function AdminDashboard() {
 ### 7.1 Database Schema
 
 #### Таблица `site_settings`
+
 ```php
 Schema::create('site_settings', function (Blueprint $table) {
     $table->id();
@@ -2111,6 +2069,7 @@ Schema::create('site_settings', function (Blueprint $table) {
 ### 7.2 Settings Categories
 
 **General Settings:**
+
 - `site_name` - Название сайта
 - `site_description` - Описание сайта
 - `site_logo` - Логотип сайта
@@ -2120,6 +2079,7 @@ Schema::create('site_settings', function (Blueprint $table) {
 - `contact_address` - Адрес офиса
 
 **SEO Settings:**
+
 - `meta_title` - Default meta title
 - `meta_description` - Default meta description
 - `meta_keywords` - Default meta keywords
@@ -2128,6 +2088,7 @@ Schema::create('site_settings', function (Blueprint $table) {
 - `yandex_metrika_id` - Yandex Metrika ID
 
 **Social Media:**
+
 - `social_facebook` - Facebook URL
 - `social_instagram` - Instagram URL
 - `social_twitter` - Twitter URL
@@ -2136,17 +2097,20 @@ Schema::create('site_settings', function (Blueprint $table) {
 - `social_telegram` - Telegram URL
 
 **Appearance:**
+
 - `primary_color` - Primary brand color
 - `header_type` - Header style
 - `footer_text` - Footer copyright text
 
 **Notifications:**
+
 - `email_notifications` - Enable email notifications
 - `notification_email` - Notification recipient email
 
 ### 7.3 Backend Implementation
 
 #### Model: SiteSetting
+
 ```php
 <?php
 // app/Models/SiteSetting.php
@@ -2213,6 +2177,7 @@ class SiteSetting extends Model
 ```
 
 #### Controller: SettingsController
+
 ```php
 <?php
 // app/Http/Controllers/Api/SettingsController.php
@@ -2301,6 +2266,7 @@ class SettingsController extends Controller
 ### 7.4 Frontend Implementation
 
 #### Page: SiteSettings
+
 ```tsx
 // src/pages/admin/SiteSettings.tsx
 
@@ -2337,9 +2303,11 @@ export function SiteSettings() {
     onSuccess: (data) => {
       // Initialize form data from settings
       const initialData: Record<string, any> = {};
-      Object.values(data).flat().forEach((setting: Setting) => {
-        initialData[setting.key] = setting.value;
-      });
+      Object.values(data)
+        .flat()
+        .forEach((setting: Setting) => {
+          initialData[setting.key] = setting.value;
+        });
       setFormData(initialData);
     },
   });
@@ -2375,28 +2343,13 @@ export function SiteSettings() {
 
     switch (setting.type) {
       case 'textarea':
-        return (
-          <Textarea
-            id={setting.key}
-            value={value}
-            onChange={(e) => handleChange(setting.key, e.target.value)}
-            rows={4}
-          />
-        );
+        return <Textarea id={setting.key} value={value} onChange={(e) => handleChange(setting.key, e.target.value)} rows={4} />;
 
       case 'image':
         return (
           <div>
-            {value && (
-              <img
-                src={value}
-                alt={setting.label}
-                className="w-32 h-32 object-contain mb-4 border rounded"
-              />
-            )}
-            <MediaUpload
-              onUploadComplete={(media) => handleChange(setting.key, media.url)}
-            />
+            {value && <img src={value} alt={setting.label} className="w-32 h-32 object-contain mb-4 border rounded" />}
+            <MediaUpload onUploadComplete={(media) => handleChange(setting.key, media.url)} />
           </div>
         );
 
@@ -2407,9 +2360,7 @@ export function SiteSettings() {
               type="checkbox"
               id={setting.key}
               checked={value === 'true' || value === true}
-              onChange={(e) =>
-                handleChange(setting.key, e.target.checked.toString())
-              }
+              onChange={(e) => handleChange(setting.key, e.target.checked.toString())}
               className="w-4 h-4 rounded"
             />
             <Label htmlFor={setting.key} className="cursor-pointer">
@@ -2419,14 +2370,7 @@ export function SiteSettings() {
         );
 
       default:
-        return (
-          <Input
-            id={setting.key}
-            type="text"
-            value={value}
-            onChange={(e) => handleChange(setting.key, e.target.value)}
-          />
-        );
+        return <Input id={setting.key} type="text" value={value} onChange={(e) => handleChange(setting.key, e.target.value)} />;
     }
   };
 
@@ -2469,11 +2413,7 @@ export function SiteSettings() {
                   {(settings?.[category.key] || []).map((setting: Setting) => (
                     <div key={setting.key} className="space-y-2">
                       <Label htmlFor={setting.key}>{setting.label}</Label>
-                      {setting.description && (
-                        <p className="text-sm text-gray-500">
-                          {setting.description}
-                        </p>
-                      )}
+                      {setting.description && <p className="text-sm text-gray-500">{setting.description}</p>}
                       {renderField(setting)}
                     </div>
                   ))}
@@ -2493,7 +2433,9 @@ export function SiteSettings() {
 ## 8. ПЛАН РЕАЛИЗАЦИИ (TIMELINE)
 
 ### Неделя 1-2: Backend Foundation (RBAC + Media)
+
 **Задачи:**
+
 - [ ] Установить и настроить spatie/laravel-permission
 - [ ] Создать миграции для RBAC (roles, permissions, role_has_permissions)
 - [ ] Создать миграции для медиа (media, mediable)
@@ -2503,6 +2445,7 @@ export function SiteSettings() {
 - [ ] Написать тесты для RBAC и Media
 
 **Deliverables:**
+
 - ✅ RBAC система работает
 - ✅ Загрузка изображений работает
 - ✅ API endpoints для медиа готовы
@@ -2510,7 +2453,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 3-4: Partners & Members Management
+
 **Задачи:**
+
 - [ ] Обновить миграцию members (добавить status, type, social_links)
 - [ ] Создать миграцию partners
 - [ ] Создать Model Partner с relationships
@@ -2520,6 +2465,7 @@ export function SiteSettings() {
 - [ ] Написать тесты
 
 **Deliverables:**
+
 - ✅ Управление партнерами работает
 - ✅ Обновленное управление членами
 - ✅ API готов к интеграции с frontend
@@ -2527,7 +2473,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 5-6: Site Settings
+
 **Задачи:**
+
 - [ ] Создать миграцию site_settings
 - [ ] Создать Model SiteSetting с caching
 - [ ] Создать SettingsController
@@ -2536,6 +2484,7 @@ export function SiteSettings() {
 - [ ] Написать тесты
 
 **Deliverables:**
+
 - ✅ Система настроек работает
 - ✅ Кеширование настроек
 - ✅ Public API для получения настроек
@@ -2543,7 +2492,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 7-9: Frontend Admin Panel (Core)
+
 **Задачи:**
+
 - [ ] Создать AdminLayout компонент
 - [ ] Реализовать боковое меню с навигацией
 - [ ] Создать AdminDashboard с статистикой
@@ -2552,6 +2503,7 @@ export function SiteSettings() {
 - [ ] Настроить routing для admin панели
 
 **Deliverables:**
+
 - ✅ Базовая структура admin панели
 - ✅ Система прав доступа на frontend
 - ✅ Dashboard с основной статистикой
@@ -2559,7 +2511,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 10-11: Frontend Media Management
+
 **Задачи:**
+
 - [ ] Создать MediaUpload компонент
 - [ ] Создать MediaLibrary компонент
 - [ ] Интегрировать react-dropzone
@@ -2568,6 +2522,7 @@ export function SiteSettings() {
 - [ ] Интегрировать с backend API
 
 **Deliverables:**
+
 - ✅ Загрузка файлов работает
 - ✅ Медиа-библиотека функциональна
 - ✅ Выбор изображений в формах
@@ -2575,7 +2530,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 12-13: Frontend Partners & Members
+
 **Задачи:**
+
 - [ ] Создать PartnersManagement page
 - [ ] Создать PartnerForm компонент
 - [ ] Обновить MembersManagement page
@@ -2584,6 +2541,7 @@ export function SiteSettings() {
 - [ ] Интегрировать с backend API
 
 **Deliverables:**
+
 - ✅ Управление партнерами работает
 - ✅ Обновленное управление членами
 - ✅ Загрузка логотипов
@@ -2591,7 +2549,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 14-15: Frontend Site Settings
+
 **Задачи:**
+
 - [ ] Создать SiteSettings page
 - [ ] Реализовать Tabs для категорий
 - [ ] Создать форму настроек
@@ -2600,6 +2560,7 @@ export function SiteSettings() {
 - [ ] Интегрировать с backend API
 
 **Deliverables:**
+
 - ✅ Управление настройками работает
 - ✅ Все категории настроек доступны
 - ✅ Сохранение настроек
@@ -2607,7 +2568,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 16-17: Testing & Polish
+
 **Задачи:**
+
 - [ ] E2E тестирование всех функций
 - [ ] Исправление багов
 - [ ] Оптимизация производительности
@@ -2616,6 +2579,7 @@ export function SiteSettings() {
 - [ ] Code review
 
 **Deliverables:**
+
 - ✅ Все тесты проходят
 - ✅ Баги исправлены
 - ✅ Документация готова
@@ -2623,7 +2587,9 @@ export function SiteSettings() {
 ---
 
 ### Неделя 18: Deployment
+
 **Задачи:**
+
 - [ ] Подготовка production build
 - [ ] Настройка production окружения
 - [ ] Миграция базы данных
@@ -2632,6 +2598,7 @@ export function SiteSettings() {
 - [ ] Финальное тестирование
 
 **Deliverables:**
+
 - ✅ CMS развернута на production
 - ✅ Все функции работают
 - ✅ Мониторинг настроен
@@ -2641,6 +2608,7 @@ export function SiteSettings() {
 ## 9. API ENDPOINTS
 
 ### Authentication
+
 ```
 POST   /api/v1/auth/register       - Регистрация
 POST   /api/v1/auth/login          - Вход
@@ -2650,6 +2618,7 @@ POST   /api/v1/auth/refresh        - Обновить токен
 ```
 
 ### Users
+
 ```
 GET    /api/v1/users               - Список пользователей
 POST   /api/v1/users               - Создать пользователя
@@ -2660,6 +2629,7 @@ POST   /api/v1/users/{id}/roles    - Назначить роли
 ```
 
 ### Roles & Permissions
+
 ```
 GET    /api/v1/roles               - Список ролей
 POST   /api/v1/roles               - Создать роль
@@ -2670,6 +2640,7 @@ GET    /api/v1/permissions         - Список прав
 ```
 
 ### Media
+
 ```
 GET    /api/v1/media               - Список медиа
 POST   /api/v1/media               - Загрузить файл
@@ -2678,6 +2649,7 @@ DELETE /api/v1/media/{id}          - Удалить медиа
 ```
 
 ### Partners
+
 ```
 GET    /api/v1/partners            - Список партнеров
 POST   /api/v1/partners            - Создать партнера
@@ -2687,6 +2659,7 @@ DELETE /api/v1/partners/{id}       - Удалить партнера
 ```
 
 ### Members
+
 ```
 GET    /api/v1/members             - Список членов
 POST   /api/v1/members             - Создать члена
@@ -2696,6 +2669,7 @@ DELETE /api/v1/members/{id}        - Удалить члена
 ```
 
 ### News
+
 ```
 GET    /api/v1/news                - Список новостей
 POST   /api/v1/news                - Создать новость
@@ -2706,6 +2680,7 @@ POST   /api/v1/news/{id}/publish   - Опубликовать новость
 ```
 
 ### Events
+
 ```
 GET    /api/v1/events              - Список событий
 POST   /api/v1/events              - Создать событие
@@ -2715,6 +2690,7 @@ DELETE /api/v1/events/{id}         - Удалить событие
 ```
 
 ### Programs
+
 ```
 GET    /api/v1/programs            - Список программ
 POST   /api/v1/programs            - Создать программу
@@ -2724,6 +2700,7 @@ DELETE /api/v1/programs/{id}       - Удалить программу
 ```
 
 ### Settings
+
 ```
 GET    /api/v1/settings            - Все настройки
 GET    /api/v1/settings/public     - Публичные настройки
@@ -2735,6 +2712,7 @@ PUT    /api/v1/settings            - Обновить настройки
 ## 10. DATABASE SCHEMA
 
 ### Roles & Permissions Tables
+
 ```sql
 -- roles
 CREATE TABLE roles (
@@ -2774,6 +2752,7 @@ CREATE TABLE model_has_roles (
 ```
 
 ### Media Tables
+
 ```sql
 -- media
 CREATE TABLE media (
@@ -2804,6 +2783,7 @@ CREATE TABLE mediable (
 ```
 
 ### Partners & Members Tables
+
 ```sql
 -- partners
 CREATE TABLE partners (
@@ -2837,6 +2817,7 @@ ALTER TABLE members ADD COLUMN display_order INTEGER DEFAULT 0;
 ```
 
 ### Site Settings Table
+
 ```sql
 -- site_settings
 CREATE TABLE site_settings (
@@ -2871,6 +2852,7 @@ CREATE TABLE site_settings (
 **Готовность к старту:** После утверждения плана можно немедленно начинать реализацию.
 
 **Приоритет задач:**
+
 1. **Неделя 1-2:** RBAC + Media (критично для безопасности)
 2. **Неделя 3-6:** Partners, Members, Settings (основной функционал)
 3. **Неделя 7-15:** Frontend Admin Panel (UX/UI)

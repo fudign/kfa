@@ -38,12 +38,14 @@ KFA/
 ```
 
 **Коммуникация:**
+
 - Backend: RESTful API (Laravel)
 - Frontend: SPA (Vite + React + TypeScript)
 - Auth: JWT в HttpOnly cookies (Laravel Sanctum)
 - Real-time (Stage 2+): Laravel WebSockets / Pusher
 
 **Преимущества раздельной архитектуры:**
+
 - ✅ Независимое масштабирование frontend и backend
 - ✅ Параллельная разработка двумя командами
 - ✅ Легче тестировать и деплоить отдельно
@@ -52,6 +54,7 @@ KFA/
 ### 1.2 Трехуровневая архитектура
 
 **Публичная зона** (открытый доступ, без авторизации):
+
 - Главная страница
 - О КФА (миссия, структура, команда)
 - Регулирование (стандарты, реестры)
@@ -60,6 +63,7 @@ KFA/
 - Международное сотрудничество
 
 **Зона членов** (требуется авторизация):
+
 - Личный кабинет
 - Управление членством и профилем
 - Онлайн-оплата взносов (ЭЛКАРТ)
@@ -69,6 +73,7 @@ KFA/
 - Дисциплинарные процедуры
 
 **Административная панель** (роль admin):
+
 - Управление пользователями и членством
 - Контент-менеджмент (CMS)
 - Модерация дисциплинарных дел
@@ -79,13 +84,16 @@ KFA/
 ### 1.3 Интеграции
 
 **MVP (Stage 1):**
+
 - ЭЛКАРТ платежный шлюз (онлайн-оплата взносов)
 
 **Stage 2:**
+
 - Moodle LMS (headless integration через API)
 - Email notifications (Laravel Queue + Mailtrap/SendGrid)
 
 **Stage 3:**
+
 - Кыргызская Фондовая Биржа API (торговые данные)
 - Push notifications (FCM/APNS для mobile app)
 
@@ -96,11 +104,13 @@ KFA/
 ### 2.1 Backend (Server)
 
 **Framework:** Laravel 10+
+
 - **Причина выбора:** Богатая экосистема для enterprise, лучшая интеграция с Moodle, Laravel Sanctum для auth
 - **Версия:** Laravel 10.x (LTS до февраля 2025) или Laravel 11.x
 - **PHP Version:** PHP 8.2+
 
 **Основные пакеты:**
+
 - `laravel/sanctum` - JWT authentication (HttpOnly cookies)
 - `spatie/laravel-permission` - Role-based access control (RBAC)
 - `laravel/horizon` - Queue monitoring (payments, emails)
@@ -111,17 +121,20 @@ KFA/
 - `laravel/telescope` (dev) - Debugging tool
 
 **Database:**
+
 - **Primary:** PostgreSQL 15+ (ACID compliance, JSON support)
 - **Cache/Sessions:** Redis 7+ (кеш, сессии, очереди)
 - **Search (Stage 2+):** Laravel Scout + Meilisearch/Algolia
 
 **API Design:**
+
 - RESTful endpoints (`/api/v1/...`)
 - JSON:API specification compliance (опционально)
 - API versioning через URL (`/api/v1`, `/api/v2`)
 - Rate limiting (60 requests/min для guests, 1000 для auth users)
 
 **Security:**
+
 - HTTPS only (Let's Encrypt SSL)
 - CORS configured для client domain
 - CSRF protection
@@ -132,16 +145,19 @@ KFA/
 ### 2.2 Frontend (Client)
 
 **Build Tool:** Vite 5+
+
 - **Причина выбора:** Быстрый HMR, native ESM, лучше чем Next.js для SPA
 - **Dev Server:** Lightning-fast hot reload
 - **Production Build:** Optimized bundles with code splitting
 
 **Framework:** React 18+
+
 - **Причина:** Наиболее зрелая экосистема, большой talent pool в КР
 - **Language:** TypeScript 5+ (строго типизированный код)
 - **Build Target:** ES2020+
 
 **Core Libraries:**
+
 - `react-router-dom` v6+ - Client-side routing
 - `@tanstack/react-query` v5 - Server state management, caching
 - `zustand` - Client state management (легковесная альтернатива Redux)
@@ -150,12 +166,14 @@ KFA/
 - `@headlessui/react` - Unstyled accessible components
 
 **UI & Styling:**
+
 - `tailwindcss` v3+ - Utility-first CSS framework
 - `shadcn/ui` - High-quality React components (copy-paste, customizable)
 - `lucide-react` - Icon library (modern, tree-shakeable)
 - `clsx` + `tailwind-merge` - Conditional classnames
 
 **Additional Tools:**
+
 - `@vitejs/plugin-react` - React support for Vite
 - `vite-tsconfig-paths` - TypeScript path aliases
 - `vitest` - Unit testing (Vite-native)
@@ -163,6 +181,7 @@ KFA/
 - `eslint` + `prettier` - Code quality
 
 **Build Output:**
+
 - Single Page Application (SPA)
 - Code splitting по routes
 - Lazy loading для тяжелых компонентов
@@ -171,11 +190,13 @@ KFA/
 ### 2.3 Infrastructure
 
 **Development:**
+
 - **OS:** macOS/Linux/Windows (cross-platform)
 - **Docker:** Development environment consistency
 - **Docker Compose:** Local multi-container setup
 
 **Staging/Production (MVP):**
+
 - **Hosting:** VPS (DigitalOcean Droplet 4GB RAM, $40-80/мес)
 - **OS:** Ubuntu 22.04 LTS
 - **Containerization:** Docker + Docker Compose
@@ -183,22 +204,26 @@ KFA/
 - **Process Manager:** Supervisor (Laravel queue workers)
 
 **CI/CD:**
+
 - **Repository:** GitHub (monorepo)
 - **CI:** GitHub Actions
 - **Deployment:** Git-based deploy (push to main → auto-deploy to staging)
 
 **Monitoring & Observability (MVP):**
+
 - **Error Tracking:** Sentry (free tier, 5K events/мес)
 - **CDN + WAF:** Cloudflare Free (SSL, DDoS protection, basic WAF)
 - **Uptime Monitoring:** Cloudflare Analytics
 - **Backend Debugging:** Laravel Telescope (dev only)
 
 **Backups:**
+
 - PostgreSQL automated daily backups (pg_dump → S3-compatible storage)
 - Retention: 30 дней
 - Recovery testing: ежемесячно
 
 **Stage 2+ (при >10K users):**
+
 - Database replication (read replicas)
 - Load balancer (nginx)
 - Managed Kubernetes (DigitalOcean K8s / AWS EKS) - только если >50K users
@@ -206,19 +231,23 @@ KFA/
 ### 2.4 Development Tools
 
 **Version Control:**
+
 - Git + GitHub
-- Branch strategy: GitFlow (main, develop, feature/*, hotfix/*)
+- Branch strategy: GitFlow (main, develop, feature/_, hotfix/_)
 - PR-based workflow с code review
 
 **IDE Recommendations:**
+
 - Backend: PHPStorm / VS Code + PHP extensions
 - Frontend: VS Code + ESLint + Prettier + TypeScript
 
 **Package Managers:**
+
 - Backend: Composer 2+
 - Frontend: pnpm (быстрее npm/yarn)
 
 **Pre-commit Hooks:**
+
 - Laravel Pint (PHP code style)
 - ESLint + Prettier (TypeScript/React)
 - Husky + lint-staged
@@ -424,6 +453,7 @@ kfa-platform/
 ### 3.2 Именование и соглашения
 
 **Backend (Laravel):**
+
 - Controllers: `PascalCase` + `Controller` суффикс
 - Models: `PascalCase`, singular (User, Member, Payment)
 - Services: `PascalCase` + `Service` суффикс
@@ -432,6 +462,7 @@ kfa-platform/
 - Migrations: timestamp + `_action_table_name.php`
 
 **Frontend (React):**
+
 - Components: `PascalCase.tsx` (Button.tsx, UserCard.tsx)
 - Hooks: `camelCase` с `use` префиксом (useAuth.ts, useMember.ts)
 - Utils/Helpers: `camelCase` (formatDate.ts, validateEmail.ts)
@@ -440,6 +471,7 @@ kfa-platform/
 - Files/folders: kebab-case для folders, PascalCase для components
 
 **Git:**
+
 - Branches: `feature/short-description`, `hotfix/issue-number`, `release/v1.0.0`
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`)
 
@@ -450,24 +482,28 @@ kfa-platform/
 ### 4.1 Roadmap Overview
 
 **Month 0 (Weeks 1-8): Подготовка** - $8K-15K
+
 - Формирование команды
 - UX research + Brand book + Figma прототипы
 - Legal документы + SIRP
 - Начать процесс образовательной лицензии
 
 **Stage 1 (Months 1-6): MVP** - $40K-45K
+
 - Month 0: Подготовка (выше)
 - Months 1-3: Backend API + Frontend публичная зона
 - Months 4-6: Личные кабинеты, платежи, тестирование
 - **Launch:** Q4 2026
 
 **Stage 2 (Months 7-12): Education** - $35K-50K
+
 - Moodle LMS integration (headless)
 - Образовательные программы
 - Data portal
 - **Launch:** Q2-Q3 2027
 
 **Stage 3 (Months 13-18): Integration** - $30K-45K
+
 - Интеграция с КФБ
 - Mobile app (iOS/Android)
 - FinTech Accelerator
@@ -476,28 +512,34 @@ kfa-platform/
 ### 4.2 Month 0: Подготовка (Weeks 1-8)
 
 **Week 1-2: Формирование команды + Технические решения**
+
 - [ ] QW-1: Нанять команду (Backend, Frontend, DevOps, Designer, PM, QA)
 - [ ] QW-2: Принять решение: Laravel 10+ для backend
 - [ ] QW-3: Упростить инфраструктуру: VPS + Docker вместо K8s
 - [ ] QW-7: Добавить TypeScript в frontend stack
 
 **Week 2-3: UX Research + Legal Consultation**
+
 - [ ] SI-3: Провести UX research (интервью с 10-15 участниками рынка)
 - [ ] SI-8: Юридическая консультация (10 критичных вопросов)
 
 **Week 3-4: Legal Documents + Security**
+
 - [ ] QW-4: Создать Privacy Policy, Terms of Service, Cookie Policy
 - [ ] QW-6: Разработать Security Incident Response Plan (SIRP)
 - [ ] QW-8: Начать процесс получения образовательной лицензии (параллельно)
 
 **Week 4-5: Visual Design**
+
 - [ ] SI-1: Создать Visual Brand Book и дизайн-систему
 
 **Week 5-8: Prototyping**
+
 - [ ] SI-2: Создать Figma прототипы 20-30 ключевых страниц (desktop + mobile)
 - [ ] User testing прототипов с 5-10 членами
 
 **Deliverables Month 0:**
+
 - ✅ Команда сформирована и онбордирована
 - ✅ UX research report с user journeys
 - ✅ Legal документы готовы (Privacy Policy, Terms, SIRP)
@@ -513,6 +555,7 @@ kfa-platform/
 ### 5.1 Month 1: Project Setup + Backend Foundation
 
 **Week 1: Repository Setup**
+
 - [ ] Создать GitHub repo (monorepo structure)
 - [ ] Setup pnpm workspaces
 - [ ] Configure branch protection rules (main, develop)
@@ -520,6 +563,7 @@ kfa-platform/
 - [ ] Create project management board (GitHub Projects / Jira)
 
 **Week 2: Backend Setup**
+
 - [ ] Initialize Laravel 10+ project в `/server`
 - [ ] Configure PostgreSQL + Redis (Docker Compose)
 - [ ] Setup Laravel Sanctum для auth
@@ -528,6 +572,7 @@ kfa-platform/
 - [ ] Create .env.example with all variables
 
 **Week 3: Frontend Setup**
+
 - [ ] Initialize Vite + React + TypeScript в `/client`
 - [ ] Configure Tailwind CSS + shadcn/ui
 - [ ] Setup React Router v6
@@ -536,6 +581,7 @@ kfa-platform/
 - [ ] Create .env.example
 
 **Week 4: Infrastructure + CI/CD**
+
 - [ ] Create Dockerfiles (server, client)
 - [ ] Setup docker-compose для local development
 - [ ] Configure Nginx reverse proxy
@@ -543,6 +589,7 @@ kfa-platform/
 - [ ] Configure staging environment
 
 **Deliverables Month 1:**
+
 - ✅ Monorepo структура готова
 - ✅ Backend API skeleton с auth
 - ✅ Frontend SPA skeleton с routing
@@ -552,6 +599,7 @@ kfa-platform/
 ### 5.2 Month 2: Auth + User Management + Public Pages
 
 **Backend Tasks:**
+
 - [ ] User model + migrations
 - [ ] Auth API (register, login, logout, refresh token)
 - [ ] Password reset flow
@@ -561,6 +609,7 @@ kfa-platform/
 - [ ] API documentation (Postman collection / Swagger)
 
 **Frontend Tasks:**
+
 - [ ] Layout components (Header, Footer, Sidebar)
 - [ ] Auth pages (Login, Register, Password Reset)
 - [ ] Protected routes с ProtectedRoute component
@@ -571,10 +620,12 @@ kfa-platform/
 - [ ] 404 Not Found page
 
 **Testing:**
+
 - [ ] Backend: Auth API integration tests
 - [ ] Frontend: Auth flow E2E tests (Vitest + Testing Library)
 
 **Deliverables Month 2:**
+
 - ✅ Полный auth flow работает (register → login → logout)
 - ✅ Role-based access control
 - ✅ Публичные страницы (Home, About)
@@ -583,6 +634,7 @@ kfa-platform/
 ### 5.3 Month 3: Content Management + Public Zone
 
 **Backend Tasks:**
+
 - [ ] Content models (Page, Post, News, Event)
 - [ ] Content CRUD API (admin only)
 - [ ] Content API для публичного доступа (with caching)
@@ -591,6 +643,7 @@ kfa-platform/
 - [ ] Search API (basic, full-text search в Stage 2)
 
 **Frontend Tasks (Public Zone):**
+
 - [ ] Регулирование page (Стандарты, Реестры)
 - [ ] Образование page (Программы, Календарь событий)
 - [ ] Новости и публикации (list + detail pages)
@@ -599,15 +652,18 @@ kfa-platform/
 - [ ] FAQ page
 
 **Admin Panel (начало):**
+
 - [ ] Admin layout
 - [ ] Admin Dashboard (basic stats)
 - [ ] Content management UI (CRUD для pages, news, events)
 
 **Testing:**
+
 - [ ] Backend: Content API tests
 - [ ] Frontend: Public pages rendering tests
 
 **Deliverables Month 3:**
+
 - ✅ Content management система (backend + admin UI)
 - ✅ Все публичные страницы готовы
 - ✅ Новости и события публикуются
@@ -616,6 +672,7 @@ kfa-platform/
 ### 5.4 Month 4: Membership Management
 
 **Backend Tasks:**
+
 - [ ] Member model + migrations
 - [ ] Membership application API
 - [ ] Membership approval workflow (admin)
@@ -625,6 +682,7 @@ kfa-platform/
 - [ ] Member directory API (для членов)
 
 **Frontend Tasks (Member Zone):**
+
 - [ ] Membership application form
 - [ ] Member dashboard (overview)
 - [ ] Member profile management
@@ -632,15 +690,18 @@ kfa-platform/
 - [ ] Membership status indicators
 
 **Admin Panel:**
+
 - [ ] Membership applications management
 - [ ] Member management (approve, suspend, terminate)
 - [ ] Member statistics
 
 **Testing:**
+
 - [ ] Backend: Membership workflow tests
 - [ ] Frontend: Application form validation tests
 
 **Deliverables Month 4:**
+
 - ✅ Membership application flow работает
 - ✅ Admin может управлять членами
 - ✅ Member dashboard готов
@@ -649,6 +710,7 @@ kfa-platform/
 ### 5.5 Month 5: Payments Integration
 
 **Backend Tasks:**
+
 - [ ] Payment model + transactions table
 - [ ] ЭЛКАРТ API integration
 - [ ] Payment initiation API
@@ -659,6 +721,7 @@ kfa-platform/
 - [ ] Automated email notifications (payment success/fail)
 
 **Frontend Tasks (Member Zone):**
+
 - [ ] Membership fees payment page
 - [ ] Payment flow UI (initiate → redirect to ЭЛКАРТ → callback)
 - [ ] Payment history page
@@ -666,15 +729,18 @@ kfa-platform/
 - [ ] Payment status indicators
 
 **Admin Panel:**
+
 - [ ] Payment management (view all transactions)
 - [ ] Payment statistics
 - [ ] Manual payment recording
 
 **Testing:**
+
 - [ ] Backend: Payment flow integration tests (sandbox)
 - [ ] Frontend: Payment UI flow tests
 
 **Deliverables Month 5:**
+
 - ✅ ЭЛКАРТ payment integration работает
 - ✅ Members могут оплатить взносы онлайн
 - ✅ Payment history и invoices
@@ -683,6 +749,7 @@ kfa-platform/
 ### 5.6 Month 6: Final Features + Testing + Launch Prep
 
 **Remaining Features:**
+
 - [ ] Голосования и опросы (basic, без real-time)
   - Backend: Poll model, vote tracking API
   - Frontend: Poll list, voting UI, results display
@@ -694,11 +761,13 @@ kfa-platform/
   - Frontend: Notification preferences
 
 **Content & Legal:**
+
 - [ ] SI-4, SI-5: Детализировать Стандарты КФА + написать контент всех страниц
 - [ ] QW-5: Внедрить Consent Management UI (чекбоксы, Cookie banner)
 - [ ] Назначить DPO
 
 **Security & Infrastructure:**
+
 - [ ] SI-6: Database backups + retention policy
 - [ ] SI-9: Cloudflare CDN + WAF + SSL
 - [ ] Sentry configured для production
@@ -706,6 +775,7 @@ kfa-platform/
 - [ ] Security audit (internal или external)
 
 **Testing:**
+
 - [ ] Full E2E testing всех user flows
 - [ ] Performance testing (load testing с k6/Artillery)
 - [ ] Security testing (OWASP Top 10 checklist)
@@ -713,6 +783,7 @@ kfa-platform/
 - [ ] Mobile responsive testing
 
 **Deployment:**
+
 - [ ] Production VPS setup (DigitalOcean Droplet)
 - [ ] Docker Compose production config
 - [ ] Nginx configuration
@@ -722,12 +793,14 @@ kfa-platform/
 - [ ] Monitoring setup (Sentry, Cloudflare Analytics)
 
 **Documentation:**
+
 - [ ] API documentation (Postman/Swagger)
 - [ ] User guide (для членов)
 - [ ] Admin manual
 - [ ] Deployment documentation
 
 **Launch Checklist:**
+
 - [ ] All critical bugs fixed
 - [ ] Legal documents published (Privacy Policy, Terms)
 - [ ] Content complete (все страницы заполнены)
@@ -737,6 +810,7 @@ kfa-platform/
 - [ ] Monitoring active
 
 **Deliverables Month 6:**
+
 - ✅ MVP полностью готов к запуску
 - ✅ Все тесты прошли
 - ✅ Production deployment успешен
@@ -750,11 +824,13 @@ kfa-platform/
 ### 6.1 Prerequisites
 
 **System Requirements:**
+
 - OS: macOS 10.15+ / Ubuntu 20.04+ / Windows 10+ (with WSL2)
 - RAM: 8GB minimum, 16GB recommended
 - Disk: 20GB free space
 
 **Required Software:**
+
 - **Git** 2.30+
 - **Docker** 20.10+ and Docker Compose 2.0+
 - **Node.js** 18+ (LTS)
@@ -763,18 +839,21 @@ kfa-platform/
 - **Composer** 2+
 
 **Optional (для native development):**
+
 - PostgreSQL 15+
 - Redis 7+
 
 ### 6.2 Initial Setup
 
 **1. Clone Repository**
+
 ```bash
 git clone https://github.com/kfa/kfa-platform.git
 cd kfa-platform
 ```
 
 **2. Install Dependencies**
+
 ```bash
 # Root workspace
 pnpm install
@@ -794,6 +873,7 @@ cp .env.example .env
 **3. Configure Environment**
 
 **Backend (.env):**
+
 ```env
 APP_NAME="KFA Platform"
 APP_ENV=local
@@ -817,12 +897,14 @@ FRONTEND_URL=http://localhost:5173
 ```
 
 **Frontend (.env):**
+
 ```env
 VITE_API_BASE_URL=http://localhost:8000/api/v1
 VITE_APP_NAME="KFA Platform"
 ```
 
 **4. Start Docker Services**
+
 ```bash
 # From project root
 docker-compose up -d
@@ -832,6 +914,7 @@ docker-compose ps
 ```
 
 **5. Database Setup**
+
 ```bash
 cd server
 php artisan migrate
@@ -841,6 +924,7 @@ php artisan db:seed  # Seed initial data
 **6. Start Development Servers**
 
 **Terminal 1 (Backend):**
+
 ```bash
 cd server
 php artisan serve
@@ -848,6 +932,7 @@ php artisan serve
 ```
 
 **Terminal 2 (Frontend):**
+
 ```bash
 cd client
 pnpm dev
@@ -855,6 +940,7 @@ pnpm dev
 ```
 
 **7. Access Application**
+
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8000/api/v1
 - API Docs: http://localhost:8000/api/documentation (if Swagger configured)
@@ -862,6 +948,7 @@ pnpm dev
 ### 6.3 Common Commands
 
 **Backend:**
+
 ```bash
 # Run migrations
 php artisan migrate
@@ -893,6 +980,7 @@ php artisan migrate
 ```
 
 **Frontend:**
+
 ```bash
 # Development server
 pnpm dev
@@ -917,6 +1005,7 @@ npx shadcn-ui@latest add button
 ```
 
 **Docker:**
+
 ```bash
 # Start services
 docker-compose up -d
@@ -937,21 +1026,25 @@ docker-compose exec server php artisan migrate
 ### 6.4 Troubleshooting
 
 **Issue: Database connection failed**
+
 - Check Docker containers: `docker-compose ps`
 - Verify .env DB credentials match docker-compose.yml
 - Restart services: `docker-compose restart db`
 
 **Issue: CORS errors in browser**
+
 - Check SANCTUM_STATEFUL_DOMAINS in server/.env
 - Verify FRONTEND_URL in server/.env
 - Clear Laravel config cache: `php artisan config:clear`
 
 **Issue: Vite not hot reloading**
+
 - Check if dev server running on correct port
 - Verify firewall not blocking port 5173
 - Try clearing node_modules: `rm -rf node_modules && pnpm install`
 
 **Issue: Permission denied errors**
+
 - Laravel storage permissions: `chmod -R 775 server/storage server/bootstrap/cache`
 - Docker volume permissions: check user ID in docker-compose.yml
 
@@ -962,15 +1055,18 @@ docker-compose exec server php artisan migrate
 ### 7.1 Git Workflow (GitFlow)
 
 **Main Branches:**
+
 - `main` - Production code (stable, deployable)
 - `develop` - Integration branch (staging)
 
 **Supporting Branches:**
+
 - `feature/*` - New features
 - `hotfix/*` - Emergency production fixes
 - `release/*` - Release preparation
 
 **Workflow:**
+
 1. Create feature branch from `develop`: `git checkout -b feature/membership-application develop`
 2. Develop feature, commit frequently with meaningful messages
 3. Push to GitHub: `git push origin feature/membership-application`
@@ -983,6 +1079,7 @@ docker-compose exec server php artisan migrate
 10. Deploy `main` to production
 
 **Commit Message Convention:**
+
 ```
 <type>(<scope>): <subject>
 
@@ -994,6 +1091,7 @@ docker-compose exec server php artisan migrate
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 Example:
+
 ```
 feat(membership): add membership application form
 
@@ -1008,6 +1106,7 @@ Closes #123
 ### 7.2 Code Review Process
 
 **PR Requirements:**
+
 - [ ] Title describes change clearly
 - [ ] Description explains what and why
 - [ ] All tests pass (CI green)
@@ -1017,6 +1116,7 @@ Closes #123
 - [ ] Documentation updated if needed
 
 **Reviewers Check:**
+
 - [ ] Code quality (readability, maintainability)
 - [ ] Tests cover new functionality
 - [ ] No security vulnerabilities
@@ -1025,6 +1125,7 @@ Closes #123
 - [ ] API design consistency
 
 **Review Feedback:**
+
 - Approve: LGTM (Looks Good To Me)
 - Request Changes: Specific suggestions
 - Comment: Questions or minor suggestions
@@ -1032,6 +1133,7 @@ Closes #123
 ### 7.3 Testing Strategy
 
 **Backend (Laravel):**
+
 - **Unit Tests:** Models, Services, Helpers
 - **Feature Tests:** API endpoints, Controllers
 - **Integration Tests:** Database interactions, External APIs
@@ -1049,6 +1151,7 @@ php artisan test --coverage
 ```
 
 **Frontend (React):**
+
 - **Unit Tests:** Utilities, Hooks
 - **Component Tests:** Isolated component behavior
 - **Integration Tests:** Feature flows
@@ -1067,6 +1170,7 @@ pnpm test:coverage
 ```
 
 **Test Structure Example (Backend):**
+
 ```php
 <?php
 // tests/Feature/Api/V1/MembershipTest.php
@@ -1100,6 +1204,7 @@ class MembershipTest extends TestCase
 ```
 
 **Test Structure Example (Frontend):**
+
 ```typescript
 // src/features/membership/components/__tests__/ApplicationForm.test.tsx
 
@@ -1140,6 +1245,7 @@ describe('ApplicationForm', () => {
 ### 7.4 Code Quality Standards
 
 **Backend (Laravel):**
+
 - PSR-12 coding standard
 - Laravel Pint для auto-formatting
 - PHPStan level 5+ для static analysis
@@ -1148,6 +1254,7 @@ describe('ApplicationForm', () => {
 - API Resources для transformations
 
 **Frontend (React):**
+
 - ESLint + Prettier configured
 - TypeScript strict mode
 - No `any` types (use `unknown` if needed)
@@ -1156,18 +1263,13 @@ describe('ApplicationForm', () => {
 - Prop drilling max 2 levels (use Context/Zustand if deeper)
 
 **Pre-commit Hooks (Husky + lint-staged):**
+
 ```json
 // package.json
 {
   "lint-staged": {
-    "server/**/*.php": [
-      "vendor/bin/pint",
-      "vendor/bin/phpstan analyse"
-    ],
-    "client/src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "server/**/*.php": ["vendor/bin/pint", "vendor/bin/phpstan analyse"],
+    "client/src/**/*.{ts,tsx}": ["eslint --fix", "prettier --write"]
   }
 }
 ```
@@ -1179,11 +1281,13 @@ describe('ApplicationForm', () => {
 ### 8.1 Environment Setup
 
 **Environments:**
+
 - **Local:** Development machines
 - **Staging:** Pre-production testing (develop branch)
 - **Production:** Live application (main branch)
 
 **VPS Specifications (Production MVP):**
+
 - **Provider:** DigitalOcean
 - **Droplet:** 4GB RAM / 2 vCPU / 80GB SSD ($40-80/мес)
 - **OS:** Ubuntu 22.04 LTS
@@ -1192,6 +1296,7 @@ describe('ApplicationForm', () => {
 ### 8.2 Server Configuration
 
 **1. Initial Server Setup**
+
 ```bash
 # SSH to server
 ssh root@your-server-ip
@@ -1219,6 +1324,7 @@ chmod 700 ~/.ssh
 ```
 
 **2. Install Required Software**
+
 ```bash
 # Nginx
 sudo apt install nginx
@@ -1231,6 +1337,7 @@ sudo apt install git
 ```
 
 **3. Clone Repository**
+
 ```bash
 cd /var/www
 sudo git clone https://github.com/kfa/kfa-platform.git
@@ -1239,6 +1346,7 @@ cd kfa-platform
 ```
 
 **4. Configure Environment**
+
 ```bash
 # Backend
 cd server
@@ -1253,6 +1361,7 @@ nano .env
 ```
 
 **5. Build and Deploy with Docker Compose**
+
 ```bash
 # From project root
 docker-compose -f docker-compose.prod.yml up -d --build
@@ -1267,6 +1376,7 @@ docker-compose -f docker-compose.prod.yml exec server php artisan view:cache
 ```
 
 **6. Configure Nginx**
+
 ```nginx
 # /etc/nginx/sites-available/kfa-platform
 
@@ -1314,6 +1424,7 @@ server {
 ```
 
 **7. SSL Certificate**
+
 ```bash
 # Generate SSL certificate
 sudo certbot --nginx -d kfa.kg -d www.kfa.kg
@@ -1323,6 +1434,7 @@ sudo certbot renew --dry-run
 ```
 
 **8. Setup Supervisor (Queue Worker)**
+
 ```ini
 # /etc/supervisor/conf.d/kfa-worker.conf
 
@@ -1349,6 +1461,7 @@ sudo supervisorctl start kfa-worker:*
 ### 8.3 CI/CD with GitHub Actions
 
 **Workflow: .github/workflows/deploy.yml**
+
 ```yaml
 name: Deploy to Production
 
@@ -1381,11 +1494,13 @@ jobs:
 ### 8.4 Monitoring & Backups
 
 **Monitoring:**
+
 - Sentry: Real-time error tracking
 - Cloudflare Analytics: Traffic and performance
 - UptimeRobot (free): Uptime monitoring (check every 5 min)
 
 **Backups:**
+
 ```bash
 # Database backup script: /home/deploy/backup-db.sh
 
@@ -1410,6 +1525,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ```
 
 **Cron job:**
+
 ```bash
 # Run daily at 2 AM
 0 2 * * * /home/deploy/backup-db.sh >> /var/log/kfa-backup.log 2>&1
@@ -1422,6 +1538,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### 9.1 Definition of Done (DoD)
 
 **Feature is complete when:**
+
 - [ ] Code implemented according to requirements
 - [ ] Unit tests written and passing (≥80% coverage for backend, ≥70% for frontend)
 - [ ] Integration tests passing
@@ -1438,6 +1555,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### 9.2 Release Checklist
 
 **Before deploying to production:**
+
 - [ ] All features in release branch tested in staging
 - [ ] Regression testing completed
 - [ ] Performance testing passed (load test with expected traffic × 2)
@@ -1455,6 +1573,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### 9.3 Post-Deployment Checklist
 
 **Immediately after deployment:**
+
 - [ ] Smoke test critical paths (auth, payments, content loading)
 - [ ] Monitor error rates (Sentry dashboard)
 - [ ] Check API response times (Cloudflare Analytics)
@@ -1465,6 +1584,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - [ ] Monitor server resources (CPU, RAM, disk)
 
 **Within 24 hours:**
+
 - [ ] Review error logs
 - [ ] Check user feedback/support tickets
 - [ ] Monitor conversion rates (registrations, payments)
@@ -1479,6 +1599,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 **Core Team (6 members):**
 
 **1. Tech Lead / Backend Developer** ($1,500-2,500/мес)
+
 - Responsibilities:
   - Technical architecture decisions
   - Backend API development (Laravel)
@@ -1488,6 +1609,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - Skills: Laravel, PostgreSQL, Redis, API design, Git
 
 **2. Frontend Developer** ($1,200-2,000/мес)
+
 - Responsibilities:
   - Frontend application development (Vite + React + TypeScript)
   - UI component implementation
@@ -1497,6 +1619,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - Skills: React, TypeScript, Tailwind, Vite, REST API integration
 
 **3. UI/UX Designer** ($800-1,500/мес)
+
 - Responsibilities:
   - UI design (Figma прототипы уже готовы в Month 0)
   - Design system maintenance
@@ -1506,6 +1629,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - Skills: Figma, UI design, UX principles, responsive design
 
 **4. DevOps Engineer** ($1,000-1,800/мес, part-time 50% возможно)
+
 - Responsibilities:
   - Infrastructure setup (VPS, Docker)
   - CI/CD pipeline
@@ -1516,6 +1640,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - Skills: Docker, Linux, Nginx, Git, CI/CD, PostgreSQL, Redis
 
 **5. Project Manager** ($800-1,500/мес)
+
 - Responsibilities:
   - Sprint planning and execution
   - Stakeholder communication
@@ -1526,6 +1651,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 - Skills: Agile/Scrum, Jira/GitHub Projects, Communication
 
 **6. QA Engineer** ($700-1,200/мес)
+
 - Responsibilities:
   - Manual testing
   - Test case creation
@@ -1540,21 +1666,25 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### 10.2 Team Communication
 
 **Daily Standup (15 min, async или sync):**
+
 - What did you do yesterday?
 - What will you do today?
 - Any blockers?
 
 **Sprint Planning (every 2 weeks):**
+
 - Review completed work
 - Plan next sprint tasks
 - Estimate effort (story points)
 
 **Sprint Retrospective (every 2 weeks):**
+
 - What went well?
 - What can be improved?
 - Action items
 
 **Tools:**
+
 - **Communication:** Slack / Telegram
 - **Project Management:** GitHub Projects / Jira
 - **Documentation:** Notion / Confluence
@@ -1564,6 +1694,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### 10.3 Onboarding Process
 
 **Week 1: Setup & Orientation**
+
 - [ ] Access to all tools (GitHub, Slack, Figma, etc.)
 - [ ] Local development environment setup
 - [ ] Read project documentation
@@ -1572,12 +1703,14 @@ echo "Backup completed: db_$DATE.sql.gz"
 - [ ] Understand business domain (КФА mission, users)
 
 **Week 2: First Contributions**
+
 - [ ] Pick up "good first issue" tasks
 - [ ] Pair programming with team member
 - [ ] Submit first PR and go through code review
 - [ ] Ask questions, take notes
 
 **Week 3-4: Ramp Up**
+
 - [ ] Take on larger features
 - [ ] Participate in planning and standups
 - [ ] Contribute to documentation
@@ -1615,6 +1748,7 @@ echo "Backup completed: db_$DATE.sql.gz"
 ### Week 2-8: Execute Month 0 Plan
 
 Follow detailed Month 0 plan from section 4.2:
+
 - UX research + Brand book + Figma
 - Legal documents + SIRP
 - Team onboarding
@@ -1628,10 +1762,12 @@ Follow detailed MVP plan from section 5 with monthly milestones and deliverables
 ## 📄 ДОКУМЕНТЫ И РЕСУРСЫ
 
 **Created Documents:**
+
 - ✅ Validation Report (E:\CODE\kfa\BMAD-METHOD\validation-report-КФА-2025-10-22.md)
 - ✅ Implementation Plan (этот документ)
 
 **Next Documents to Create:**
+
 - [ ] API Documentation (Postman collection / Swagger)
 - [ ] Database Schema (ER diagrams)
 - [ ] Deployment Guide (detailed server setup)
@@ -1639,6 +1775,7 @@ Follow detailed MVP plan from section 5 with monthly milestones and deliverables
 - [ ] Admin Manual (для administrators)
 
 **Reference Documents from Validation:**
+
 - Validation Questions (bmad/bmb/workflows/audit-project-validation/validation-questions.md)
 - Quality Checklist (bmad/bmb/workflows/audit-project-validation/checklist.md)
 
@@ -1647,6 +1784,7 @@ Follow detailed MVP plan from section 5 with monthly milestones and deliverables
 ## ✅ SUMMARY
 
 **Этот план предоставляет:**
+
 - ✅ Четкую архитектуру: server (Laravel) и client (Vite) в раздельных папках
 - ✅ Полный технологический стек с обоснованием выбора
 - ✅ Детальную структуру monorepo проекта
@@ -1667,4 +1805,3 @@ Follow detailed MVP plan from section 5 with monthly milestones and deliverables
 
 _© 2025 КФА (Кыргызский Финансовый Альянс) - Implementation Plan v1.0_
 _Основано на BMAD Audit Project Validation Workflow findings_
-

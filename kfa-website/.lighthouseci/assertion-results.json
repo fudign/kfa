@@ -3,9 +3,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "bootup-time",
@@ -18,9 +16,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "color-contrast",
@@ -33,9 +29,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "csp-xss",
@@ -48,9 +42,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "dom-size",
@@ -63,9 +55,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.48,
-    "values": [
-      0.48
-    ],
+    "values": [0.48],
     "operator": ">=",
     "passed": false,
     "auditId": "first-meaningful-paint",
@@ -78,9 +68,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "heading-order",
@@ -93,9 +81,7 @@
     "name": "maxLength",
     "expected": 0,
     "actual": 1,
-    "values": [
-      1
-    ],
+    "values": [1],
     "operator": "<=",
     "passed": false,
     "auditId": "legacy-javascript",
@@ -108,9 +94,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "mainthread-work-breakdown",
@@ -123,9 +107,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.5,
-    "values": [
-      0.5
-    ],
+    "values": [0.5],
     "operator": ">=",
     "passed": false,
     "auditId": "modern-image-formats",
@@ -138,9 +120,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.5,
-    "values": [
-      0.5
-    ],
+    "values": [0.5],
     "operator": ">=",
     "passed": false,
     "auditId": "offscreen-images",
@@ -153,9 +133,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "render-blocking-resources",
@@ -168,9 +146,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "server-response-time",
@@ -183,9 +159,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "total-byte-weight",
@@ -198,9 +172,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.5,
-    "values": [
-      0.5
-    ],
+    "values": [0.5],
     "operator": ">=",
     "passed": false,
     "auditId": "unsized-images",
@@ -213,9 +185,7 @@
     "name": "maxLength",
     "expected": 0,
     "actual": 2,
-    "values": [
-      2
-    ],
+    "values": [2],
     "operator": "<=",
     "passed": false,
     "auditId": "unused-javascript",
@@ -228,9 +198,7 @@
     "name": "maxLength",
     "expected": 0,
     "actual": 8,
-    "values": [
-      8
-    ],
+    "values": [8],
     "operator": "<=",
     "passed": false,
     "auditId": "uses-long-cache-ttl",
@@ -243,9 +211,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.5,
-    "values": [
-      0.5
-    ],
+    "values": [0.5],
     "operator": ">=",
     "passed": false,
     "auditId": "uses-responsive-images",
@@ -258,9 +224,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "auditId": "valid-source-maps",
@@ -273,9 +237,7 @@
     "name": "minScore",
     "expected": 0.9,
     "actual": 0.77,
-    "values": [
-      0.77
-    ],
+    "values": [0.77],
     "operator": ">=",
     "passed": false,
     "auditProperty": "performance",
@@ -287,9 +249,7 @@
     "name": "minScore",
     "expected": 0.95,
     "actual": 0.93,
-    "values": [
-      0.93
-    ],
+    "values": [0.93],
     "operator": ">=",
     "passed": false,
     "auditProperty": "accessibility",
@@ -301,9 +261,7 @@
     "name": "auditRan",
     "expected": 1,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "message": "\"service-worker\" is not a known audit.",
@@ -315,9 +273,7 @@
     "name": "auditRan",
     "expected": 1,
     "actual": 0,
-    "values": [
-      0
-    ],
+    "values": [0],
     "operator": ">=",
     "passed": false,
     "message": "\"apple-touch-icon\" is not a known audit.",

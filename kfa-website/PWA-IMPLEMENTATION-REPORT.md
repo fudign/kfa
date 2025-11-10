@@ -43,12 +43,14 @@
 ### 1. PWA Core (Основа)
 
 **Файлы:**
+
 - `public/manifest.webmanifest` - PWA манифест с shortcuts
 - `vite.config.ts` - Workbox конфигурация
 - `public/offline.html` - Offline fallback страница
 - 40+ favicon форматов для всех платформ
 
 **Функции:**
+
 - ✅ Installable - приложение можно установить на устройство
 - ✅ Работает офлайн с Service Worker
 - ✅ Адаптивный дизайн для всех экранов
@@ -59,9 +61,11 @@
 ### 2. Web Share API
 
 **Файлы:**
+
 - `src/components/common/ShareButton.tsx` (168 строк)
 
 **Функции:**
+
 - ✅ Нативный Web Share API для мобильных устройств
 - ✅ Fallback меню для десктопа
 - ✅ Поддержка Facebook, Twitter, LinkedIn, Email
@@ -69,23 +73,21 @@
 - ✅ 3 варианта отображения: icon, button, fab
 
 **Интеграция:**
+
 ```tsx
-<ShareButton
-  title="Новость КФА"
-  text="Интересная новость"
-  url="/news/123"
-  variant="button"
-/>
+<ShareButton title="Новость КФА" text="Интересная новость" url="/news/123" variant="button" />
 ```
 
 ### 3. Push Notifications
 
 **Frontend компоненты:**
+
 - `src/components/pwa/PushNotificationManager.tsx` (408 строк)
 - `src/lib/push/pushNotifications.ts` (346 строк)
 - `public/sw-push.js` (115 строк)
 
 **Функции:**
+
 - ✅ Автоматический промпт для подписки
 - ✅ Управление подписками (subscribe/unsubscribe)
 - ✅ VAPID authentication
@@ -95,6 +97,7 @@
 - ✅ Обработка кликов и actions
 
 **Типы уведомлений:**
+
 - 📰 NEWS - Новости
 - 📅 EVENT - События
 - 📄 DOCUMENT - Документы
@@ -102,6 +105,7 @@
 - ⏰ REMINDER - Напоминания
 
 **Backend Guide:**
+
 - `PUSH-NOTIFICATIONS-BACKEND.md` (720+ строк)
 - Полное руководство по Node.js + Express backend
 - VAPID ключи генерация
@@ -113,9 +117,11 @@
 ### 4. API Caching System
 
 **Файлы:**
+
 - `src/lib/cache/apiCache.ts` (263 строки)
 
 **Функции:**
+
 - ✅ IndexedDB-based storage для больших данных
 - ✅ Automatic expiration и cleanup
 - ✅ Multiple стратегии: Cache-First, Stale-While-Revalidate, Network-First
@@ -123,22 +129,25 @@
 - ✅ Configurable TTL для разных типов данных
 
 **Стратегии кэширования:**
+
 ```typescript
 const CACHE_TTL = {
-  STATIC: 24 * 60 * 60 * 1000,      // 24 часа
-  SEMI_STATIC: 60 * 60 * 1000,      // 1 час
-  DYNAMIC: 5 * 60 * 1000,            // 5 минут
-  REAL_TIME: 30 * 1000,              // 30 секунд
+  STATIC: 24 * 60 * 60 * 1000, // 24 часа
+  SEMI_STATIC: 60 * 60 * 1000, // 1 час
+  DYNAMIC: 5 * 60 * 1000, // 5 минут
+  REAL_TIME: 30 * 1000, // 30 секунд
 };
 ```
 
 ### 5. Offline Support
 
 **Компоненты:**
+
 - `src/components/common/OfflineBanner.tsx`
 - `public/offline.html`
 
 **Функции:**
+
 - ✅ Автоматическое определение offline/online
 - ✅ Красивый offline fallback page
 - ✅ Offline banner с уведомлением
@@ -146,6 +155,7 @@ const CACHE_TTL = {
 - ✅ Советы по устранению проблем
 
 **Service Worker Strategies:**
+
 - Fonts: CacheFirst, 1 год
 - Images: CacheFirst, 30 дней
 - API: NetworkFirst, 5 минут
@@ -154,9 +164,11 @@ const CACHE_TTL = {
 ### 6. PWA Install Prompt
 
 **Файлы:**
+
 - `src/components/pwa/PWAInstallPrompt.tsx` (162 строки)
 
 **Функции:**
+
 - ✅ Автоматическое появление через 3 секунды
 - ✅ Отслеживание установки (localStorage)
 - ✅ Опция "Позже" с permanent dismiss
@@ -166,9 +178,11 @@ const CACHE_TTL = {
 ### 7. Lighthouse CI
 
 **Файлы:**
+
 - `lighthouserc.json` - CI конфигурация
 
 **Настройки:**
+
 - 3 прогона для точности
 - Desktop preset
 - Minimum scores: Performance 90%, Accessibility 95%, PWA 90%
@@ -187,13 +201,13 @@ const CACHE_TTL = {
 
 ### Scores:
 
-| Category | Score | Target | Status |
-|----------|-------|--------|--------|
-| **Performance** | 77% | 90% | ⚠️ Below target |
-| **Accessibility** | 93% | 95% | ⚠️ Below target |
-| **Best Practices** | - | 95% | - |
-| **SEO** | - | 95% | - |
-| **PWA** | - | 90% | - |
+| Category           | Score | Target | Status          |
+| ------------------ | ----- | ------ | --------------- |
+| **Performance**    | 77%   | 90%    | ⚠️ Below target |
+| **Accessibility**  | 93%   | 95%    | ⚠️ Below target |
+| **Best Practices** | -     | 95%    | -               |
+| **SEO**            | -     | 95%    | -               |
+| **PWA**            | -     | 90%    | -               |
 
 ### ❌ Critical Issues (11 failures):
 
@@ -245,6 +259,7 @@ const CACHE_TTL = {
 ## 🛠️ Технический стек
 
 ### Frontend:
+
 - **React** 18.3.1 с TypeScript 5.4.2
 - **Vite** 5.2.0 - Build tool
 - **Tailwind CSS** 3.4.1 - Styling
@@ -257,6 +272,7 @@ const CACHE_TTL = {
 - **Framer Motion** - Animations
 
 ### PWA Technologies:
+
 - **VitePWA** 0.19.8 - PWA plugin
 - **Workbox** - Service Worker utilities
 - **IndexedDB** - Client-side database
@@ -266,6 +282,7 @@ const CACHE_TTL = {
 - **Cache API** - Resource caching
 
 ### Development:
+
 - **TypeScript** - Type safety
 - **ESLint** + Prettier - Code quality
 - **Lighthouse CI** - PWA auditing
@@ -279,6 +296,7 @@ const CACHE_TTL = {
 ### Созданные/модифицированные файлы:
 
 #### PWA Core (5 файлов):
+
 1. `public/manifest.webmanifest` - PWA manifest
 2. `vite.config.ts` - Workbox config + Service Worker
 3. `public/offline.html` - Offline page
@@ -286,6 +304,7 @@ const CACHE_TTL = {
 5. `lighthouserc.json` - Lighthouse CI config
 
 #### Frontend Components (6 файлов):
+
 1. `src/components/common/ShareButton.tsx` - Web Share API (168 строк)
 2. `src/components/pwa/PushNotificationManager.tsx` - Push управление (408 строк)
 3. `src/components/pwa/PWAInstallPrompt.tsx` - Install prompt (162 строки)
@@ -294,15 +313,18 @@ const CACHE_TTL = {
 6. `src/components/pwa/index.ts` - Exports
 
 #### Utilities (2 файла):
+
 1. `src/lib/cache/apiCache.ts` - API caching (263 строки)
 2. `src/lib/push/pushNotifications.ts` - Push utils (346 строк)
 
 #### Documentation (3 файла):
+
 1. `PWA-FEATURES-GUIDE.md` - Comprehensive guide (550+ строк)
 2. `PUSH-NOTIFICATIONS-BACKEND.md` - Backend setup (720+ строк)
 3. `PWA-IMPLEMENTATION-REPORT.md` - This report (180+ строк)
 
 #### Assets (40+ файлов):
+
 - Favicon formats: ICO, PNG, SVG
 - Apple touch icons: 57x57 до 180x180
 - Android chrome icons: 192x192, 512x512
@@ -338,6 +360,7 @@ Warnings: Large chunks (>1MB)
 ### ✅ PWA Features Testing Checklist:
 
 **Manifest:**
+
 - [x] PWA installable на desktop/mobile
 - [x] Icons отображаются корректно
 - [x] Shortcuts работают
@@ -345,6 +368,7 @@ Warnings: Large chunks (>1MB)
 - [x] Splash screen отображается
 
 **Service Worker:**
+
 - [x] SW регистрируется без ошибок
 - [x] Precaching работает
 - [x] Runtime caching функционирует
@@ -352,6 +376,7 @@ Warnings: Large chunks (>1MB)
 - [x] Update notification показывается
 
 **Offline Support:**
+
 - [x] Offline banner появляется/исчезает
 - [x] Offline page доступна
 - [x] Cached resources загружаются
@@ -359,6 +384,7 @@ Warnings: Large chunks (>1MB)
 - [x] Reconnect detection функционирует
 
 **Web Share API:**
+
 - [x] Native share на mobile работает
 - [x] Fallback menu на desktop показывается
 - [x] Social links корректны
@@ -366,6 +392,7 @@ Warnings: Large chunks (>1MB)
 - [x] Visual feedback работает
 
 **Push Notifications:**
+
 - [x] Permission request показывается
 - [x] Subscription создается
 - [x] Service Worker получает push
@@ -374,6 +401,7 @@ Warnings: Large chunks (>1MB)
 - [x] Unsubscribe функционирует
 
 **API Caching:**
+
 - [x] IndexedDB инициализируется
 - [x] Cache-First strategy работает
 - [x] Stale-While-Revalidate работает
@@ -381,6 +409,7 @@ Warnings: Large chunks (>1MB)
 - [x] Offline fallback срабатывает
 
 **Install Prompt:**
+
 - [x] beforeinstallprompt перехватывается
 - [x] Custom prompt показывается
 - [x] Install process работает
@@ -398,6 +427,7 @@ Warnings: Large chunks (>1MB)
 **Проблема:** Большой размер bundle и неоптимизированные изображения
 
 **Решения:**
+
 ```typescript
 // vite.config.ts - улучшить code splitting
 build: {
@@ -415,6 +445,7 @@ build: {
 ```
 
 **Действия:**
+
 - [ ] Внедрить dynamic imports для heavy компонентов
 - [ ] Использовать React.lazy() для route-based code splitting
 - [ ] Конвертировать изображения в WebP/AVIF формат
@@ -426,6 +457,7 @@ build: {
 **Проблема:** Контраст цветов и порядок заголовков
 
 **Решения:**
+
 ```typescript
 // Проверить контраст для всех text/background комбинаций
 // Минимум: 4.5:1 для normal text, 3:1 для large text
@@ -438,6 +470,7 @@ build: {
 ```
 
 **Действия:**
+
 - [ ] Audit всех цветовых комбинаций с WebAIM Contrast Checker
 - [ ] Исправить heading hierarchy на всех страницах
 - [ ] Добавить ARIA labels где необходимо
@@ -448,6 +481,7 @@ build: {
 **Проблема:** Отсутствует CSP header для защиты от XSS
 
 **Решение:**
+
 ```typescript
 // vite.config.ts или nginx config
 headers: {
@@ -463,6 +497,7 @@ headers: {
 ```
 
 **Действия:**
+
 - [ ] Добавить CSP header в production
 - [ ] Убрать 'unsafe-inline' где возможно
 - [ ] Использовать nonce для inline scripts
@@ -473,11 +508,13 @@ headers: {
 **1. JavaScript Optimization**
 
 **Проблемы:**
+
 - Unused JavaScript (2 items)
 - Legacy polyfills (1 item)
 - Heavy main thread work
 
 **Решения:**
+
 - [ ] Tree-shaking для unused exports
 - [ ] Удалить unnecessary polyfills для modern browsers
 - [ ] Использовать Web Workers для heavy computations
@@ -486,11 +523,13 @@ headers: {
 **2. Image Optimization**
 
 **Проблемы:**
+
 - Not using modern formats (WebP/AVIF)
 - Offscreen images not deferred
 - Images not properly sized
 
 **Решения:**
+
 - [ ] Конвертировать все images в WebP с fallback
 - [ ] Использовать `loading="lazy"` для offscreen images
 - [ ] Добавить responsive images с `srcset`
@@ -501,6 +540,7 @@ headers: {
 **Проблема:** Short cache TTL (8 resources)
 
 **Решение:**
+
 ```typescript
 // vite.config.ts
 build: {
@@ -518,6 +558,7 @@ Cache-Control: public, max-age=31536000, immutable
 ```
 
 **Действия:**
+
 - [ ] Использовать content hashing для all assets
 - [ ] Set long cache TTL (1 year) для immutable resources
 - [ ] Implement cache-busting strategy
@@ -552,24 +593,20 @@ Cache-Control: public, max-age=31536000, immutable
 ### Phase 1: Critical Fixes (1-2 дня)
 
 **Performance:**
+
 1. [ ] Code splitting для heavy dependencies (mermaid, charts)
 2. [ ] Convert images в WebP format
 3. [ ] Add explicit width/height to images
 4. [ ] Enable source maps для production debugging
 
-**Accessibility:**
-5. [ ] Fix color contrast issues
-6. [ ] Correct heading hierarchy
-7. [ ] Add missing ARIA labels
+**Accessibility:** 5. [ ] Fix color contrast issues 6. [ ] Correct heading hierarchy 7. [ ] Add missing ARIA labels
 
-**Security:**
-8. [ ] Implement Content Security Policy
-9. [ ] Enable HTTPS в production
-10. [ ] Add security headers (HSTS, X-Frame-Options)
+**Security:** 8. [ ] Implement Content Security Policy 9. [ ] Enable HTTPS в production 10. [ ] Add security headers (HSTS, X-Frame-Options)
 
 ### Phase 2: Backend Integration (3-5 дней)
 
 **Push Notifications:**
+
 1. [ ] Setup Node.js + Express backend (используя PUSH-NOTIFICATIONS-BACKEND.md)
 2. [ ] Generate VAPID keys
 3. [ ] Implement subscription endpoints
@@ -578,67 +615,45 @@ Cache-Control: public, max-age=31536000, immutable
 6. [ ] Integrate frontend с backend API
 7. [ ] Test end-to-end push flow
 
-**API Integration:**
-8. [ ] Integrate cachedFetch во все API calls
-9. [ ] Configure appropriate TTL для different endpoints
-10. [ ] Test offline functionality с real API
+**API Integration:** 8. [ ] Integrate cachedFetch во все API calls 9. [ ] Configure appropriate TTL для different endpoints 10. [ ] Test offline functionality с real API
 
 ### Phase 3: Optimization (1-2 дня)
 
 **Images:**
+
 1. [ ] Batch convert images в WebP/AVIF
 2. [ ] Setup responsive images pipeline
 3. [ ] Implement lazy loading для all images
 4. [ ] Configure image CDN
 
-**JavaScript:**
-5. [ ] Analyze bundle с webpack-bundle-analyzer
-6. [ ] Remove unused dependencies
-7. [ ] Optimize React components
-8. [ ] Implement route-based code splitting
+**JavaScript:** 5. [ ] Analyze bundle с webpack-bundle-analyzer 6. [ ] Remove unused dependencies 7. [ ] Optimize React components 8. [ ] Implement route-based code splitting
 
-**Caching:**
-9. [ ] Configure long cache TTL
-10. [ ] Setup CDN caching rules
-11. [ ] Test cache invalidation
+**Caching:** 9. [ ] Configure long cache TTL 10. [ ] Setup CDN caching rules 11. [ ] Test cache invalidation
 
 ### Phase 4: Testing & Validation (2-3 дня)
 
 **Manual Testing:**
+
 1. [ ] Test PWA installation на iOS/Android/Desktop
 2. [ ] Test offline functionality на всех страницах
 3. [ ] Test push notifications на разных browsers
 4. [ ] Test Web Share API на mobile devices
 5. [ ] Verify all shortcuts work correctly
 
-**Automated Testing:**
-6. [ ] Run Lighthouse CI в production
-7. [ ] Verify all scores meet targets (>90%)
-8. [ ] Test Core Web Vitals
-9. [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge)
-10. [ ] Performance testing с real user data
+**Automated Testing:** 6. [ ] Run Lighthouse CI в production 7. [ ] Verify all scores meet targets (>90%) 8. [ ] Test Core Web Vitals 9. [ ] Cross-browser testing (Chrome, Firefox, Safari, Edge) 10. [ ] Performance testing с real user data
 
-**Load Testing:**
-11. [ ] Stress test push notification system
-12. [ ] Load test Service Worker caching
-13. [ ] Test IndexedDB performance с large datasets
-14. [ ] Monitor memory leaks
+**Load Testing:** 11. [ ] Stress test push notification system 12. [ ] Load test Service Worker caching 13. [ ] Test IndexedDB performance с large datasets 14. [ ] Monitor memory leaks
 
 ### Phase 5: Documentation & Deployment (1 день)
 
 **Documentation:**
+
 1. [ ] Update README с deployment instructions
 2. [ ] Create user guide для PWA features
 3. [ ] Document backend API endpoints
 4. [ ] Write troubleshooting guide
 
-**Deployment:**
-5. [ ] Deploy frontend to production
-6. [ ] Deploy push backend to server
-7. [ ] Configure production environment
-8. [ ] Setup monitoring и logging
-9. [ ] Create deployment checklist
-10. [ ] Verify production PWA score
+**Deployment:** 5. [ ] Deploy frontend to production 6. [ ] Deploy push backend to server 7. [ ] Configure production environment 8. [ ] Setup monitoring и logging 9. [ ] Create deployment checklist 10. [ ] Verify production PWA score
 
 ---
 
@@ -647,6 +662,7 @@ Cache-Control: public, max-age=31536000, immutable
 ### Целевые показатели:
 
 **Lighthouse Scores:**
+
 - [x] Performance: ≥90% (текущий: 77%)
 - [x] Accessibility: ≥95% (текущий: 93%)
 - [ ] Best Practices: ≥95%
@@ -654,6 +670,7 @@ Cache-Control: public, max-age=31536000, immutable
 - [ ] PWA: ≥90%
 
 **Core Web Vitals:**
+
 - [ ] LCP (Largest Contentful Paint): <2.5s
 - [ ] FID (First Input Delay): <100ms
 - [ ] CLS (Cumulative Layout Shift): <0.1
@@ -661,6 +678,7 @@ Cache-Control: public, max-age=31536000, immutable
 - [ ] TBT (Total Blocking Time): <300ms
 
 **PWA Features:**
+
 - [x] Installable: ✅
 - [x] Works Offline: ✅
 - [x] Push Notifications: ✅
@@ -668,6 +686,7 @@ Cache-Control: public, max-age=31536000, immutable
 - [x] Fast Loading: ⚠️ Needs optimization
 
 **User Experience:**
+
 - [ ] Install rate: ≥10% of visitors
 - [ ] Push notification opt-in: ≥20%
 - [ ] Offline usage: ≥5% of sessions
@@ -709,6 +728,7 @@ Cache-Control: public, max-age=31536000, immutable
 ### Быстрый старт:
 
 **Frontend:**
+
 ```bash
 # Install dependencies
 npm install
@@ -727,6 +747,7 @@ lhci autorun
 ```
 
 **Backend (Push Notifications):**
+
 ```bash
 # Generate VAPID keys
 npx web-push generate-vapid-keys
@@ -776,6 +797,7 @@ npm start
 ### Оценка готовности к production:
 
 **Ready:**
+
 - ✅ PWA Core functionality
 - ✅ Offline support
 - ✅ Install prompt
@@ -783,6 +805,7 @@ npm start
 - ✅ Service Worker caching
 
 **Needs Work:**
+
 - ⚠️ Performance optimization (77% → 90%)
 - ⚠️ Accessibility improvements (93% → 95%)
 - ⚠️ CSP implementation

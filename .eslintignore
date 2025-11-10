@@ -1,0 +1,21 @@
+# Build outputs
+dist/
+build/
+node_modules/
+
+# Laravel backend files
+kfa-backend/kfa-api/vendor/**
+kfa-backend/kfa-api/resources/**
+kfa-backend/kfa-api/*.js
+kfa-backend/kfa-api/*.config.js
+
+# Legacy scripts
+compile-bmm-agents.js
+test-auth-system.js
+
+# Frontend build
+kfa-website/dist/
+kfa-website/dev-dist/
+
+# Generated files
+*.min.js

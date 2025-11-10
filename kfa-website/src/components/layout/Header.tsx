@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, ChevronDown, Globe } from 'lucide-react';
 import { NavbarMenu } from '@/components/aceternity/navbar-menu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Logo } from '@/components/ui/Logo';
@@ -12,6 +12,8 @@ export function Header() {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const languageMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     logout();
@@ -20,10 +22,34 @@ export function Header() {
   };
 
   const languages = [
-    { code: 'ru', name: 'РУС' },
-    { code: 'ky', name: 'КЫР' },
-    { code: 'en', name: 'ENG' },
+    { code: 'ru', name: 'РУС', fullName: 'Русский' },
+    { code: 'ky', name: 'КЫР', fullName: 'Кыргызча' },
+    { code: 'en', name: 'ENG', fullName: 'English' },
   ];
+
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+
+  // Закрытие меню при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageMenuRef.current && !languageMenuRef.current.contains(event.target as Node)) {
+        setLanguageMenuOpen(false);
+      }
+    };
+
+    if (languageMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [languageMenuOpen]);
+
+  const handleLanguageChange = (code: string) => {
+    i18n.changeLanguage(code);
+    setLanguageMenuOpen(false);
+  };
 
   const navItems = [
     {
@@ -88,21 +114,45 @@ export function Header() {
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
-          {/* Language Selector */}
-          <div className="hidden items-center gap-1 md:flex" data-testid="language-switcher">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => i18n.changeLanguage(lang.code)}
-                className={`rounded-md px-2 py-1 text-xs font-medium transition-colors ${
-                  i18n.language === lang.code
-                    ? 'bg-primary-600 text-white'
-                    : 'text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800'
-                }`}
-              >
-                {lang.name}
-              </button>
-            ))}
+          {/* Language Selector - Desktop */}
+          <div className="relative hidden md:block" ref={languageMenuRef} data-testid="language-switcher">
+            <button
+              onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
+              className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 transition-all hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+              aria-label="Выбор языка"
+              aria-expanded={languageMenuOpen}
+            >
+              <Globe className="h-4 w-4" />
+              <span className="hidden lg:inline">{currentLanguage.fullName}</span>
+              <span className="lg:hidden">{currentLanguage.name}</span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${languageMenuOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            {languageMenuOpen && (
+              <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-neutral-200 bg-white shadow-lg transition-all duration-200 ease-in-out dark:border-neutral-700 dark:bg-neutral-800">
+                <div className="py-1">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={`w-full px-4 py-2 text-left text-sm transition-colors ${
+                        i18n.language === lang.code
+                          ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
+                          : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{lang.fullName}</span>
+                        <span className="text-xs text-neutral-500">{lang.name}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Theme Toggle */}
@@ -174,6 +224,37 @@ export function Header() {
                 )}
               </div>
             ))}
+
+            {/* Language Selector - Mobile */}
+            <div className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
+              <div className="px-4 pb-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  Язык
+                </span>
+              </div>
+              <div className="space-y-1">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      handleLanguageChange(lang.code);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full rounded-md px-4 py-2 text-left text-sm transition-colors ${
+                      i18n.language === lang.code
+                        ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-400'
+                        : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{lang.fullName}</span>
+                      <span className="text-xs text-neutral-500">{lang.name}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* User Menu / Login Button */}
             {isAuthenticated && user ? (
               <div className="space-y-2 border-t border-neutral-200 pt-4 dark:border-neutral-800">

@@ -14,7 +14,7 @@ content = content.replace(
       }
     });
     
-    const { token } = await loginResponse.json();`
+    const { token } = await loginResponse.json();`,
 );
 
 // Fix status code from 201 to 200 for GET /api/user
@@ -28,7 +28,7 @@ content = content.replace(
       }
     });
 
-    expect(response.status()).toBe(200);`
+    expect(response.status()).toBe(200);`,
 );
 
 fs.writeFileSync('tests/e2e/auth-roles.spec.ts', content, 'utf8');

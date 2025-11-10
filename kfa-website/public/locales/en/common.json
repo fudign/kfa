@@ -37,19 +37,19 @@
       "services": {
         "title": "Services",
         "links": {
-          "certification": "Certification",
+          "membership": "Membership",
           "education": "Education",
+          "certification": "Certification",
           "standards": "Standards",
-          "research": "Research"
+          "directors_database": "Directors Database"
         }
       },
-      "membership": {
-        "title": "Membership",
+      "governance": {
+        "title": "Governance",
         "links": {
-          "benefits": "Benefits",
-          "join": "Join",
-          "members": "Members",
-          "fees": "Fees"
+          "code": "Code",
+          "directors_program": "Directors Program",
+          "community": "Community"
         }
       },
       "resources": {

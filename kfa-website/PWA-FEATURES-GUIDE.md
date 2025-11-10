@@ -61,13 +61,13 @@ import { ShareButton } from '@/components/common/ShareButton';
 
 #### API:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | string | required | Заголовок для sharing |
-| `text` | string | required | Описание контента |
-| `url` | string | `window.location.href` | URL для sharing |
-| `variant` | `'icon' \| 'button' \| 'fab'` | `'button'` | Вариант отображения |
-| `className` | string | `''` | Дополнительные CSS классы |
+| Prop        | Type                          | Default                | Description               |
+| ----------- | ----------------------------- | ---------------------- | ------------------------- |
+| `title`     | string                        | required               | Заголовок для sharing     |
+| `text`      | string                        | required               | Описание контента         |
+| `url`       | string                        | `window.location.href` | URL для sharing           |
+| `variant`   | `'icon' \| 'button' \| 'fab'` | `'button'`             | Вариант отображения       |
+| `className` | string                        | `''`                   | Дополнительные CSS классы |
 
 ---
 
@@ -78,6 +78,7 @@ import { ShareButton } from '@/components/common/ShareButton';
 Система управления push уведомлениями с поддержкой Web Push API.
 
 #### Функции:
+
 - ✅ Запрос разрешения на уведомления
 - ✅ Подписка/отписка от уведомлений
 - ✅ Интеграция с Service Worker
@@ -96,17 +97,17 @@ import { PushNotificationManager } from '@/components/pwa/PushNotificationManage
   subscriptionEndpoint="/api/push/subscribe"
   autoPrompt={true}
   promptDelay={5000}
-/>
+/>;
 ```
 
 #### API компонента:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `vapidPublicKey` | string | undefined | VAPID публичный ключ для подписки |
-| `subscriptionEndpoint` | string | `/api/push/subscribe` | URL для регистрации подписки |
-| `autoPrompt` | boolean | `true` | Автоматически показывать промпт |
-| `promptDelay` | number | `5000` | Задержка перед промптом (мс) |
+| Prop                   | Type    | Default               | Description                       |
+| ---------------------- | ------- | --------------------- | --------------------------------- |
+| `vapidPublicKey`       | string  | undefined             | VAPID публичный ключ для подписки |
+| `subscriptionEndpoint` | string  | `/api/push/subscribe` | URL для регистрации подписки      |
+| `autoPrompt`           | boolean | `true`                | Автоматически показывать промпт   |
+| `promptDelay`          | number  | `5000`                | Задержка перед промптом (мс)      |
 
 #### Утилиты для работы с уведомлениями:
 
@@ -153,39 +154,19 @@ await showLocalNotification({
 
 ```typescript
 // Новость
-const newsNotification = NotificationTemplates.news(
-  'Заголовок новости',
-  'Краткий превью новости...',
-  '/news/123'
-);
+const newsNotification = NotificationTemplates.news('Заголовок новости', 'Краткий превью новости...', '/news/123');
 
 // Событие
-const eventNotification = NotificationTemplates.event(
-  'Название события',
-  '25 октября 2025',
-  '/events/456'
-);
+const eventNotification = NotificationTemplates.event('Название события', '25 октября 2025', '/events/456');
 
 // Документ
-const docNotification = NotificationTemplates.document(
-  'Новый регламент',
-  'Нормативный документ',
-  '/documents/789'
-);
+const docNotification = NotificationTemplates.document('Новый регламент', 'Нормативный документ', '/documents/789');
 
 // Объявление
-const announcement = NotificationTemplates.announcement(
-  'Важное объявление',
-  'Текст объявления',
-  '/announcements/321'
-);
+const announcement = NotificationTemplates.announcement('Важное объявление', 'Текст объявления', '/announcements/321');
 
 // Напоминание
-const reminder = NotificationTemplates.reminder(
-  'Название события',
-  '1 час',
-  '/events/654'
-);
+const reminder = NotificationTemplates.reminder('Название события', '1 час', '/events/654');
 ```
 
 #### Service Worker интеграция:
@@ -279,23 +260,25 @@ sendNotification(subscription, payload);
 
 ```typescript
 enum NotificationType {
-  NEWS = 'news',           // 📰 Новости
-  EVENT = 'event',         // 📅 События
-  DOCUMENT = 'document',   // 📄 Документы
+  NEWS = 'news', // 📰 Новости
+  EVENT = 'event', // 📅 События
+  DOCUMENT = 'document', // 📄 Документы
   ANNOUNCEMENT = 'announcement', // 📢 Объявления
-  REMINDER = 'reminder',   // ⏰ Напоминания
+  REMINDER = 'reminder', // ⏰ Напоминания
 }
 ```
 
 #### Рекомендации:
 
 **Частота уведомлений**:
+
 - Критичные: немедленно
 - Важные: не более 3-5 в день
 - Информационные: дайджест раз в день
 - Маркетинговые: не более 2 в неделю
 
 **Best Practices**:
+
 - Всегда спрашивать разрешение в контексте
 - Предоставлять ценность в каждом уведомлении
 - Уважать выбор пользователя отписаться
@@ -303,6 +286,7 @@ enum NotificationType {
 - Использовать понятные action buttons
 
 **Безопасность**:
+
 - Храните VAPID приватный ключ в безопасности
 - Валидируйте подписки на сервере
 - Проверяйте origin запросов
@@ -325,14 +309,11 @@ import { cachedFetch, apiCache, startCacheCleanup } from '@/lib/cache/apiCache';
 startCacheCleanup();
 
 // 2. Fetching с кэшированием
-const news = await cachedFetch<NewsItem[]>(
-  'https://api.kfa.kg/news',
-  {
-    key: 'news-list',
-    maxAge: 5 * 60 * 1000, // 5 минут
-    staleWhileRevalidate: true, // Использовать кэш пока обновляется
-  }
-);
+const news = await cachedFetch<NewsItem[]>('https://api.kfa.kg/news', {
+  key: 'news-list',
+  maxAge: 5 * 60 * 1000, // 5 минут
+  staleWhileRevalidate: true, // Использовать кэш пока обновляется
+});
 
 // 3. Прямая работа с кэшем
 await apiCache.set('my-key', data, 10 * 60 * 1000); // 10 минут
@@ -350,6 +331,7 @@ const size = await apiCache.getSize();
 #### Стратегии кэширования:
 
 **1. Cache-First (по умолчанию)**
+
 ```typescript
 const data = await cachedFetch(url, {
   key: 'cache-key',
@@ -359,6 +341,7 @@ const data = await cachedFetch(url, {
 ```
 
 **2. Stale-While-Revalidate**
+
 ```typescript
 const data = await cachedFetch(url, {
   key: 'cache-key',
@@ -369,9 +352,10 @@ const data = await cachedFetch(url, {
 ```
 
 **3. Network-First (offline fallback)**
+
 ```typescript
 try {
-  const data = await fetch(url).then(r => r.json());
+  const data = await fetch(url).then((r) => r.json());
   await apiCache.set('key', data, maxAge);
 } catch {
   // Offline - используем кэш
@@ -383,10 +367,10 @@ try {
 
 ```typescript
 const CACHE_TTL = {
-  STATIC: 24 * 60 * 60 * 1000,      // 24 часа (документы, статичный контент)
-  SEMI_STATIC: 60 * 60 * 1000,      // 1 час (список членов, стандарты)
-  DYNAMIC: 5 * 60 * 1000,            // 5 минут (новости, события)
-  REAL_TIME: 30 * 1000,              // 30 секунд (dashboard данные)
+  STATIC: 24 * 60 * 60 * 1000, // 24 часа (документы, статичный контент)
+  SEMI_STATIC: 60 * 60 * 1000, // 1 час (список членов, стандарты)
+  DYNAMIC: 5 * 60 * 1000, // 5 минут (новости, события)
+  REAL_TIME: 30 * 1000, // 30 секунд (dashboard данные)
 };
 ```
 
@@ -399,6 +383,7 @@ const CACHE_TTL = {
 Компонент `OfflineBanner` автоматически отображается при потере соединения.
 
 #### Функции:
+
 - ✅ Автоматическое определение offline/online
 - ✅ Уведомление о восстановлении связи
 - ✅ Красный баннер при offline, зеленый при reconnect
@@ -409,6 +394,7 @@ const CACHE_TTL = {
 Standalone страница `/offline.html` показывается Service Worker при offline навигации.
 
 #### Функции:
+
 - ✅ Красивый дизайн с КФА брендингом
 - ✅ Кнопка "Попробовать снова"
 - ✅ Автоматический reload при восстановлении связи
@@ -460,6 +446,7 @@ Standalone страница `/offline.html` показывается Service Wor
 Кастомный промпт для установки PWA приложения.
 
 #### Функции:
+
 - ✅ Автоматическое появление через 3 секунды
 - ✅ Отслеживание установки (localStorage)
 - ✅ Опция "Позже" (не показывать повторно)
@@ -490,6 +477,7 @@ window.addEventListener('appinstalled', () => {
 Уведомление о доступных обновлениях приложения.
 
 #### Функции:
+
 - ✅ Автоматическое определение новой версии
 - ✅ One-click обновление
 - ✅ Список изменений (What's New)
@@ -539,13 +527,13 @@ lhci assert
 
 #### Минимальные требования:
 
-| Метрика | Минимум | Цель |
-|---------|---------|------|
-| Performance | 90% | 95%+ |
-| Accessibility | 95% | 100% |
-| Best Practices | 95% | 100% |
-| SEO | 95% | 100% |
-| PWA | 90% | 100% |
+| Метрика        | Минимум | Цель |
+| -------------- | ------- | ---- |
+| Performance    | 90%     | 95%+ |
+| Accessibility  | 95%     | 100% |
+| Best Practices | 95%     | 100% |
+| SEO            | 95%     | 100% |
+| PWA            | 90%     | 100% |
 
 #### Core Web Vitals:
 
@@ -633,7 +621,7 @@ if ('indexedDB' in window) {
 ```typescript
 // ✅ Graceful degradation
 try {
-  const data = await fetch(url).then(r => r.json());
+  const data = await fetch(url).then((r) => r.json());
   await apiCache.set('key', data, maxAge);
   return data;
 } catch (error) {
@@ -687,14 +675,10 @@ lhci autorun
 
 ```typescript
 // 1. Очистить кэш
-await caches.keys().then(names =>
-  Promise.all(names.map(name => caches.delete(name)))
-);
+await caches.keys().then((names) => Promise.all(names.map((name) => caches.delete(name))));
 
 // 2. Unregister SW
-navigator.serviceWorker.getRegistrations().then(registrations =>
-  Promise.all(registrations.map(r => r.unregister()))
-);
+navigator.serviceWorker.getRegistrations().then((registrations) => Promise.all(registrations.map((r) => r.unregister())));
 
 // 3. Hard reload
 window.location.reload();

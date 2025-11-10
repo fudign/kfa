@@ -37,19 +37,19 @@
       "services": {
         "title": "Кызматтар",
         "links": {
-          "certification": "Сертификаттоо",
+          "membership": "Мүчөлүк",
           "education": "Билим берүү",
+          "certification": "Сертификаттоо",
           "standards": "Стандарттар",
-          "research": "Изилдөөлөр"
+          "directors_database": "Директорлор базасы"
         }
       },
-      "membership": {
-        "title": "Мүчөлүк",
+      "governance": {
+        "title": "Башкаруу",
         "links": {
-          "benefits": "Артыкчылыктар",
-          "join": "Кошулуу",
-          "members": "КФА мүчөлөрү",
-          "fees": "Төлөмдөр"
+          "code": "Кодекс",
+          "directors_program": "Директорлор программасы",
+          "community": "Коомчулук"
         }
       },
       "resources": {

@@ -46,12 +46,9 @@ export function YourPage() {
 ```tsx
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/seo/structuredData';
 
-const structuredData = [
-  generateOrganizationSchema(),
-  generateWebSiteSchema()
-];
+const structuredData = [generateOrganizationSchema(), generateWebSiteSchema()];
 
-<SEO structuredData={structuredData} />
+<SEO structuredData={structuredData} />;
 ```
 
 #### Статья/Новость
@@ -67,13 +64,13 @@ const articleData = {
   dateModified: '2025-10-28T15:00:00Z',
   author: {
     name: 'Автор Статьи',
-    url: 'https://kfa.kg/authors/author-slug'
+    url: 'https://kfa.kg/authors/author-slug',
   },
   publisher: {
     name: 'Кыргызский Финансовый Альянс',
     url: 'https://kfa.kg',
-    logo: 'https://kfa.kg/logo.png'
-  }
+    logo: 'https://kfa.kg/logo.png',
+  },
 };
 
 <SEO
@@ -83,10 +80,10 @@ const articleData = {
     modifiedTime: articleData.dateModified,
     author: articleData.author.name,
     section: 'Новости',
-    tags: ['финансы', 'рынок ценных бумаг']
+    tags: ['финансы', 'рынок ценных бумаг'],
   }}
   structuredData={generateArticleSchema(articleData)}
-/>
+/>;
 ```
 
 #### Событие
@@ -101,16 +98,16 @@ const eventData = {
   endDate: '2025-11-15T18:00:00Z',
   location: {
     name: 'Место проведения',
-    address: 'ул. Исанова, 91, Бишкек'
+    address: 'ул. Исанова, 91, Бишкек',
   },
   image: 'https://kfa.kg/event-image.png',
   organizer: {
     name: 'Кыргызский Финансовый Альянс',
-    url: 'https://kfa.kg'
-  }
+    url: 'https://kfa.kg',
+  },
 };
 
-<SEO structuredData={generateEventSchema(eventData)} />
+<SEO structuredData={generateEventSchema(eventData)} />;
 ```
 
 #### FAQ страница
@@ -121,15 +118,15 @@ import { generateFAQSchema } from '@/lib/seo/structuredData';
 const faqs = [
   {
     question: 'Как стать членом КФА?',
-    answer: 'Для вступления в КФА необходимо...'
+    answer: 'Для вступления в КФА необходимо...',
   },
   {
     question: 'Какие требования к членам?',
-    answer: 'Требования включают...'
-  }
+    answer: 'Требования включают...',
+  },
 ];
 
-<SEO structuredData={generateFAQSchema(faqs)} />
+<SEO structuredData={generateFAQSchema(faqs)} />;
 ```
 
 #### Хлебные крошки
@@ -140,10 +137,10 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 const breadcrumbs = [
   { name: 'Главная', url: 'https://kfa.kg' },
   { name: 'Образование', url: 'https://kfa.kg/education' },
-  { name: 'Программы', url: 'https://kfa.kg/education/programs' }
+  { name: 'Программы', url: 'https://kfa.kg/education/programs' },
 ];
 
-<SEO structuredData={generateBreadcrumbSchema(breadcrumbs)} />
+<SEO structuredData={generateBreadcrumbSchema(breadcrumbs)} />;
 ```
 
 #### Образовательный курс
@@ -156,25 +153,23 @@ const courseData = {
   description: 'Описание курса',
   provider: {
     name: 'Кыргызский Финансовый Альянс',
-    url: 'https://kfa.kg'
-  }
+    url: 'https://kfa.kg',
+  },
 };
 
-<SEO structuredData={generateCourseSchema(courseData)} />
+<SEO structuredData={generateCourseSchema(courseData)} />;
 ```
 
 ## 📝 Примеры использования по страницам
 
 ### Главная страница (/)
+
 ```tsx
 import { SEO } from '@/components/seo';
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/seo/structuredData';
 
 export function HomePage() {
-  const structuredData = [
-    generateOrganizationSchema(),
-    generateWebSiteSchema()
-  ];
+  const structuredData = [generateOrganizationSchema(), generateWebSiteSchema()];
 
   return (
     <>
@@ -191,6 +186,7 @@ export function HomePage() {
 ```
 
 ### Страница новостей (/news)
+
 ```tsx
 <SEO
   title="Новости"
@@ -201,6 +197,7 @@ export function HomePage() {
 ```
 
 ### Отдельная новость (/news/:slug)
+
 ```tsx
 <SEO
   title={news.title}
@@ -213,7 +210,7 @@ export function HomePage() {
     modifiedTime: news.updatedAt,
     author: news.author,
     section: 'Новости',
-    tags: news.tags
+    tags: news.tags,
   }}
   structuredData={generateArticleSchema({
     headline: news.title,
@@ -225,22 +222,20 @@ export function HomePage() {
     publisher: {
       name: 'Кыргызский Финансовый Альянс',
       url: 'https://kfa.kg',
-      logo: 'https://kfa.kg/logo.png'
-    }
+      logo: 'https://kfa.kg/logo.png',
+    },
   })}
 />
 ```
 
 ### События (/events)
+
 ```tsx
-<SEO
-  title="Мероприятия"
-  description="Предстоящие мероприятия, семинары и конференции КФА"
-  url="https://kfa.kg/events"
-/>
+<SEO title="Мероприятия" description="Предстоящие мероприятия, семинары и конференции КФА" url="https://kfa.kg/events" />
 ```
 
 ### Отдельное событие (/events/:slug)
+
 ```tsx
 <SEO
   title={event.title}
@@ -254,14 +249,15 @@ export function HomePage() {
     endDate: event.endsAt,
     location: {
       name: event.location,
-      address: event.address
+      address: event.address,
     },
-    image: event.image
+    image: event.image,
   })}
 />
 ```
 
 ### О нас (/about)
+
 ```tsx
 <SEO
   title="О нас"
@@ -272,6 +268,7 @@ export function HomePage() {
 ```
 
 ### FAQ (/faq)
+
 ```tsx
 <SEO
   title="Часто задаваемые вопросы"
@@ -282,29 +279,29 @@ export function HomePage() {
 ```
 
 ### Образование (/education)
+
 ```tsx
-<SEO
-  title="Образование"
-  description="Образовательные программы и сертификация для участников рынка"
-  url="https://kfa.kg/education"
-/>
+<SEO title="Образование" description="Образовательные программы и сертификация для участников рынка" url="https://kfa.kg/education" />
 ```
 
 ## ✅ Checklist для каждой страницы
 
 ### Обязательные метатеги
+
 - [x] `title` - Уникальный заголовок (до 60 символов)
 - [x] `description` - Описание страницы (до 160 символов)
 - [x] `url` - Канонический URL страницы
 - [x] `image` - OG изображение (1200x630px)
 
 ### Дополнительные метатеги
+
 - [ ] `keywords` - Ключевые слова (для внутреннего использования)
 - [ ] `type` - Тип контента (`website`, `article`, `profile`)
 - [ ] `article` - Метаданные для статей (даты, автор, теги)
 - [ ] `structuredData` - JSON-LD разметка
 
 ### Structured Data по типу контента
+
 - [ ] **Организация** - На главной странице и /about
 - [ ] **WebSite** - На главной странице (с SearchAction)
 - [ ] **Article** - На страницах новостей и статей
@@ -343,37 +340,40 @@ npm run preview
 ```html
 <!-- Должны присутствовать в <head> -->
 <title>Заголовок страницы | КФА</title>
-<meta name="description" content="Описание страницы">
-<meta property="og:title" content="Заголовок страницы | КФА">
-<meta property="og:description" content="Описание страницы">
-<meta property="og:image" content="https://kfa.kg/image.png">
-<meta property="og:url" content="https://kfa.kg/page">
-<link rel="canonical" href="https://kfa.kg/page">
+<meta name="description" content="Описание страницы" />
+<meta property="og:title" content="Заголовок страницы | КФА" />
+<meta property="og:description" content="Описание страницы" />
+<meta property="og:image" content="https://kfa.kg/image.png" />
+<meta property="og:url" content="https://kfa.kg/page" />
+<link rel="canonical" href="https://kfa.kg/page" />
 
 <!-- Structured data -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Кыргызский Финансовый Альянс"
-  ...
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Кыргызский Финансовый Альянс"
+    ...
+  }
 </script>
 ```
 
 ## 📊 Метрики успеха
 
 ### Google Search Console
+
 - Количество проиндексированных страниц
 - CTR (Click-Through Rate) в поиске
 - Средняя позиция в выдаче
 - Количество валидных structured data элементов
 
 ### Lighthouse SEO Score
+
 - **Цель**: 95-100 баллов
 - Проверить через Chrome DevTools → Lighthouse
 
 ### Core Web Vitals
+
 - **LCP** (Largest Contentful Paint): < 2.5s
 - **FID** (First Input Delay): < 100ms
 - **CLS** (Cumulative Layout Shift): < 0.1
@@ -398,6 +398,7 @@ npm run preview
 ## ✅ Итог
 
 SEO инфраструктура настроена и готова к использованию:
+
 - ✅ Динамические метатеги через react-helmet-async
 - ✅ Компонент SEO для простой интеграции
 - ✅ Утилиты для structured data (JSON-LD)

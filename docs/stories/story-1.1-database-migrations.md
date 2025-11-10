@@ -42,6 +42,7 @@
 ### Database Schema
 
 #### Members Table
+
 ```sql
 - id (bigint, PK, auto-increment)
 - name (varchar 255, not null)
@@ -61,6 +62,7 @@ Indexes:
 ```
 
 #### News Table
+
 ```sql
 - id (bigint, PK, auto-increment)
 - title (varchar 255, not null)
@@ -80,6 +82,7 @@ Indexes:
 ```
 
 #### Events Table
+
 ```sql
 - id (bigint, PK, auto-increment)
 - title (varchar 255, not null)
@@ -103,6 +106,7 @@ Indexes:
 ```
 
 #### Programs Table
+
 ```sql
 - id (bigint, PK, auto-increment)
 - title (varchar 255, not null)
@@ -142,6 +146,7 @@ Indexes:
 ## Testing
 
 ### Manual Testing
+
 ```bash
 # Run migrations
 php artisan migrate
@@ -156,6 +161,7 @@ php artisan tinker
 ```
 
 ### Expected Results
+
 - All migrations run without errors
 - Tables have correct columns
 - Indexes created successfully

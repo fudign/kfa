@@ -7,7 +7,7 @@ content = content.replace(
   /test\('should login with correct credentials', async \(\{ request \}\) => \{[\s\S]*?\/\/ First register\n[\s\S]*?await request\.post\(`\$\{API_URL\}\/register`[\s\S]*?\}\);[\s\n]*\/\/ Then login/,
   `test('should login with correct credentials', async ({ request }) => {
     // Login with seeded account
-    // Then login`
+    // Then login`,
 );
 
 fs.writeFileSync('tests/e2e/auth-roles.spec.ts', content, 'utf8');

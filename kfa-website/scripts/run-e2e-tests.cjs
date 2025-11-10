@@ -23,7 +23,7 @@ setTimeout(() => {
   const devServer = spawn('npm', ['run', 'dev'], {
     cwd: path.join(__dirname, '..'),
     shell: true,
-    stdio: ['ignore', 'pipe', 'pipe']
+    stdio: ['ignore', 'pipe', 'pipe'],
   });
 
   let serverReady = false;
@@ -44,14 +44,12 @@ setTimeout(() => {
 
           // 3. Запускаем тесты
           const testArgs = process.argv.slice(2);
-          const testCommand = testArgs.length > 0
-            ? ['run', 'test:e2e', '--', ...testArgs]
-            : ['run', 'test:e2e', '--', 'cms-news.spec.ts'];
+          const testCommand = testArgs.length > 0 ? ['run', 'test:e2e', '--', ...testArgs] : ['run', 'test:e2e', '--', 'cms-news.spec.ts'];
 
           const tests = spawn('npm', testCommand, {
             cwd: path.join(__dirname, '..'),
             shell: true,
-            stdio: 'inherit'
+            stdio: 'inherit',
           });
 
           tests.on('close', (code) => {
@@ -83,5 +81,4 @@ setTimeout(() => {
     devServer.kill();
     process.exit(0);
   });
-
 }, 1000);
