@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, LogOut, LayoutDashboard, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Globe } from 'lucide-react';
 import { NavbarMenu } from '@/components/aceternity/navbar-menu';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Logo } from '@/components/ui/Logo';
@@ -26,8 +26,6 @@ export function Header() {
     { code: 'ky', name: 'КЫР', fullName: 'Кыргызча' },
     { code: 'en', name: 'ENG', fullName: 'English' },
   ];
-
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
 
   // Закрытие меню при клике вне его
   useEffect(() => {

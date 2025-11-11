@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Moon, Sun, ChevronDown } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 
 export function ThemeToggle() {
