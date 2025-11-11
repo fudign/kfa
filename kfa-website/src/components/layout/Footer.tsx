@@ -69,9 +69,9 @@ export function Footer() {
 
   return (
     <footer className="bg-primary-900 text-white">
-      <div className="container px-4 py-8 md:px-6 md:py-12 lg:py-16">
+      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8 lg:py-16">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6 xl:gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-6 lg:gap-8">
           {/* Brand & Contact */}
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="mb-6">
@@ -82,11 +82,11 @@ export function Footer() {
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-400" />
                 <div className="min-w-0 flex-1">
-                  <p className="break-words text-sm leading-relaxed text-primary-100">
+                  <p className="text-sm leading-relaxed text-primary-100">
                     {t('footer.contact.address')}
                   </p>
                 </div>
@@ -95,7 +95,7 @@ export function Footer() {
                 <Phone className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
                   href="tel:+996312123456"
-                  className="break-all text-sm text-primary-100 transition-colors hover:text-white"
+                  className="text-sm text-primary-100 transition-colors hover:text-white"
                 >
                   +996 (312) 12-34-56
                 </a>
@@ -104,7 +104,7 @@ export function Footer() {
                 <Mail className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
                   href="mailto:info@kfa.kg"
-                  className="break-all text-sm text-primary-100 transition-colors hover:text-white"
+                  className="text-sm text-primary-100 transition-colors hover:text-white"
                 >
                   info@kfa.kg
                 </a>
@@ -112,7 +112,7 @@ export function Footer() {
             </div>
 
             {/* Social Links */}
-            <div className="mt-6 flex flex-wrap gap-3 md:gap-4">
+            <div className="mt-6 flex gap-3">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -133,16 +133,16 @@ export function Footer() {
 
           {/* Navigation Links */}
           {navigationLinks.map((section) => (
-            <div key={section.titleKey} className="min-w-0">
-              <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-accent-400">
+            <div key={section.titleKey}>
+              <h4 className="mb-4 h-6 text-sm font-semibold uppercase tracking-wider text-accent-400">
                 {t(`footer.nav.${section.titleKey}.title`)}
               </h4>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2">
                 {section.links.map((link) => (
-                  <li key={link.labelKey} className="break-words">
+                  <li key={link.labelKey}>
                     <a
                       href={link.href}
-                      className="inline-block break-words text-sm leading-relaxed text-primary-200 transition-colors hover:text-white hover:underline"
+                      className="inline-block text-sm text-primary-200 transition-colors hover:text-white hover:underline"
                     >
                       {t(`footer.nav.${section.titleKey}.links.${link.labelKey}`)}
                     </a>
@@ -154,27 +154,27 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 border-t border-primary-800 pt-6 md:mt-10 md:pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-primary-300 md:flex-row md:gap-6">
-            <p className="text-center text-xs md:text-left md:text-sm">
+        <div className="mt-12 border-t border-primary-800 pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <p className="text-center text-sm text-primary-300 md:text-left">
               &copy; {new Date().getFullYear()} {t('footer.copyright')}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-6">
               <a
                 href="/privacy"
-                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+                className="text-sm text-primary-300 transition-colors hover:text-white"
               >
                 {t('footer.legal.privacy')}
               </a>
               <a
                 href="/terms"
-                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+                className="text-sm text-primary-300 transition-colors hover:text-white"
               >
                 {t('footer.legal.terms')}
               </a>
               <a
                 href="/sitemap"
-                className="whitespace-nowrap text-xs transition-colors hover:text-white hover:underline md:text-sm"
+                className="text-sm text-primary-300 transition-colors hover:text-white"
               >
                 {t('footer.legal.sitemap')}
               </a>
