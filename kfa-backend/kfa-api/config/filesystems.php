@@ -60,6 +60,15 @@ return [
             'report' => false,
         ],
 
+        'supabase' => [
+            'driver' => 'supabase',
+            'key' => env('SUPABASE_KEY'),
+            'url' => env('SUPABASE_URL'),
+            'bucket' => env('SUPABASE_STORAGE_BUCKET', 'media'),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
     ],
 
     /*
