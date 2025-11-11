@@ -1,91 +1,39 @@
 #!/bin/bash
+set -e
 
-echo "Starting KFA API..."
+echo "Starting KFA API deployment..."
 
-# Create storage directories if they don't exist
-mkdir -p storage/framework/cache/data
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
+# Wait for database to be ready
+echo "Waiting for database connection..."
+sleep 5
+
+# Create necessary directories
+echo "Creating storage directories..."
+mkdir -p storage/framework/{sessions,views,cache}
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
 # Set permissions
 chmod -R 775 storage bootstrap/cache
 
+# Clear any cached config (in case of stale cache)
+php artisan config:clear || true
+php artisan cache:clear || true
+
 # Run migrations
+echo "Running database migrations..."
 php artisan migrate --force
 
-# Seed database (only roles and permissions)
-php artisan db:seed --force --class=RoleSeeder
+# Seed roles and permissions
+echo "Seeding roles and permissions..."
+php artisan db:seed --force --class=RoleSeeder || true
 
-# Clear and cache config
-php artisan config:clear
+# Cache configuration for production
+echo "Caching configuration..."
 php artisan config:cache
 php artisan route:cache
+php artisan view:cache
 
-# Create Nginx configuration
-cat > /tmp/nginx.conf <<'EOF'
-worker_processes auto;
-pid /tmp/nginx.pid;
-error_log /tmp/nginx_error.log;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
-
-    access_log /tmp/nginx_access.log;
-    client_body_temp_path /tmp/client_temp;
-    proxy_temp_path /tmp/proxy_temp;
-    fastcgi_temp_path /tmp/fastcgi_temp;
-    uwsgi_temp_path /tmp/uwsgi_temp;
-    scgi_temp_path /tmp/scgi_temp;
-
-    sendfile on;
-    keepalive_timeout 65;
-    gzip on;
-
-    upstream php-fpm {
-        server 127.0.0.1:9000;
-    }
-
-    server {
-        listen ${PORT:-8000};
-        server_name _;
-        root /app/public;
-        index index.php;
-
-        client_max_body_size 50M;
-
-        # Security headers
-        add_header X-Frame-Options "SAMEORIGIN" always;
-        add_header X-Content-Type-Options "nosniff" always;
-        add_header X-XSS-Protection "1; mode=block" always;
-
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
-
-        location ~ \.php$ {
-            fastcgi_pass php-fpm;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-            fastcgi_read_timeout 300;
-        }
-
-        location ~ /\.(?!well-known).* {
-            deny all;
-        }
-    }
-}
-EOF
-
-# Start PHP-FPM in background
-php-fpm -D -y /etc/php/php-fpm.conf
-
-# Start Nginx in foreground
-nginx -c /tmp/nginx.conf -g 'daemon off;'
+# Start the application
+echo "Starting PHP built-in server on port $PORT..."
+php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
