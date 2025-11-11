@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd kfa-website && npm run build",
+  "outputDirectory": "kfa-website/dist",
+  "installCommand": "cd kfa-website && npm install",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
