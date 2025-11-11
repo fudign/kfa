@@ -1,0 +1,10 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "kfa-backend/kfa-api/Dockerfile"
+
+[deploy]
+startCommand = "/usr/local/bin/start.sh"
+healthcheckPath = "/up"
+healthcheckTimeout = 100
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
