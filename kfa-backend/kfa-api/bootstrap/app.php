@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'throttle.auth' => \App\Http\Middleware\ThrottleAuth::class,
         ]);
 
+        // Custom CORS middleware - должен быть первым для обработки preflight запросов
+        $middleware->prependToGroup('api', \App\Http\Middleware\HandleCorsHeaders::class);
+
         // Log all API requests in development
         $middleware->appendToGroup('api', \App\Http\Middleware\LogApiRequests::class);
 
