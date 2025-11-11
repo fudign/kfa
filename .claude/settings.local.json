@@ -23,7 +23,15 @@
       "Bash(claude mcp add:*)",
       "Bash(claude mcp list:*)",
       "Bash(cp:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(vercel inspect:*)",
+      "WebFetch(domain:kfa-production.up.railway.app)",
+      "Bash(npm test:*)",
+      "Bash(npm run validate:schemas:*)",
+      "Bash(npm run validate:bundles:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

@@ -50,19 +50,19 @@ export function NewsSection() {
   };
 
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-24 dark:bg-neutral-900">
       <div className="container">
         {/* Header */}
         <div className="mb-12 flex items-end justify-between">
           <div>
-            <h2 className="mb-4 font-display text-display-lg text-primary-900">
+            <h2 className="mb-4 font-display text-display-lg text-primary-900 dark:text-primary-100">
               {t('news.title')}
             </h2>
-            <p className="max-w-2xl text-lg text-neutral-600">{t('news.subtitle')}</p>
+            <p className="max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">{t('news.subtitle')}</p>
           </div>
           <a
             href="/news"
-            className="hidden items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700 md:flex"
+            className="hidden items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 md:flex"
           >
             {t('news.viewAll')}
             <ArrowRight className="h-5 w-5" />
@@ -74,36 +74,36 @@ export function NewsSection() {
           {newsItems.map((item) => (
             <article
               key={item.id}
-              className="group cursor-pointer overflow-hidden rounded-kfa border border-neutral-200 bg-white transition-all hover:border-primary-300 hover:shadow-kfa-lg"
+              className="group cursor-pointer overflow-hidden rounded-kfa border border-neutral-200 bg-white transition-all hover:border-primary-300 hover:shadow-kfa-lg dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-primary-600"
             >
               {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary-100 to-primary-50">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-900/30 dark:to-primary-800/30">
                 <img
                   src={item.imageUrl}
                   alt={t(`news.items.${item.titleKey}`)}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-medium text-primary-700 shadow-kfa-sm">
+                <div className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-medium text-primary-700 shadow-kfa-sm dark:bg-neutral-800 dark:text-primary-400">
                   {t(`news.categories.${item.category}`)}
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-6">
-                <div className="mb-3 flex items-center gap-2 text-sm text-neutral-500">
+                <div className="mb-3 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
                   <Calendar className="h-4 w-4" />
                   <time dateTime={item.date}>{formatDate(item.date)}</time>
                 </div>
 
-                <h3 className="mb-3 font-display text-xl font-semibold text-primary-900 transition-colors group-hover:text-primary-700">
+                <h3 className="mb-3 font-display text-xl font-semibold text-primary-900 transition-colors group-hover:text-primary-700 dark:text-primary-100 dark:group-hover:text-primary-300">
                   {t(`news.items.${item.titleKey}`)}
                 </h3>
 
-                <p className="mb-4 line-clamp-3 leading-relaxed text-neutral-600">
+                <p className="mb-4 line-clamp-3 leading-relaxed text-neutral-600 dark:text-neutral-400">
                   {t(`news.items.${item.excerptKey}`)}
                 </p>
 
-                <div className="flex items-center gap-2 font-semibold text-primary-600 transition-colors group-hover:text-primary-700">
+                <div className="flex items-center gap-2 font-semibold text-primary-600 transition-colors group-hover:text-primary-700 dark:text-primary-400 dark:group-hover:text-primary-300">
                   {t('news.readMore')}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -116,7 +116,7 @@ export function NewsSection() {
         <div className="mt-8 text-center md:hidden">
           <a
             href="/news"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white shadow-kfa-md transition-all hover:bg-primary-700"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white shadow-kfa-md transition-all hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-800"
           >
             {t('news.viewAll')}
             <ArrowRight className="h-5 w-5" />

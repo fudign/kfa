@@ -3,14 +3,14 @@
 # Version: 6.0.0-alpha.8
 # Date: 2025-11-10T09:20:35.176Z
 
-custom_agent_location: '{project-root}/bmad/agents'
-custom_workflow_location: '{project-root}/bmad/workflows'
-custom_module_location: '{project-root}/bmad'
+custom_agent_location: "{project-root}/bmad/agents"
+custom_workflow_location: "{project-root}/bmad/workflows"
+custom_module_location: "{project-root}/bmad"
 
 # Core Configuration Values
 user_name: BMad
 communication_language: English
 document_output_language: English
-output_folder: '{project-root}/docs'
+output_folder: "{project-root}/docs"
 bmad_folder: bmad
 install_user_docs: true

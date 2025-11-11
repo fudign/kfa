@@ -41,15 +41,11 @@ export function ThemeToggle() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 transition-all hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+        className="flex items-center justify-center rounded-lg border border-neutral-200 bg-white p-2 text-neutral-700 transition-all hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
         aria-label="Выбор темы"
         aria-expanded={isOpen}
       >
-        <currentTheme.icon className="h-4 w-4" />
-        <span className="hidden lg:inline">{currentTheme.label}</span>
-        <ChevronDown
-          className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        />
+        <currentTheme.icon className="h-5 w-5" />
       </button>
 
       {/* Dropdown Menu */}

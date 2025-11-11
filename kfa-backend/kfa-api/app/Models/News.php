@@ -13,6 +13,7 @@ class News extends Model
     protected $fillable = [
         'title',
         'slug',
+        'category',
         'content',
         'excerpt',
         'image',
@@ -198,6 +199,14 @@ class News extends Model
               ->orWhere('content', 'like', "%{$search}%")
               ->orWhere('excerpt', 'like', "%{$search}%");
         });
+    }
+
+    /**
+     * Фильтр по категории
+     */
+    public function scopeCategory(Builder $query, string $category): Builder
+    {
+        return $query->where('category', $category);
     }
 
     /**

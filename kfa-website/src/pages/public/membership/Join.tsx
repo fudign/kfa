@@ -111,7 +111,7 @@ function ApplicationFormSection() {
   };
 
   return (
-    <section className="bg-white px-4 py-12 dark:bg-neutral-900 md:py-16 lg:py-24">
+    <section id="application-form" className="bg-white px-4 py-12 dark:bg-neutral-900 md:py-16 lg:py-24">
       <div className="container">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center md:mb-12">
@@ -318,7 +318,7 @@ export function JoinPage() {
     <div className="min-h-screen">
       <JoinHeroSection />
       <RequirementsSection />
-      <JoinProcessSection />
+      <JoinProcessSection scrollToForm={true} />
       <ApplicationFormSection />
     </div>
   );

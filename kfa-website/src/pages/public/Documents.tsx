@@ -30,9 +30,9 @@ function DocumentsHeroSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 to-primary-800 py-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 to-primary-800 py-32 dark:from-neutral-900 dark:to-neutral-800">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 dark:opacity-5">
         <div
           className="absolute inset-0"
           style={{
@@ -44,10 +44,10 @@ function DocumentsHeroSection() {
 
       <div className="container relative">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 font-display text-display-xl text-white">
+          <h1 className="mb-6 font-display text-display-xl text-white dark:text-neutral-50">
             {t('hero.title')}
           </h1>
-          <p className="mb-12 text-xl leading-relaxed text-primary-50">
+          <p className="mb-12 text-xl leading-relaxed text-primary-50 dark:text-neutral-300">
             {t('hero.subtitle')}
           </p>
 
@@ -58,13 +58,13 @@ function DocumentsHeroSection() {
               return (
                 <div
                   key={index}
-                  className="rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-all hover:bg-white/20"
+                  className="rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-all hover:bg-white/20 dark:bg-neutral-700/30 dark:hover:bg-neutral-700/50"
                 >
-                  <Icon className="mx-auto mb-3 h-8 w-8 text-accent-300" />
-                  <div className="mb-2 font-semibold text-white">
+                  <Icon className="mx-auto mb-3 h-8 w-8 text-accent-300 dark:text-accent-400" />
+                  <div className="mb-2 font-semibold text-white dark:text-neutral-100">
                     {t(feature.titleKey)}
                   </div>
-                  <div className="text-sm text-primary-100">
+                  <div className="text-sm text-primary-100 dark:text-neutral-300">
                     {t(feature.descriptionKey)}
                   </div>
                 </div>

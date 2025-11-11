@@ -1,0 +1,107 @@
+{
+  "hero": {
+    "title": "About the Kyrgyz Financial Alliance",
+    "subtitle": "Self-regulatory organization of professional participants of the securities market of the Kyrgyz Republic",
+    "stats": {
+      "years": "Years in the market",
+      "members": "Organization members",
+      "certified": "Certified specialists"
+    }
+  },
+  "mission": {
+    "title": "Our Mission and Values",
+    "description": "KFA unites the professional community of securities market participants to develop a transparent, efficient and sustainable financial market in Kyrgyzstan",
+    "mission": {
+      "title": "Mission",
+      "text": "Promoting the development of a professional and transparent securities market through the establishment of high standards of activity and protection of participants' interests"
+    },
+    "vision": {
+      "title": "Vision",
+      "text": "To become the leading self-regulatory organization in Central Asia, recognized for high quality standards and contribution to the development of the region's financial market"
+    },
+    "values": {
+      "title": "Values",
+      "items": [
+        "Professionalism and competence",
+        "Transparency and accountability",
+        "Integrity and ethics",
+        "Innovation and development",
+        "Cooperation and partnership"
+      ]
+    }
+  },
+  "history": {
+    "title": "KFA Development History",
+    "subtitle": "From creation to becoming a leading self-regulatory organization",
+    "events": {
+      "event1.title": "Organization establishment",
+      "event1.description": "Establishment of the Kyrgyz Financial Alliance as a self-regulatory organization of professional participants in the securities market",
+      "event2.title": "First certification program",
+      "event2.description": "Launch of certification program for securities market specialists. First 50 specialists received KFA certificates",
+      "event3.title": "International recognition",
+      "event3.description": "Signing of cooperation agreements with leading international organizations and joining the association of self-regulatory organizations",
+      "event4.title": "Digital transformation",
+      "event4.description": "Launch of digital platform for KFA members with personal accounts, online courses and electronic document management",
+      "event5.title": "Expansion of activities",
+      "event5.description": "Opening of regional office in Osh. The number of organization members exceeded 100 companies",
+      "event6.title": "New standards",
+      "event6.description": "Adoption of updated professional standards and code of ethics that meet international requirements"
+    }
+  },
+  "team": {
+    "leadership": {
+      "title": "KFA Leadership",
+      "subtitle": "Experienced financial market professionals leading the organization"
+    },
+    "staff": {
+      "title": "Team of specialists",
+      "subtitle": "Professionals ensuring the organization's operations"
+    },
+    "member1.name": "Alexey Petrov",
+    "member1.position": "Chairman of the Board",
+    "member1.bio": "More than 20 years of experience in the financial market. Candidate of Economic Sciences, member of the Council on Financial Markets under the Government of the Kyrgyz Republic",
+    "member2.name": "Gulnara Asanova",
+    "member2.position": "Deputy Chairman",
+    "member2.bio": "Expert in the field of financial market regulation. 15 years of work experience at the NBKR, corporate governance specialist",
+    "member3.name": "Marat Toktomatov",
+    "member3.position": "Executive Secretary",
+    "member3.bio": "Manages KFA operational activities. Specialist in organizational development and project management",
+    "member4.name": "Anna Smirnova",
+    "member4.position": "Head of Certification Department",
+    "member4.bio": "Responsible for specialist certification programs and development of educational courses",
+    "member5.name": "Azamat Murzabekov",
+    "member5.position": "Chief Analyst",
+    "member5.bio": "Financial market analysis specialist, preparation of research and analytical materials",
+    "member6.name": "Elena Ivanova",
+    "member6.position": "Legal Consultant",
+    "member6.bio": "Provides legal support for KFA activities and consulting for organization members"
+  },
+  "documents": {
+    "title": "Regulatory Documents",
+    "subtitle": "Charter, regulations and main documents regulating KFA activities",
+    "categories": {
+      "charter": "Charter Documents",
+      "regulation": "Regulations",
+      "standard": "Standards",
+      "report": "Reports"
+    },
+    "actions": {
+      "view": "View",
+      "download": "Download"
+    },
+    "items": {
+      "doc1.title": "KFA Charter",
+      "doc1.description": "Founding document defining the goals, objectives, structure and procedure of the organization's activities",
+      "doc2.title": "Membership Regulations",
+      "doc2.description": "Regulation establishing requirements for members, procedures for joining and interaction",
+      "doc3.title": "Professional Standards",
+      "doc3.description": "Standards of professional activity of securities market participants",
+      "doc4.title": "Code of Ethics",
+      "doc4.description": "Rules of professional ethics and business conduct of KFA members",
+      "doc5.title": "Annual Report 2024",
+      "doc5.description": "Report on the organization's activities, financial indicators and achievements for 2024",
+      "doc6.title": "Certification Procedure",
+      "doc6.description": "Procedure for certification of specialists, requirements and examination program"
+    }
+  }
+}

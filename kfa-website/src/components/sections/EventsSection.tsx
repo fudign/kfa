@@ -42,23 +42,23 @@ const upcomingEvents: Event[] = [
 ];
 
 const eventTypeColors = {
-  webinar: 'bg-blue-100 text-blue-700',
-  conference: 'bg-purple-100 text-purple-700',
-  training: 'bg-green-100 text-green-700',
+  webinar: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  conference: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  training: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
 };
 
 export function EventsSection() {
   const { t } = useTranslation('home');
 
   return (
-    <section className="bg-gradient-to-b from-primary-50 to-white py-24">
+    <section className="bg-gradient-to-b from-primary-50 to-white py-24 dark:from-neutral-800 dark:to-neutral-900">
       <div className="container">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h2 className="mb-4 font-display text-display-lg text-primary-900">
+          <h2 className="mb-4 font-display text-display-lg text-primary-900 dark:text-primary-100">
             {t('events.title')}
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-neutral-600">
+          <p className="mx-auto max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
             {t('events.subtitle')}
           </p>
         </div>
@@ -68,13 +68,13 @@ export function EventsSection() {
           {upcomingEvents.map((event) => (
             <div
               key={event.id}
-              className="group relative overflow-hidden rounded-kfa border border-neutral-200 bg-white p-6 transition-all hover:border-primary-300 hover:shadow-kfa-lg md:p-8"
+              className="group relative overflow-hidden rounded-kfa border border-neutral-200 bg-white p-6 transition-all hover:border-primary-300 hover:shadow-kfa-lg dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-primary-600 md:p-8"
             >
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 {/* Left: Date Badge */}
                 <div className="flex items-start gap-6">
                   <div className="flex-shrink-0 text-center">
-                    <div className="rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 p-4 text-white shadow-kfa-md">
+                    <div className="rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 p-4 text-white shadow-kfa-md dark:from-primary-700 dark:to-primary-800">
                       <div className="text-3xl font-bold">
                         {new Date(event.date).getDate()}
                       </div>
@@ -96,11 +96,11 @@ export function EventsSection() {
                       </span>
                     </div>
 
-                    <h3 className="mb-3 font-display text-xl font-semibold text-primary-900 transition-colors group-hover:text-primary-700">
+                    <h3 className="mb-3 font-display text-xl font-semibold text-primary-900 transition-colors group-hover:text-primary-700 dark:text-primary-100 dark:group-hover:text-primary-300">
                       {t(`events.items.${event.titleKey}`)}
                     </h3>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-neutral-600">
+                    <div className="flex flex-wrap gap-4 text-sm text-neutral-600 dark:text-neutral-400">
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         <span>{event.time}</span>
@@ -121,7 +121,7 @@ export function EventsSection() {
 
                 {/* Right: CTA */}
                 <div className="flex-shrink-0">
-                  <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white shadow-kfa-md transition-all hover:bg-primary-700 hover:shadow-kfa-lg md:w-auto">
+                  <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white shadow-kfa-md transition-all hover:bg-primary-700 hover:shadow-kfa-lg dark:bg-primary-700 dark:hover:bg-primary-800 md:w-auto">
                     {t('events.register')}
                     <ArrowRight className="h-4 w-4" />
                   </button>
@@ -135,7 +135,7 @@ export function EventsSection() {
         <div className="mt-12 text-center">
           <a
             href="/events"
-            className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700"
+            className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
           >
             {t('events.viewCalendar')}
             <ArrowRight className="h-5 w-5" />

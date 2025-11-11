@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\DocumentController;
 use Illuminate\Support\Facades\Route;
 
 // Public authentication routes with strict rate limiting (5/min)
@@ -102,7 +103,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/news/{news}/archive', [NewsController::class, 'archive']);
 
     // Membership application moderation
+    Route::get('/applications/pending', [ApplicationController::class, 'pending']);
     Route::post('/applications/{application}/approve', [ApplicationController::class, 'approve']);
+    Route::post('/applications/{application}/reject', [ApplicationController::class, 'reject']);
 });
 
 // Public routes (no authentication required)
@@ -140,4 +143,20 @@ Route::middleware(['auth:sanctum', 'permission:settings.view'])->group(function 
 });
 Route::middleware(['auth:sanctum', 'permission:settings.update'])->group(function () {
     Route::put('/settings', [SettingsController::class, 'update']);
+});
+
+// Documents routes
+Route::get('/documents', [DocumentController::class, 'index']);
+Route::get('/documents/{document}', [DocumentController::class, 'show']);
+Route::post('/documents/{document}/download', [DocumentController::class, 'download']);
+
+Route::middleware(['auth:sanctum', 'permission:content.create'])->group(function () {
+    Route::post('/documents', [DocumentController::class, 'store']);
+});
+Route::middleware(['auth:sanctum', 'permission:content.update'])->group(function () {
+    Route::put('/documents/{document}', [DocumentController::class, 'update']);
+    Route::patch('/documents/{document}', [DocumentController::class, 'update']);
+});
+Route::middleware(['auth:sanctum', 'permission:content.delete'])->group(function () {
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy']);
 });

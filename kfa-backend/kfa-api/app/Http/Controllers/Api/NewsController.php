@@ -24,6 +24,11 @@ class NewsController extends Controller
             $query->status($request->status);
         }
 
+        // Фильтрация по категории
+        if ($request->has('category')) {
+            $query->category($request->category);
+        }
+
         // Фильтрация по автору
         if ($request->has('author_id')) {
             $query->byAuthor($request->author_id);

@@ -13,13 +13,13 @@ interface MetricCardProps {
 
 function MetricCard({ icon: Icon, label, value, unit }: MetricCardProps) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-kfa border border-white/10 bg-white/5 p-4 backdrop-blur-sm md:p-6">
+    <div className="flex flex-col items-center gap-2 rounded-kfa border border-white/10 bg-white/5 p-4 backdrop-blur-sm dark:border-neutral-600/30 dark:bg-neutral-700/30 md:p-6">
       <Icon className="mb-1 h-6 w-6 text-accent-400 md:mb-2 md:h-8 md:w-8" />
-      <div className="text-2xl font-bold text-white md:text-3xl">
+      <div className="text-2xl font-bold text-white dark:text-neutral-100 md:text-3xl">
         {value}
-        {unit && <span className="ml-1 text-base text-neutral-300 md:text-lg">{unit}</span>}
+        {unit && <span className="ml-1 text-base text-neutral-300 dark:text-neutral-400 md:text-lg">{unit}</span>}
       </div>
-      <div className="text-xs text-neutral-300 md:text-sm">{label}</div>
+      <div className="text-xs text-neutral-300 dark:text-neutral-400 md:text-sm">{label}</div>
     </div>
   );
 }
@@ -28,7 +28,7 @@ export function HeroSection() {
   const { t } = useTranslation('home');
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-primary-900 via-primary-800 to-primary-700 px-4">
+    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-primary-900 via-primary-800 to-primary-700 px-4 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-700">
       {/* Aceternity Spotlight Effect */}
       <Spotlight
         className="-top-40 left-0 md:-top-20 md:left-60"
@@ -38,7 +38,7 @@ export function HeroSection() {
       <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center py-16 text-center md:py-20">
         {/* Animated Title */}
         <motion.h1
-          className="mb-4 bg-gradient-to-r from-white to-neutral-200 bg-clip-text font-display text-4xl text-transparent md:mb-6 md:text-5xl lg:text-6xl"
+          className="mb-4 bg-gradient-to-r from-white to-neutral-200 bg-clip-text font-display text-4xl text-transparent dark:from-neutral-100 dark:to-neutral-300 md:mb-6 md:text-5xl lg:text-6xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -51,7 +51,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <motion.p
-          className="mb-8 max-w-3xl text-base text-neutral-200 md:mb-12 md:text-lg lg:text-xl"
+          className="mb-8 max-w-3xl text-base text-neutral-200 dark:text-neutral-300 md:mb-12 md:text-lg lg:text-xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -73,7 +73,7 @@ export function HeroSection() {
           <Button
             size="lg"
             variant="outline"
-            className="border-white text-white hover:bg-white/10"
+            className="border-white text-white hover:bg-white/10 dark:border-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-700/50"
           >
             {t('hero.cta.login')}
           </Button>

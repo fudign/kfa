@@ -29,5 +29,4 @@ validation: "{installed_path}/checklist.md"
 autonomous: true # Runs without user checkpoints unless clarification needed
 
 standalone: true
-
 # Web bundle configuration

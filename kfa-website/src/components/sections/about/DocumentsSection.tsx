@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { FileText, Download, Eye } from 'lucide-react';
 
 interface Document {
@@ -7,6 +8,7 @@ interface Document {
   descriptionKey: string;
   category: 'charter' | 'regulation' | 'standard' | 'report';
   fileUrl: string;
+  viewUrl: string;
   size: string;
   date: string;
 }
@@ -17,16 +19,18 @@ const documents: Document[] = [
     titleKey: 'doc1.title',
     descriptionKey: 'doc1.description',
     category: 'charter',
-    fileUrl: '/documents/charter.pdf',
+    fileUrl: '/documents/charter.md',
+    viewUrl: '/documents/view/charter',
     size: '2.5 MB',
-    date: '2024-01-15',
+    date: '2025-10-23',
   },
   {
     id: 2,
     titleKey: 'doc2.title',
     descriptionKey: 'doc2.description',
     category: 'regulation',
-    fileUrl: '/documents/membership-regulation.pdf',
+    fileUrl: '/documents/membership.md',
+    viewUrl: '/documents/view/membership',
     size: '1.8 MB',
     date: '2024-03-20',
   },
@@ -35,7 +39,8 @@ const documents: Document[] = [
     titleKey: 'doc3.title',
     descriptionKey: 'doc3.description',
     category: 'standard',
-    fileUrl: '/documents/professional-standards.pdf',
+    fileUrl: '/documents/standards.md',
+    viewUrl: '/documents/view/standards',
     size: '3.2 MB',
     date: '2024-06-10',
   },
@@ -44,7 +49,8 @@ const documents: Document[] = [
     titleKey: 'doc4.title',
     descriptionKey: 'doc4.description',
     category: 'regulation',
-    fileUrl: '/documents/ethics-code.pdf',
+    fileUrl: '/documents/ethics.md',
+    viewUrl: '/documents/view/ethics',
     size: '1.5 MB',
     date: '2024-02-28',
   },
@@ -53,7 +59,8 @@ const documents: Document[] = [
     titleKey: 'doc5.title',
     descriptionKey: 'doc5.description',
     category: 'report',
-    fileUrl: '/documents/annual-report-2024.pdf',
+    fileUrl: '/documents/annual-report.md',
+    viewUrl: '/documents/view/annual-report',
     size: '4.8 MB',
     date: '2024-12-01',
   },
@@ -62,7 +69,8 @@ const documents: Document[] = [
     titleKey: 'doc6.title',
     descriptionKey: 'doc6.description',
     category: 'regulation',
-    fileUrl: '/documents/certification-procedure.pdf',
+    fileUrl: '/documents/certification.md',
+    viewUrl: '/documents/view/certification',
     size: '2.1 MB',
     date: '2024-04-15',
   },
@@ -77,6 +85,7 @@ const categoryColors = {
 
 export function DocumentsSection() {
   const { t } = useTranslation('about');
+  const navigate = useNavigate();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -142,15 +151,13 @@ export function DocumentsSection() {
 
                   {/* Actions */}
                   <div className="flex gap-2 md:gap-3">
-                    <a
-                      href={doc.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => navigate(doc.viewUrl)}
                       className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-neutral-300 px-3 py-2 text-xs font-medium text-neutral-700 transition-colors hover:bg-neutral-50 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-700 md:gap-2 md:px-4 md:text-sm"
                     >
                       <Eye className="h-3 w-3 md:h-4 md:w-4" />
                       {t('documents.actions.view')}
-                    </a>
+                    </button>
                     <a
                       href={doc.fileUrl}
                       download

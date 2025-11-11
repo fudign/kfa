@@ -62,14 +62,14 @@ export function PartnersSection() {
   const { t } = useTranslation('home');
 
   return (
-    <section className="bg-neutral-50 py-24">
+    <section className="bg-neutral-50 py-24 dark:bg-neutral-800">
       <div className="container">
         {/* Header */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 font-display text-display-lg text-primary-900">
+          <h2 className="mb-4 font-display text-display-lg text-primary-900 dark:text-primary-100">
             {t('partners.title')}
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-neutral-600">
+          <p className="mx-auto max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
             {t('partners.subtitle')}
           </p>
         </div>
@@ -80,7 +80,7 @@ export function PartnersSection() {
             {partners.map((partner) => (
               <div
                 key={partner.id}
-                className="group flex items-center justify-center rounded-kfa border border-neutral-200 bg-white p-8 transition-all hover:border-primary-300 hover:shadow-kfa-md"
+                className="group flex items-center justify-center rounded-kfa border border-neutral-200 bg-white p-8 transition-all hover:border-primary-300 hover:shadow-kfa-md dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-primary-600"
               >
                 <img
                   src={partner.logoUrl}
@@ -96,7 +96,7 @@ export function PartnersSection() {
         <div className="mt-16 text-center">
           <a
             href="/membership"
-            className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700"
+            className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
           >
             {t('partners.cta')}
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

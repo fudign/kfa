@@ -24,8 +24,22 @@ const steps = [
   },
 ];
 
-export function JoinProcessSection() {
+interface JoinProcessSectionProps {
+  scrollToForm?: boolean;
+}
+
+export function JoinProcessSection({ scrollToForm = false }: JoinProcessSectionProps) {
   const { t } = useTranslation('membership');
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (scrollToForm) {
+      e.preventDefault();
+      const formElement = document.getElementById('application-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
 
   return (
     <section className="bg-gradient-to-b from-neutral-50 to-white py-24 dark:from-neutral-800 dark:to-neutral-900">
@@ -110,7 +124,8 @@ export function JoinProcessSection() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <a
-            href="/membership/join"
+            href={scrollToForm ? '#application-form' : '/membership/join'}
+            onClick={handleButtonClick}
             className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-8 py-4 font-semibold text-white shadow-kfa-lg transition-all hover:bg-primary-700 hover:shadow-kfa-xl"
           >
             {t('process.cta')}

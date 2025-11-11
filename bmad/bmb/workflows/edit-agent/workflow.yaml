@@ -30,5 +30,4 @@ instructions: "{installed_path}/instructions.md"
 validation: "{installed_path}/checklist.md"
 
 standalone: true
-
 # Web bundle configuration

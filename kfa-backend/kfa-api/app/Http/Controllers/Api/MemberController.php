@@ -7,12 +7,44 @@ use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\MemberResource;
 use App\Models\Member;
+use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $members = Member::orderBy('created_at', 'desc')->get();
+        $query = Member::query();
+
+        // Filter by type
+        if ($request->has('type')) {
+            $query->type($request->type);
+        }
+
+        // Filter by active status
+        if ($request->has('is_active')) {
+            if ($request->boolean('is_active')) {
+                $query->active();
+            } else {
+                $query->where('is_active', false);
+            }
+        }
+
+        // Search
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%')
+                  ->orWhere('company', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Sort
+        $query->orderBy('order')->orderBy('name');
+
+        // Pagination
+        $perPage = min($request->get('per_page', 15), 100);
+        $members = $query->paginate($perPage);
+
         return MemberResource::collection($members);
     }
 

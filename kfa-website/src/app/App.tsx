@@ -13,6 +13,7 @@ import { HomePage } from '@/pages/public/Home';
 // Lazy loading публичных страниц
 const AboutPage = lazy(() => import('@/pages/public/About').then(m => ({ default: m.AboutPage })));
 const DocumentsPage = lazy(() => import('@/pages/public/Documents').then(m => ({ default: m.DocumentsPage })));
+const DocumentViewer = lazy(() => import('@/pages/public/DocumentViewer').then(m => ({ default: m.DocumentViewer })));
 const MembershipPage = lazy(() => import('@/pages/public/Membership').then(m => ({ default: m.MembershipPage })));
 const JoinPage = lazy(() => import('@/pages/public/membership/Join').then(m => ({ default: m.JoinPage })));
 const MembersPage = lazy(() => import('@/pages/public/Members').then(m => ({ default: m.MembersPage })));
@@ -221,6 +222,14 @@ function App() {
           element={
             <PublicLayout>
               <DocumentsPage />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/documents/view/:documentId"
+          element={
+            <PublicLayout>
+              <DocumentViewer />
             </PublicLayout>
           }
         />
