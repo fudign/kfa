@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "timestamp": "2025-11-11T19:04:45.977Z",
+  "duration": "903ms",
+  "filter": "all",
+  "tests": 0,
+  "assertions": 0,
+  "output": "\n  \u001b[30;42;1m PASS \u001b[39;49;22m\u001b[39m Tests\\Unit\\ExampleTest\u001b[39m\r\n  \u001b[32;1m✓\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mthat true is true\u001b[39m\u001b[90m                                                                                           \u001b[39m \u001b[90m0.01s\u001b[39m  \r\n\n  \u001b[30;42;1m PASS \u001b[39;49;22m\u001b[39m Tests\\Feature\\ExampleTest\u001b[39m\r\n  \u001b[32;1m✓\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mthe application returns a successful response\u001b[39m\u001b[90m                                                               \u001b[39m \u001b[90m0.23s\u001b[39m  \r\n\r\n  \u001b[90mTests:\u001b[39m    \u001b[32;1m2 passed\u001b[39;22m\u001b[90m (2 assertions)\u001b[39m\r\n  \u001b[90mDuration:\u001b[39m \u001b[39m0.40s\u001b[39m\r\n\r\n",
+  "error": null
+}

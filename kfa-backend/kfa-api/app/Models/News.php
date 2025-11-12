@@ -46,7 +46,7 @@ class News extends Model
      */
     public function media(): MorphToMany
     {
-        return $this->morphToMany(Media::class, 'mediable')
+        return $this->morphToMany(Media::class, 'mediable', 'mediable')
             ->withTimestamps()
             ->withPivot('type', 'order')
             ->orderBy('order');

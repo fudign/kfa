@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { JoinProcessSection } from '@/components/sections/membership/JoinProcessSection';
 import { RequirementsSection } from '@/components/sections/membership/RequirementsSection';
-import { UserPlus, CheckCircle, Shield, Award } from 'lucide-react';
+import { UserPlus, CheckCircle, Shield, Award, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { applicationsAPI, type MembershipApplicationData } from '@/services/api';
 
 function JoinHeroSection() {
   const { t } = useTranslation('join');
@@ -93,11 +94,65 @@ function ApplicationFormSection() {
     motivation: '',
     agreeToTerms: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const applicationData: MembershipApplicationData = {
+        membershipType: formData.membershipType as 'individual' | 'corporate',
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        organizationName: formData.organizationName || undefined,
+        position: formData.position,
+        email: formData.email,
+        phone: formData.phone,
+        experience: formData.experience,
+        motivation: formData.motivation,
+        agreeToTerms: formData.agreeToTerms,
+      };
+
+      const response = await applicationsAPI.submit(applicationData);
+
+      if (response.success) {
+        setSubmitSuccess(true);
+        // Clear form on success
+        setFormData({
+          membershipType: 'individual',
+          firstName: '',
+          lastName: '',
+          organizationName: '',
+          position: '',
+          email: '',
+          phone: '',
+          experience: '',
+          motivation: '',
+          agreeToTerms: false,
+        });
+        // Scroll to top to show success message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } catch (error: any) {
+      console.error('Application submission error:', error);
+
+      if (error.response?.data?.errors) {
+        // Laravel validation errors
+        const errors = error.response.data.errors;
+        const firstError = Object.values(errors)[0] as string[];
+        setSubmitError(firstError[0]);
+      } else if (error.response?.data?.message) {
+        setSubmitError(error.response.data.message);
+      } else {
+        setSubmitError(t('form.errors.submitFailed'));
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -122,6 +177,42 @@ function ApplicationFormSection() {
               {t('form.subtitle')}
             </p>
           </div>
+
+          {/* Success Message */}
+          {submitSuccess && (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" />
+                <div>
+                  <h3 className="mb-1 font-semibold text-green-800 dark:text-green-300">
+                    {t('form.success.title')}
+                  </h3>
+                  <p className="text-sm text-green-700 dark:text-green-400">
+                    {t('form.success.message')}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {submitError && (
+            <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+              <div className="flex items-start gap-3">
+                <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-red-600 text-white dark:bg-red-400">
+                  !
+                </div>
+                <div>
+                  <h3 className="mb-1 font-semibold text-red-800 dark:text-red-300">
+                    {t('form.errors.title')}
+                  </h3>
+                  <p className="text-sm text-red-700 dark:text-red-400">
+                    {submitError}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* Membership Type */}
@@ -299,11 +390,20 @@ function ApplicationFormSection() {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-8 py-4 font-semibold text-white shadow-kfa-lg transition-all hover:bg-primary-700 hover:shadow-kfa-xl disabled:opacity-50"
-                disabled={!formData.agreeToTerms}
+                className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-8 py-4 font-semibold text-white shadow-kfa-lg transition-all hover:bg-primary-700 hover:shadow-kfa-xl disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={!formData.agreeToTerms || isSubmitting}
               >
-                <UserPlus className="h-5 w-5" />
-                {t('form.submitButton')}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    {t('form.submitting')}
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="h-5 w-5" />
+                    {t('form.submitButton')}
+                  </>
+                )}
               </button>
             </div>
           </form>

@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "cache": {
+    "defaultTtl": 21600,
+    "directory": ".kfa/cache"
+  },
+  "paths": {
+    "frontend": "kfa-website",
+    "backend": "kfa-backend/kfa-api",
+    "cache": ".kfa/cache",
+    "backups": ".kfa/backups",
+    "logs": ".kfa/logs"
+  },
+  "database": {
+    "backupFormat": "sql",
+    "migrationTimeout": 300000
+  },
+  "commands": {
+    "timeout": 120000,
+    "verbose": false
+  }
+}

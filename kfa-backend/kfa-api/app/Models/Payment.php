@@ -13,6 +13,8 @@ class Payment extends Model
         'amount',
         'payment_type',
         'status',
+        'failure_reason',
+        'refund_reason',
     ];
 
     public function user(): BelongsTo

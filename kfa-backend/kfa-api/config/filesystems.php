@@ -62,11 +62,12 @@ return [
 
         'supabase' => [
             'driver' => 'supabase',
-            'key' => env('SUPABASE_KEY'),
+            'key' => env('SUPABASE_SERVICE_ROLE_KEY'),  // Use service role for full permissions
             'url' => env('SUPABASE_URL'),
+            'endpoint' => env('SUPABASE_URL'),  // Adapter automatically adds /storage/v1
             'bucket' => env('SUPABASE_STORAGE_BUCKET', 'media'),
             'visibility' => 'public',
-            'throw' => false,
+            'throw' => false,  // Back to false for production
         ],
 
     ],

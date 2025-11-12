@@ -308,30 +308,37 @@ export function NewsManagerPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {news?.data && news.data.length > 0 ? (
-                    news.data.map((item) => (
-                      <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            {(item.featured_image?.url || item.image) && (
-                              <img
-                                src={item.featured_image?.url || item.image}
-                                alt={item.title}
-                                className="w-12 h-12 rounded object-cover"
-                              />
-                            )}
-                            <div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                {item.title}
-                              </div>
-                              {item.featured && (
-                                <span className="inline-flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400">
-                                  <CheckCircle className="w-3 h-3" />
-                                  Избранное
-                                </span>
+                    news.data.map((item) => {
+                      // DEBUG: Проверяем данные изображений
+                      console.log('📰 News ID:', item.id, 'Title:', item.title);
+                      console.log('  🖼️ image field:', item.image);
+                      console.log('  🎨 featured_image:', item.featured_image);
+                      console.log('  ✅ Should show image?', !!(item.featured_image?.url || item.image));
+
+                      return (
+                        <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              {(item.featured_image?.url || item.image) && (
+                                <img
+                                  src={item.featured_image?.url || item.image}
+                                  alt={item.title}
+                                  className="w-12 h-12 rounded object-cover"
+                                />
                               )}
+                              <div>
+                                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                  {item.title}
+                                </div>
+                                {item.featured && (
+                                  <span className="inline-flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400">
+                                    <CheckCircle className="w-3 h-3" />
+                                    Избранное
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </td>
+                          </td>
                         <td className="px-6 py-4">
                           <span
                             className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -369,7 +376,8 @@ export function NewsManagerPage() {
                           </button>
                         </td>
                       </tr>
-                    ))
+                      );
+                    })
                   ) : (
                     <tr>
                       <td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">

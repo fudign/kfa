@@ -73,7 +73,7 @@ export function HeroSection() {
           <Button
             size="lg"
             variant="outline"
-            className="border-white text-white hover:bg-white/10 dark:border-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-700/50"
+            className="border-white bg-white/10 text-white hover:bg-white/20 dark:border-neutral-400 dark:bg-transparent dark:text-neutral-200 dark:hover:bg-neutral-700/50"
           >
             {t('hero.cta.login')}
           </Button>

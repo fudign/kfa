@@ -192,7 +192,7 @@ export function EventsManagerPage() {
     resetForm();
   };
 
-  if (!can('manage_events')) {
+  if (!can('events.view')) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">

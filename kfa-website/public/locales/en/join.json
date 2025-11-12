@@ -58,6 +58,15 @@
         "termsLink": "terms of use"
       }
     },
-    "submitButton": "Submit Application"
+    "submitButton": "Submit Application",
+    "submitting": "Submitting...",
+    "success": {
+      "title": "Application Submitted Successfully!",
+      "message": "Thank you for your application! We will review it and contact you within 3 business days."
+    },
+    "errors": {
+      "title": "Submission Error",
+      "submitFailed": "An error occurred while submitting your application. Please try again later."
+    }
   }
 }

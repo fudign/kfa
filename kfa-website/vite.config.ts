@@ -237,7 +237,7 @@ export default defineConfig({
       },
 
       devOptions: {
-        enabled: true,
+        enabled: false, // Отключено в dev-режиме, чтобы не было ошибок registerSW
         type: 'module',
       },
     }),

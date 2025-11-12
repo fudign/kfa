@@ -1,0 +1,271 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Event;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+
+class EventsSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $admin = User::where('email', 'admin@kfa.kg')->first();
+
+        if (!$admin) {
+            $this->command->error('Admin user not found. Please create admin user first.');
+            return;
+        }
+
+        $events = [
+            [
+                'title' => 'Введение в МСФО для финансовых специалистов',
+                'slug' => 'vvedenie-v-msfo-dlya-finansovyh-specialistov',
+                'description' => 'Онлайн вебинар, посвященный основам Международных стандартов финансовой отчетности (МСФО). Узнайте о ключевых принципах, структуре стандартов и их применении в практике финансовой отчетности.',
+                'event_type' => 'webinar',
+                'status' => 'published',
+                'cpe_hours' => 2.0,
+                'level' => 'beginner',
+                'speaker_name' => 'Айгуль Токтобаева',
+                'speaker_bio' => 'Сертифицированный финансовый аналитик (CFA), более 15 лет опыта в области МСФО и финансовой отчетности.',
+                'price' => 500.00,
+                'member_price' => 300.00,
+                'location' => 'Online (Zoom)',
+                'is_online' => true,
+                'meeting_link' => 'https://zoom.us/j/example1',
+                'meeting_password' => 'KFA2025',
+                'starts_at' => Carbon::now()->addDays(7)->setTime(14, 0),
+                'ends_at' => Carbon::now()->addDays(7)->setTime(16, 0),
+                'max_participants' => 100,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(6),
+                'requires_approval' => false,
+                'issues_certificate' => true,
+                'is_featured' => true,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Финансовый анализ и управление рисками',
+                'slug' => 'finansovyj-analiz-i-upravlenie-riskami',
+                'description' => 'Практический семинар по методам финансового анализа и управлению финансовыми рисками. Рассмотрим современные подходы к оценке и минимизации рисков в финансовой деятельности.',
+                'event_type' => 'seminar',
+                'status' => 'published',
+                'cpe_hours' => 4.0,
+                'level' => 'intermediate',
+                'speaker_name' => 'Эмиль Осмонов',
+                'speaker_bio' => 'Эксперт по управлению рисками, сертифицированный FRM, 12 лет опыта в банковском секторе.',
+                'price' => 1500.00,
+                'member_price' => 1000.00,
+                'is_online' => false,
+                'location' => 'Бишкек, отель Hyatt Regency, конференц-зал',
+                'starts_at' => Carbon::now()->addDays(14)->setTime(10, 0),
+                'ends_at' => Carbon::now()->addDays(14)->setTime(14, 0),
+                'capacity' => '50 участников',
+                'max_participants' => 50,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(12),
+                'requires_approval' => true,
+                'agenda' => [
+                    ['time' => '10:00-10:30', 'topic' => 'Регистрация участников'],
+                    ['time' => '10:30-12:00', 'topic' => 'Методы финансового анализа'],
+                    ['time' => '12:00-12:30', 'topic' => 'Перерыв'],
+                    ['time' => '12:30-14:00', 'topic' => 'Управление финансовыми рисками'],
+                ],
+                'issues_certificate' => true,
+                'is_featured' => true,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Годовая конференция финансистов Кыргызстана 2025',
+                'slug' => 'godovaya-konferenciya-finansistov-kyrgyzstana-2025',
+                'description' => 'Крупнейшее ежегодное мероприятие для финансовых специалистов Кыргызстана. Обсуждение трендов, вызовов и возможностей в финансовой отрасли. Networking с ведущими экспертами и руководителями финансовых организаций.',
+                'event_type' => 'conference',
+                'status' => 'published',
+                'cpe_hours' => 8.0,
+                'level' => 'advanced',
+                'speaker_name' => 'Коллектив спикеров',
+                'speaker_bio' => 'Ведущие финансовые эксперты, CEO банков и финансовых компаний, представители регуляторов.',
+                'price' => 5000.00,
+                'member_price' => 3500.00,
+                'is_online' => false,
+                'location' => 'Бишкек, конгресс-холл Ак-Орго',
+                'starts_at' => Carbon::now()->addDays(45)->setTime(9, 0),
+                'ends_at' => Carbon::now()->addDays(45)->setTime(18, 0),
+                'capacity' => '300 участников',
+                'max_participants' => 300,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(40),
+                'requires_approval' => false,
+                'agenda' => [
+                    ['time' => '09:00-09:30', 'topic' => 'Регистрация и приветственный кофе'],
+                    ['time' => '09:30-10:00', 'topic' => 'Открытие конференции'],
+                    ['time' => '10:00-12:00', 'topic' => 'Пленарная сессия: Будущее финансов'],
+                    ['time' => '12:00-13:00', 'topic' => 'Обед'],
+                    ['time' => '13:00-15:00', 'topic' => 'Секционные заседания'],
+                    ['time' => '15:00-15:30', 'topic' => 'Кофе-брейк'],
+                    ['time' => '15:30-17:30', 'topic' => 'Панельные дискуссии'],
+                    ['time' => '17:30-18:00', 'topic' => 'Закрытие, networking'],
+                ],
+                'materials' => [
+                    'Сборник материалов конференции',
+                    'Презентации спикеров',
+                    'Сертификат участника'
+                ],
+                'issues_certificate' => true,
+                'is_featured' => true,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Корпоративные финансы: практические кейсы',
+                'slug' => 'korporativnye-finansy-prakticheskie-kejsy',
+                'description' => 'Интерактивный тренинг по корпоративным финансам с разбором реальных кейсов из практики компаний Кыргызстана. Научитесь применять теоретические знания на практике.',
+                'event_type' => 'training',
+                'status' => 'published',
+                'cpe_hours' => 6.0,
+                'level' => 'intermediate',
+                'speaker_name' => 'Нурлан Бекмуратов',
+                'speaker_bio' => 'CFO крупной торговой компании, MBA, более 10 лет опыта в корпоративных финансах.',
+                'price' => 2000.00,
+                'member_price' => 1500.00,
+                'location' => 'Online (Zoom)',
+                'is_online' => true,
+                'meeting_link' => 'https://zoom.us/j/example2',
+                'meeting_password' => 'KFA2025',
+                'starts_at' => Carbon::now()->addDays(21)->setTime(10, 0),
+                'ends_at' => Carbon::now()->addDays(21)->setTime(16, 0),
+                'max_participants' => 40,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(19),
+                'requires_approval' => false,
+                'issues_certificate' => true,
+                'is_featured' => false,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Налоговое планирование и оптимизация',
+                'slug' => 'nalogovoe-planirovanie-i-optimizaciya',
+                'description' => 'Вебинар по современным методам налогового планирования и легальной оптимизации налоговых платежей. Обзор изменений в налоговом законодательстве Кыргызстана.',
+                'event_type' => 'webinar',
+                'status' => 'published',
+                'cpe_hours' => 3.0,
+                'level' => 'intermediate',
+                'speaker_name' => 'Гульнара Асанова',
+                'speaker_bio' => 'Налоговый консультант, эксперт по налоговому праву, 8 лет опыта.',
+                'price' => 800.00,
+                'member_price' => 500.00,
+                'location' => 'Online (Zoom)',
+                'is_online' => true,
+                'meeting_link' => 'https://zoom.us/j/example3',
+                'meeting_password' => 'KFA2025',
+                'starts_at' => Carbon::now()->addDays(10)->setTime(15, 0),
+                'ends_at' => Carbon::now()->addDays(10)->setTime(18, 0),
+                'max_participants' => 80,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(9),
+                'requires_approval' => false,
+                'issues_certificate' => true,
+                'is_featured' => false,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Цифровая трансформация в финансах',
+                'slug' => 'cifrovaya-transformaciya-v-finansah',
+                'description' => 'Семинар о цифровых технологиях в финансовом секторе: blockchain, AI, big data, финтех инновации. Как технологии меняют финансовую индустрию.',
+                'event_type' => 'seminar',
+                'status' => 'published',
+                'cpe_hours' => 4.0,
+                'level' => 'advanced',
+                'speaker_name' => 'Тимур Жумабеков',
+                'speaker_bio' => 'IT-директор банка, эксперт по цифровой трансформации, 15 лет в финансовом IT.',
+                'price' => 1200.00,
+                'member_price' => 800.00,
+                'is_online' => false,
+                'location' => 'Бишкек, бизнес-центр Аврора',
+                'starts_at' => Carbon::now()->addDays(30)->setTime(14, 0),
+                'ends_at' => Carbon::now()->addDays(30)->setTime(18, 0),
+                'max_participants' => 60,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(28),
+                'requires_approval' => true,
+                'issues_certificate' => true,
+                'is_featured' => false,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Основы инвестиционного анализа',
+                'slug' => 'osnovy-investicionnogo-analiza',
+                'description' => 'Вводный курс для начинающих инвесторов и финансовых аналитиков. Методы оценки инвестиционных проектов, расчет NPV, IRR, анализ рисков.',
+                'event_type' => 'workshop',
+                'status' => 'published',
+                'cpe_hours' => 5.0,
+                'level' => 'beginner',
+                'speaker_name' => 'Азамат Султанов',
+                'speaker_bio' => 'Инвестиционный аналитик, CFA Level 2, опыт работы в венчурных фондах.',
+                'price' => 1000.00,
+                'member_price' => 700.00,
+                'location' => 'Online (Zoom)',
+                'is_online' => true,
+                'meeting_link' => 'https://zoom.us/j/example4',
+                'meeting_password' => 'KFA2025',
+                'starts_at' => Carbon::now()->addDays(17)->setTime(10, 0),
+                'ends_at' => Carbon::now()->addDays(17)->setTime(15, 0),
+                'max_participants' => 50,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(15),
+                'requires_approval' => false,
+                'issues_certificate' => true,
+                'is_featured' => false,
+                'published_at' => Carbon::now(),
+                'created_by' => $admin->id,
+            ],
+            [
+                'title' => 'Антикризисное управление финансами',
+                'slug' => 'antikrizisnoe-upravlenie-finansami',
+                'description' => 'Специализированный семинар по управлению финансами компании в кризисных ситуациях. Стратегии выживания, антикризисные меры, кейсы из практики.',
+                'event_type' => 'seminar',
+                'status' => 'draft',
+                'cpe_hours' => 4.0,
+                'level' => 'advanced',
+                'speaker_name' => 'Марат Калыков',
+                'speaker_bio' => 'Антикризисный управляющий, более 20 лет опыта в финансовом менеджменте.',
+                'price' => 1800.00,
+                'member_price' => 1200.00,
+                'is_online' => false,
+                'location' => 'Бишкек (место уточняется)',
+                'starts_at' => Carbon::now()->addDays(60)->setTime(13, 0),
+                'ends_at' => Carbon::now()->addDays(60)->setTime(17, 0),
+                'max_participants' => 40,
+                'registered_count' => 0,
+                'registration_deadline' => Carbon::now()->addDays(55),
+                'requires_approval' => true,
+                'issues_certificate' => true,
+                'is_featured' => false,
+                'created_by' => $admin->id,
+            ],
+        ];
+
+        foreach ($events as $eventData) {
+            // Convert agenda and materials arrays to JSON strings for SQLite compatibility
+            if (isset($eventData['agenda']) && is_array($eventData['agenda'])) {
+                $eventData['agenda'] = json_encode($eventData['agenda']);
+            }
+            if (isset($eventData['materials']) && is_array($eventData['materials'])) {
+                $eventData['materials'] = json_encode($eventData['materials']);
+            }
+
+            Event::create($eventData);
+        }
+
+        $this->command->info('Events seeded successfully! Created ' . count($events) . ' events.');
+    }
+}

@@ -40,6 +40,7 @@ const LoginPage = lazy(() => import('@/pages/auth/Login').then(m => ({ default: 
 const RegisterPage = lazy(() => import('@/pages/auth/Register').then(m => ({ default: m.RegisterPage })));
 const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPassword').then(m => ({ default: m.ForgotPasswordPage })));
 const ResetPasswordPage = lazy(() => import('@/pages/auth/ResetPassword').then(m => ({ default: m.ResetPasswordPage })));
+const ForceLogoutPage = lazy(() => import('@/pages/auth/ForceLogout').then(m => ({ default: m.ForceLogoutPage })));
 
 // Lazy loading для dashboard страниц
 const DashboardPage = lazy(() => import('@/pages/dashboard/Dashboard').then(m => ({ default: m.DashboardPage })));
@@ -48,6 +49,7 @@ const PaymentsPage = lazy(() => import('@/pages/dashboard/Payments').then(m => (
 const DashboardDocumentsPage = lazy(() => import('@/pages/dashboard/Documents').then(m => ({ default: m.DocumentsPage })));
 const CertificatesPage = lazy(() => import('@/pages/dashboard/Certificates').then(m => ({ default: m.CertificatesPage })));
 const DashboardEducationPage = lazy(() => import('@/pages/dashboard/Education').then(m => ({ default: m.EducationPage })));
+const MyRegistrationsPage = lazy(() => import('@/pages/dashboard/MyRegistrations').then(m => ({ default: m.MyRegistrations })));
 const MediaManagerPage = lazy(() => import('@/pages/dashboard/MediaManager').then(m => ({ default: m.MediaManagerPage })));
 const PartnersManagerPage = lazy(() => import('@/pages/dashboard/PartnersManager').then(m => ({ default: m.PartnersManagerPage })));
 const SettingsManagerPage = lazy(() => import('@/pages/dashboard/SettingsManager').then(m => ({ default: m.SettingsManagerPage })));
@@ -136,6 +138,16 @@ function App() {
           element={
             <ProtectedRoute requireRole={['admin', 'member']}>
               <DashboardEducationPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Мои регистрации на события - доступно всем авторизованным */}
+        <Route
+          path="/dashboard/my-registrations"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <MyRegistrationsPage />
             </ProtectedRoute>
           }
         />
@@ -410,6 +422,10 @@ function App() {
               <ResetPasswordPage />
             </PublicLayout>
           }
+        />
+        <Route
+          path="/auth/force-logout"
+          element={<ForceLogoutPage />}
         />
 
         {/* Legal Pages */}

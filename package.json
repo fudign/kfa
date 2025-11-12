@@ -58,11 +58,13 @@
   },
   "dependencies": {
     "@kayvan/markdown-tree-parser": "^1.6.1",
+    "@supabase/supabase-js": "^2.81.1",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.0",
     "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.3",
     "figlet": "^1.8.0",
     "fs-extra": "^11.3.0",
     "glob": "^11.0.3",
@@ -70,6 +72,7 @@
     "inquirer": "^8.2.6",
     "js-yaml": "^4.1.0",
     "ora": "^5.4.1",
+    "pg": "^8.16.3",
     "semver": "^7.6.3",
     "wrap-ansi": "^7.0.0",
     "xml2js": "^0.6.2"

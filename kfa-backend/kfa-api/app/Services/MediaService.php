@@ -48,12 +48,23 @@ class MediaService
         // Validate
         $this->validateFile($file);
 
+        // Get configured disk
+        $disk = config('filesystems.default');
+
         // Generate unique filename
         $filename = $this->generateFilename($file);
-        $path = 'media/' . date('Y/m/d');
+
+        // Different path structure for different disks
+        if ($disk === 'supabase') {
+            // Supabase: no 'media/' prefix since bucket is already 'media'
+            $path = date('Y/m/d');
+        } else {
+            // Local/public: use 'media/' prefix
+            $path = 'media/' . date('Y/m/d');
+        }
 
         // Store original file
-        $fullPath = $file->storeAs($path, $filename, 'public');
+        $fullPath = $file->storeAs($path, $filename, $disk);
 
         // Get dimensions for images
         [$width, $height] = $this->getImageDimensions($file);
@@ -61,14 +72,14 @@ class MediaService
         // Create thumbnails if image
         $thumbnails = [];
         if ($this->isImage($file->getMimeType())) {
-            $thumbnails = $this->createThumbnails($file, $path, $filename);
+            $thumbnails = $this->createThumbnails($file, $path, $filename, $disk);
         }
 
         // Create media record
         return Media::create([
             'filename' => $file->getClientOriginalName(),
             'path' => $fullPath,
-            'disk' => 'public',
+            'disk' => $disk,
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
             'width' => $width,
@@ -136,7 +147,7 @@ class MediaService
     /**
      * Create thumbnails for images
      */
-    protected function createThumbnails(UploadedFile $file, string $path, string $filename): array
+    protected function createThumbnails(UploadedFile $file, string $path, string $filename, string $disk): array
     {
         if ($file->getMimeType() === 'image/svg+xml') {
             return []; // Don't create thumbnails for SVG

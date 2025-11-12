@@ -1,0 +1,13 @@
+{
+  "value": {
+    "status": "connected",
+    "host": "localhost",
+    "database": "unknown",
+    "latency": 350,
+    "success": true
+  },
+  "expires": 1762918447226,
+  "timestamp": 1762896847226,
+  "key": "status",
+  "namespace": "db"
+}

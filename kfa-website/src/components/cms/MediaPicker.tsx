@@ -9,6 +9,7 @@ import {
   Search,
   X,
   Check,
+  AlertCircle,
 } from 'lucide-react';
 
 interface MediaPickerProps {
@@ -31,6 +32,7 @@ export function MediaPicker({
   const [media, setMedia] = useState<PaginatedResponse<Media> | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState<number[]>(selectedIds);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +40,7 @@ export function MediaPicker({
   const loadMedia = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params: any = {};
       if (searchTerm) params.search = searchTerm;
 
@@ -50,8 +53,20 @@ export function MediaPicker({
 
       const response = await mediaAPI.getAll(params);
       setMedia(response);
-    } catch (error) {
-      console.error('Error loading media:', error);
+    } catch (err: any) {
+      console.error('Error loading media:', err);
+
+      // Check if error is due to non-JSON response (HTML error page)
+      if (err.message?.includes('Unexpected token') || err.message?.includes('JSON')) {
+        setError('Нет доступа к медиа-библиотеке. Проверьте права доступа или используйте прямую ссылку на изображение.');
+      } else if (err.response?.status === 403) {
+        setError('У вас нет прав для просмотра медиа-библиотеки.');
+      } else if (err.response?.status === 401) {
+        setError('Требуется авторизация для доступа к медиа-библиотеке.');
+      } else {
+        setError('Ошибка загрузки медиафайлов. Вы можете ввести URL изображения вручную.');
+      }
+      setMedia(null);
     } finally {
       setLoading(false);
     }
@@ -208,6 +223,22 @@ export function MediaPicker({
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <AlertCircle className="mb-3 h-12 w-12 text-red-400" />
+              <p className="mb-1 text-lg font-semibold text-red-600 dark:text-red-400">
+                {error}
+              </p>
+              <p className="mb-4 text-sm text-neutral-500">
+                Вы можете закрыть это окно и ввести URL изображения вручную
+              </p>
+              <button
+                onClick={onClose}
+                className="rounded-lg bg-neutral-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-neutral-700"
+              >
+                Закрыть
+              </button>
             </div>
           ) : media?.data && media.data.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

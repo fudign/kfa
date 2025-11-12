@@ -1,128 +1,29 @@
-import { useState } from 'react';
-import { Calendar as CalendarIcon, Clock, MapPin, Users, Filter, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar as CalendarIcon, Clock, MapPin, Users, Filter, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { eventsAPI } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
 
 interface EducationEvent {
   id: number;
   title: string;
+  description?: string;
   date: string;
-  time: string;
-  location: string;
-  type: 'webinar' | 'workshop' | 'seminar' | 'conference' | 'exam';
-  category: 'beginners' | 'advanced' | 'certification' | 'special';
-  seats: number;
-  seatsAvailable: number;
-  instructor: string;
-  description: string;
+  start_time?: string;
+  end_time?: string;
+  location?: string;
+  type?: 'webinar' | 'workshop' | 'seminar' | 'conference' | 'exam';
+  category?: string;
+  capacity?: number;
+  seats_available?: number;
+  instructor?: string;
+  instructor_name?: string;
+  is_online?: boolean;
+  status?: string;
+  cpe_hours?: number;
 }
 
-const events: EducationEvent[] = [
-  {
-    id: 1,
-    title: 'Введение в рынок ценных бумаг',
-    date: '2025-11-25',
-    time: '14:00',
-    location: 'online',
-    type: 'webinar',
-    category: 'beginners',
-    seats: 100,
-    seatsAvailable: 45,
-    instructor: 'Анна Смирнова',
-    description: 'Базовые понятия и принципы работы фондового рынка для начинающих специалистов',
-  },
-  {
-    id: 2,
-    title: 'Практикум по анализу финансовой отчетности',
-    date: '2025-12-05',
-    time: '10:00',
-    location: 'Бишкек',
-    type: 'workshop',
-    category: 'advanced',
-    seats: 30,
-    seatsAvailable: 12,
-    instructor: 'Марат Токтоматов',
-    description: 'Практические кейсы по анализу финансовых показателей компаний',
-  },
-  {
-    id: 3,
-    title: 'ESG-инвестирование: тренды и перспективы',
-    date: '2025-12-15',
-    time: '15:00',
-    location: 'online',
-    type: 'webinar',
-    category: 'special',
-    seats: 150,
-    seatsAvailable: 89,
-    instructor: 'Азамат Мурзабеков',
-    description: 'Принципы устойчивого инвестирования и их применение на локальном рынке',
-  },
-  {
-    id: 4,
-    title: 'Базовый экзамен на сертификацию',
-    date: '2025-12-20',
-    time: '09:00',
-    location: 'Бишкек',
-    type: 'exam',
-    category: 'certification',
-    seats: 50,
-    seatsAvailable: 15,
-    instructor: 'Комиссия КФА',
-    description: 'Аттестационный экзамен для получения базового сертификата специалиста',
-  },
-  {
-    id: 5,
-    title: 'Управление рисками в портфеле',
-    date: '2026-01-10',
-    time: '14:00',
-    location: 'online',
-    type: 'seminar',
-    category: 'advanced',
-    seats: 80,
-    seatsAvailable: 42,
-    instructor: 'Алексей Петров',
-    description: 'Современные методы оценки и управления инвестиционными рисками',
-  },
-  {
-    id: 6,
-    title: 'Регуляторные изменения 2026',
-    date: '2026-01-20',
-    time: '11:00',
-    location: 'Бишкек',
-    type: 'conference',
-    category: 'special',
-    seats: 200,
-    seatsAvailable: 134,
-    instructor: 'Спикеры НБКР и КФА',
-    description: 'Обзор новых требований регулятора и их влияние на участников рынка',
-  },
-  {
-    id: 7,
-    title: 'Основы технического анализа',
-    date: '2026-02-01',
-    time: '14:00',
-    location: 'online',
-    type: 'webinar',
-    category: 'beginners',
-    seats: 100,
-    seatsAvailable: 67,
-    instructor: 'Анна Смирнова',
-    description: 'Практическое применение индикаторов и паттернов технического анализа',
-  },
-  {
-    id: 8,
-    title: 'Профессиональный экзамен на сертификацию',
-    date: '2026-02-15',
-    time: '09:00',
-    location: 'Бишкек',
-    type: 'exam',
-    category: 'certification',
-    seats: 30,
-    seatsAvailable: 8,
-    instructor: 'Комиссия КФА',
-    description: 'Экзамен для получения профессионального сертификата',
-  },
-];
-
-const typeColors = {
+const typeColors: Record<string, string> = {
   webinar: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
   workshop: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   seminar: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
@@ -130,19 +31,12 @@ const typeColors = {
   exam: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
 };
 
-const typeLabels = {
+const typeLabels: Record<string, string> = {
   webinar: 'Вебинар',
   workshop: 'Воркшоп',
   seminar: 'Семинар',
   conference: 'Конференция',
   exam: 'Экзамен',
-};
-
-const categoryLabels = {
-  beginners: 'Для начинающих',
-  advanced: 'Для профессионалов',
-  certification: 'Сертификация',
-  special: 'Спецмероприятие',
 };
 
 function CalendarHeroSection() {
@@ -175,14 +69,117 @@ function CalendarHeroSection() {
 }
 
 export function CalendarPage() {
+  const [events, setEvents] = useState<EducationEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [registeringEventId, setRegisteringEventId] = useState<number | null>(null);
+
+  const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await eventsAPI.getAll({ status: 'published' });
+
+      // Handle both paginated and non-paginated responses
+      const eventsData = response.data || response;
+      setEvents(Array.isArray(eventsData) ? eventsData : []);
+    } catch (err: any) {
+      console.error('Error fetching events:', err);
+      setError('Не удалось загрузить события. Пожалуйста, попробуйте позже.');
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async (eventId: number) => {
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      // Redirect to login
+      navigate(`/auth/login?redirect=/education/calendar&event=${eventId}`);
+      return;
+    }
+
+    try {
+      setRegisteringEventId(eventId);
+      const response = await eventsAPI.register(eventId);
+
+      if (response.success || response.data) {
+        alert('✅ Вы успешно зарегистрированы на событие!');
+        // Optionally refresh events to update available seats
+        fetchEvents();
+      }
+    } catch (err: any) {
+      console.error('Registration error:', err);
+
+      if (err.response?.data?.message) {
+        alert(`❌ ${err.response.data.message}`);
+      } else {
+        alert('❌ Не удалось зарегистрироваться. Попробуйте позже.');
+      }
+    } finally {
+      setRegisteringEventId(null);
+    }
+  };
 
   const filteredEvents = events.filter((event) => {
     const matchesType = selectedType === 'all' || event.type === selectedType;
     const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
     return matchesType && matchesCategory;
   });
+
+  // Get unique types and categories from events
+  const availableTypes = [...new Set(events.map(e => e.type).filter(Boolean))] as string[];
+  const availableCategories = [...new Set(events.map(e => e.category).filter(Boolean))] as string[];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <CalendarHeroSection />
+        <section className="bg-white py-12 dark:bg-neutral-900">
+          <div className="container">
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary-600" />
+                <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Загрузка событий...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen">
+        <CalendarHeroSection />
+        <section className="bg-white py-12 dark:bg-neutral-900">
+          <div className="container">
+            <div className="rounded-kfa border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-900/20">
+              <AlertCircle className="mx-auto h-12 w-12 text-red-600 dark:text-red-400" />
+              <p className="mt-4 text-lg font-semibold text-red-800 dark:text-red-300">{error}</p>
+              <button
+                onClick={fetchEvents}
+                className="mt-6 rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-700"
+              >
+                Попробовать снова
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -191,147 +188,203 @@ export function CalendarPage() {
       <section className="bg-white py-12 dark:bg-neutral-900">
         <div className="container">
           {/* Filters */}
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            {/* Type Filter */}
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedType('all')}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  selectedType === 'all'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
-                }`}
-              >
-                Все типы
-              </button>
-              {Object.entries(typeLabels).map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => setSelectedType(key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    selectedType === key
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+          {(availableTypes.length > 0 || availableCategories.length > 0) && (
+            <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              {/* Type Filter */}
+              {availableTypes.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setSelectedType('all')}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                      selectedType === 'all'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                    }`}
+                  >
+                    Все типы
+                  </button>
+                  {availableTypes.map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        selectedType === type
+                          ? 'bg-primary-600 text-white'
+                          : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                      }`}
+                    >
+                      {typeLabels[type] || type}
+                    </button>
+                  ))}
+                </div>
+              )}
 
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  selectedCategory === 'all'
-                    ? 'bg-accent-600 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
-                }`}
-              >
-                Все категории
-              </button>
-              {Object.entries(categoryLabels).map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => setSelectedCategory(key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    selectedCategory === key
-                      ? 'bg-accent-600 text-white'
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+              {/* Category Filter */}
+              {availableCategories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setSelectedCategory('all')}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                      selectedCategory === 'all'
+                        ? 'bg-accent-600 text-white'
+                        : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                    }`}
+                  >
+                    Все категории
+                  </button>
+                  {availableCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        selectedCategory === category
+                          ? 'bg-accent-600 text-white'
+                          : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Events List */}
           <div className="space-y-6">
             {filteredEvents.length > 0 ? (
-              filteredEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="group relative overflow-hidden rounded-kfa border border-neutral-200 bg-white transition-all hover:border-primary-300 hover:shadow-kfa-md dark:border-neutral-700 dark:bg-neutral-900"
-                >
-                  <div className="flex flex-col gap-6 p-8 md:flex-row">
-                    {/* Date Badge */}
-                    <div className="flex-shrink-0">
-                      <div className="flex h-24 w-24 flex-col items-center justify-center rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 text-white shadow-kfa-md">
-                        <div className="text-3xl font-bold">{new Date(event.date).getDate()}</div>
-                        <div className="text-xs font-medium uppercase">
-                          {new Date(event.date).toLocaleString('ru-RU', { month: 'short' })}
+              filteredEvents.map((event) => {
+                const isRegistering = registeringEventId === event.id;
+                const isFull = event.seats_available !== undefined && event.seats_available <= 0;
+                const isAlmostFull = event.seats_available !== undefined && event.seats_available < 10;
+                const eventDate = event.date ? new Date(event.date) : null;
+
+                return (
+                  <div
+                    key={event.id}
+                    className="group relative overflow-hidden rounded-kfa border border-neutral-200 bg-white transition-all hover:border-primary-300 hover:shadow-kfa-md dark:border-neutral-700 dark:bg-neutral-900"
+                  >
+                    <div className="flex flex-col gap-6 p-8 md:flex-row">
+                      {/* Date Badge */}
+                      {eventDate && (
+                        <div className="flex-shrink-0">
+                          <div className="flex h-24 w-24 flex-col items-center justify-center rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 text-white shadow-kfa-md">
+                            <div className="text-3xl font-bold">{eventDate.getDate()}</div>
+                            <div className="text-xs font-medium uppercase">
+                              {eventDate.toLocaleString('ru-RU', { month: 'short' })}
+                            </div>
+                            <div className="text-xs">{eventDate.getFullYear()}</div>
+                          </div>
                         </div>
-                        <div className="text-xs">{new Date(event.date).getFullYear()}</div>
+                      )}
+
+                      {/* Event Info */}
+                      <div className="flex-1">
+                        {(event.type || event.category) && (
+                          <div className="mb-3 flex flex-wrap items-center gap-2">
+                            {event.type && (
+                              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${typeColors[event.type] || 'bg-neutral-100 text-neutral-700'}`}>
+                                {typeLabels[event.type] || event.type}
+                              </span>
+                            )}
+                            {event.category && (
+                              <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                                {event.category}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        <h3 className="mb-2 font-display text-xl font-semibold text-primary-900 dark:text-primary-100">
+                          {event.title}
+                        </h3>
+
+                        {event.description && (
+                          <p className="mb-4 leading-relaxed text-neutral-600 dark:text-neutral-400">
+                            {event.description}
+                          </p>
+                        )}
+
+                        <div className="flex flex-wrap gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                          {event.start_time && (
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              <span>{event.start_time}</span>
+                            </div>
+                          )}
+                          {event.location && (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              <span>{event.is_online ? 'Онлайн' : event.location}</span>
+                            </div>
+                          )}
+                          {event.capacity !== undefined && (
+                            <div className="flex items-center gap-2">
+                              <Users className="h-4 w-4" />
+                              <span>
+                                {event.seats_available !== undefined
+                                  ? `${event.seats_available} из ${event.capacity} мест доступно`
+                                  : `Вместимость: ${event.capacity}`
+                                }
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {(event.instructor || event.instructor_name) && (
+                          <div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-500">
+                            <span>Спикер:</span>
+                            <span className="font-semibold text-primary-700 dark:text-primary-400">
+                              {event.instructor || event.instructor_name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* CTA */}
+                      <div className="flex flex-shrink-0 items-start">
+                        <button
+                          onClick={() => handleRegister(event.id)}
+                          disabled={isFull || isRegistering}
+                          className="flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {isRegistering ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Регистрация...
+                            </>
+                          ) : isFull ? (
+                            'Мест нет'
+                          ) : (
+                            <>
+                              Записаться
+                              <ArrowRight className="h-4 w-4" />
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
 
-                    {/* Event Info */}
-                    <div className="flex-1">
-                      <div className="mb-3 flex flex-wrap items-center gap-2">
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${typeColors[event.type]}`}>
-                          {typeLabels[event.type]}
-                        </span>
-                        <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                          {categoryLabels[event.category]}
-                        </span>
+                    {/* Availability Indicator */}
+                    {isAlmostFull && !isFull && (
+                      <div className="absolute right-4 top-4 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                        Мест осталось мало!
                       </div>
-
-                      <h3 className="mb-2 font-display text-xl font-semibold text-primary-900 dark:text-primary-100">
-                        {event.title}
-                      </h3>
-
-                      <p className="mb-4 leading-relaxed text-neutral-600 dark:text-neutral-400">
-                        {event.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-4 text-sm text-neutral-600 dark:text-neutral-400">
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4" />
-                          <span>{event.location === 'online' ? 'Онлайн' : event.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4" />
-                          <span>
-                            {event.seatsAvailable} из {event.seats} мест доступно
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-500">
-                        <span>Спикер:</span>
-                        <span className="font-semibold text-primary-700 dark:text-primary-400">{event.instructor}</span>
-                      </div>
-                    </div>
-
-                    {/* CTA */}
-                    <div className="flex flex-shrink-0 items-start">
-                      <button className="flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-primary-700">
-                        Записаться
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    </div>
+                    )}
                   </div>
-
-                  {/* Availability Indicator */}
-                  {event.seatsAvailable < 10 && (
-                    <div className="absolute right-4 top-4 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                      Мест осталось мало!
-                    </div>
-                  )}
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="rounded-kfa border-2 border-dashed border-neutral-300 bg-neutral-50 p-12 text-center dark:border-neutral-700 dark:bg-neutral-800">
                 <Filter className="mx-auto mb-4 h-12 w-12 text-neutral-400" />
-                <p className="text-lg text-neutral-600 dark:text-neutral-400">События не найдены</p>
+                <p className="text-lg text-neutral-600 dark:text-neutral-400">
+                  {events.length === 0 ? 'Нет доступных событий' : 'События не найдены'}
+                </p>
                 <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-500">
-                  Попробуйте изменить фильтры поиска
+                  {events.length === 0
+                    ? 'Скоро здесь появятся новые образовательные мероприятия'
+                    : 'Попробуйте изменить фильтры поиска'
+                  }
                 </p>
               </div>
             )}

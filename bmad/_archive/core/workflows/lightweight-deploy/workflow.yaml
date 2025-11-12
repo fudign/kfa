@@ -1,0 +1,139 @@
+# Lightweight Deployment Workflow
+# Uses agent-tools instead of heavy MCP servers
+
+name: lightweight-deploy
+version: 1.0.0
+author: BMAD Core
+description: |
+  Production deployment using lightweight CLI tools.
+  Demonstrates the efficiency of bash/node tools vs MCP servers.
+
+metadata:
+  category: deployment
+  tags:
+    - deployment
+    - lightweight
+    - cli-tools
+  complexity: intermediate
+  estimated_duration: 10-15 minutes
+
+variables:
+  deploy_url:
+    type: string
+    description: "Production URL for health check"
+    default: "https://kfa-production.up.railway.app"
+
+phases:
+  - name: pre-deploy-checks
+    description: "Verify environment and run tests"
+    steps:
+      - id: verify-env
+        description: "Check environment variables"
+        tool: bash
+        command: "node agent-tools/deploy/verify-env.js"
+        output: env-check.json
+        context_cost: ~50 tokens
+
+      - id: db-status
+        description: "Verify database connection"
+        tool: bash
+        command: "node agent-tools/db/status.js"
+        output: db-status.json
+        context_cost: ~50 tokens
+
+      - id: run-tests
+        description: "Run unit tests"
+        tool: bash
+        command: "node agent-tools/test/run-unit.js"
+        output: unit-tests.json
+        context_cost: ~50 tokens
+
+  - name: backup
+    description: "Create database backup"
+    steps:
+      - id: backup-db
+        description: "Backup before deployment"
+        tool: bash
+        command: "node agent-tools/db/backup.js --output=backups/pre-deploy.sql"
+        output: backup.json
+        context_cost: ~50 tokens
+
+  - name: build
+    description: "Build application"
+    steps:
+      - id: build-frontend
+        description: "Build React frontend"
+        tool: bash
+        command: "node agent-tools/deploy/build-frontend.js"
+        output: build-frontend.json
+        context_cost: ~50 tokens
+
+      - id: build-backend
+        description: "Optimize Laravel backend"
+        tool: bash
+        command: "node agent-tools/deploy/build-backend.js"
+        output: build-backend.json
+        context_cost: ~50 tokens
+
+  - name: migrate
+    description: "Run database migrations"
+    steps:
+      - id: run-migrations
+        description: "Apply migrations"
+        tool: bash
+        command: "node agent-tools/db/migrate.js"
+        output: migrations.json
+        context_cost: ~50 tokens
+
+  - name: verify
+    description: "Post-deployment verification"
+    steps:
+      - id: health-check
+        description: "Check application health"
+        tool: bash
+        command: "node agent-tools/deploy/health-check.js --url={{deploy_url}}"
+        output: health.json
+        context_cost: ~50 tokens
+
+      - id: e2e-tests
+        description: "Run E2E tests"
+        tool: bash
+        command: "node agent-tools/test/run-e2e.js"
+        output: e2e-tests.json
+        context_cost: ~50 tokens
+
+total_context_cost:
+  estimated: 400 tokens
+  vs_traditional_mcp: 41,700 tokens
+  savings: 99.0%
+
+comparison:
+  traditional_approach:
+    - "Playwright MCP: 13,700 tokens"
+    - "Database MCP: 10,000 tokens"
+    - "DevTools MCP: 18,000 tokens"
+    - "Total: 41,700 tokens (20.8% of context)"
+
+  lightweight_approach:
+    - "agent-tools READMEs: ~400 tokens"
+    - "Total: 400 tokens (0.2% of context)"
+    - "Savings: 99.0%"
+
+usage_example: |
+  # Run the entire workflow
+  bash agent-tools/scripts/full-deploy.sh
+
+  # Or run individual phases
+  node agent-tools/deploy/verify-env.js > env.json
+  node agent-tools/db/backup.js > backup.json
+  node agent-tools/deploy/build-frontend.js > build.json
+  node agent-tools/db/migrate.js > migrate.json
+  node agent-tools/deploy/health-check.js --url={{deploy_url}} > health.json
+
+benefits:
+  - "97.8% reduction in context usage"
+  - "File-based outputs bypass context"
+  - "Composable with bash pipes"
+  - "Easy to extend and modify"
+  - "No external dependencies"
+  - "Instant tool discovery"

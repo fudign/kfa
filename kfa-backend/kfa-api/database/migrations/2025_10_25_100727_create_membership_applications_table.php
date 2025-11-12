@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('membership_applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('membership_type', ['full', 'associate']);
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->enum('membership_type', ['individual', 'corporate']);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->string('organization');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('organization_name')->nullable();
             $table->string('position');
-            $table->integer('experience_years');
-            $table->string('education');
+            $table->string('email')->unique();
+            $table->string('phone', 50);
+            $table->text('experience');
             $table->text('motivation');
             $table->timestamps();
         });

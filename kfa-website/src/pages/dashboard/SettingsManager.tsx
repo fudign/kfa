@@ -143,6 +143,19 @@ export function SettingsManagerPage() {
   const categories = Object.keys(settings);
   const hasChanges = Object.keys(editedValues).length > 0;
 
+  // Permission check
+  if (!can('settings.view')) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            У вас нет доступа к этому разделу
+          </h2>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <div className="space-y-5 md:space-y-6">

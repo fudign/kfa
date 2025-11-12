@@ -38,7 +38,7 @@ class Partner extends Model
      */
     public function media(): MorphToMany
     {
-        return $this->morphToMany(Media::class, 'mediable')
+        return $this->morphToMany(Media::class, 'mediable', 'mediable')
             ->withPivot('collection');
     }
 

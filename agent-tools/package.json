@@ -1,0 +1,39 @@
+{
+  "name": "kfa-agent-tools",
+  "version": "1.0.0",
+  "description": "Lightweight CLI tools for KFA project operations",
+  "keywords": [
+    "cli",
+    "tools",
+    "lightweight",
+    "agent",
+    "deployment",
+    "database",
+    "testing"
+  ],
+  "license": "MIT",
+  "author": "KFA",
+  "type": "commonjs",
+  "scripts": {
+    "db:backup": "node db/backup.js",
+    "db:migrate": "node db/migrate.js",
+    "db:migrate:fresh": "node db/migrate.js --fresh --seed",
+    "db:seed": "node db/seed.js",
+    "db:status": "node db/status.js",
+    "deploy:build:backend": "node deploy/build-backend.js",
+    "deploy:build:frontend": "node deploy/build-frontend.js",
+    "deploy:health": "node deploy/health-check.js",
+    "deploy:verify": "node deploy/verify-env.js",
+    "docs:api": "node docs/generate-api.js",
+    "docs:validate": "node docs/validate-docs.js",
+    "test:all": "bash scripts/test-all.sh",
+    "test:e2e": "node test/run-e2e.js",
+    "test:unit": "node test/run-unit.js",
+    "workflow:backup-migrate": "bash scripts/backup-and-migrate.sh",
+    "workflow:deploy": "bash scripts/full-deploy.sh",
+    "workflow:pre-deploy": "bash scripts/pre-deploy-check.sh"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -186,3 +186,6 @@ export class NewsService {
     return response.data;
   }
 }
+
+// Экспорт экземпляра для удобства
+export const newsAPI = NewsService;

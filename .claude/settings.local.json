@@ -31,7 +31,13 @@
       "Bash(npm run validate:bundles:*)",
       "Bash(dir:*)",
       "Bash(findstr:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(vercel:*)",
+      "Bash(curl:*)",
+      "Bash(composer search:*)",
+      "Bash(where:*)",
+      "Bash(ping:*)",
+      "Bash(nslookup:*)"
     ],
     "deny": [],
     "ask": []

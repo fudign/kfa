@@ -93,6 +93,30 @@ export const membersAPI = {
 // News API - использует новый NewsService с полной функциональностью
 export { NewsService as newsAPI } from './api/news';
 
+// Event Registration Types
+export interface EventRegistration {
+  id: number;
+  event_id: number;
+  user_id: number;
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled' | 'attended';
+  attendance_status?: 'present' | 'absent';
+  cpe_hours?: number;
+  certificate_url?: string;
+  notes?: string;
+  dietary_requirements?: string;
+  special_needs?: string;
+  created_at: string;
+  updated_at: string;
+  event?: any; // Event details if included
+  user?: any; // User details if included
+}
+
+export interface EventRegistrationData {
+  notes?: string;
+  dietary_requirements?: string;
+  special_needs?: string;
+}
+
 // Events API
 export const eventsAPI = {
   getAll: async (params?: { page?: number; search?: string; status?: string; type?: string; per_page?: number }) => {
@@ -117,6 +141,32 @@ export const eventsAPI = {
 
   delete: async (id: string | number) => {
     const response = await api.delete(`/events/${id}`);
+    return response.data;
+  },
+
+  // Event Registration Methods
+  register: async (eventId: string | number, data?: EventRegistrationData) => {
+    const response = await api.post(`/events/${eventId}/register`, data || {});
+    return response.data;
+  },
+
+  getMyRegistrations: async () => {
+    const response = await api.get('/my-event-registrations');
+    return response.data;
+  },
+
+  cancelRegistration: async (registrationId: number) => {
+    const response = await api.post(`/event-registrations/${registrationId}/cancel`);
+    return response.data;
+  },
+
+  getUpcoming: async () => {
+    const response = await api.get('/events/upcoming');
+    return response.data;
+  },
+
+  getFeatured: async () => {
+    const response = await api.get('/events/featured');
     return response.data;
   },
 };
@@ -254,6 +304,27 @@ export const settingsAPI = {
 
   update: async (settings: Array<{ key: string; value: any }>) => {
     const response = await api.put('/settings', { settings });
+    return response.data;
+  },
+};
+
+// Membership Applications API
+export interface MembershipApplicationData {
+  membershipType: 'individual' | 'corporate';
+  firstName: string;
+  lastName: string;
+  organizationName?: string;
+  position: string;
+  email: string;
+  phone: string;
+  experience: string;
+  motivation: string;
+  agreeToTerms: boolean;
+}
+
+export const applicationsAPI = {
+  submit: async (data: MembershipApplicationData) => {
+    const response = await api.post('/applications', data);
     return response.data;
   },
 };

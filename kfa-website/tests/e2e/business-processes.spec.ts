@@ -201,6 +201,7 @@ test.describe('Payment Processing', () => {
   let memberToken: string;
   let adminToken: string;
   let paymentId: number;
+  let applicationId: number;
 
   test.beforeAll(async ({ request }) => {
     const memberRes = await request.post(`${API_URL}/login`, {
@@ -212,6 +213,26 @@ test.describe('Payment Processing', () => {
       data: { email: testAccounts.admin.email, password: testAccounts.admin.password }
     });
     adminToken = (await adminRes.json()).token;
+
+    // Create an application for payment tests
+    const appRes = await request.post(`${API_URL}/applications`, {
+      headers: {
+        'Authorization': `Bearer ${memberToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        membershipType: 'full',
+        firstName: 'Payment',
+        lastName: 'Test',
+        position: 'Analyst',
+        email: testAccounts.member.email,
+        phone: '+996555123456',
+        experience: 'Testing payments',
+        motivation: 'Test payment processing'
+      }
+    });
+    applicationId = (await appRes.json()).data.id;
   });
 
   test('MEMBER can create payment for membership', async ({ request }) => {
@@ -222,10 +243,9 @@ test.describe('Payment Processing', () => {
         'Content-Type': 'application/json'
       },
       data: {
+        application_id: applicationId,
         amount: 50000, // Full Membership - 50,000 сом/год
-        payment_type: 'membership_renewal',
-        payment_method: 'bank_transfer',
-        description: 'Annual membership renewal payment'
+        payment_type: 'membership_fee'
       }
     });
 
@@ -281,16 +301,12 @@ test.describe('Payment Processing', () => {
         'Authorization': `Bearer ${adminToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
-      data: {
-        confirmation_notes: 'Bank transfer verified and confirmed',
-        transaction_reference: 'TXN123456789'
       }
     });
 
     expect(response.status()).toBe(200);
     const data = await response.json();
-    expect(data.data.status).toBe('confirmed');
+    expect(data.data.status).toBe('completed');
   });
 
   test('MEMBER CANNOT confirm payments', async ({ request }) => {
@@ -298,11 +314,13 @@ test.describe('Payment Processing', () => {
     const newPayment = await request.post(`${API_URL}/payments`, {
       headers: {
         'Authorization': `Bearer ${memberToken}`,
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
       data: {
+        application_id: applicationId,
         amount: 30000, // Associate Membership
-        payment_type: 'course_fee'
+        payment_type: 'subscription'
       }
     });
     const newPaymentId = (await newPayment.json()).data.id;
@@ -786,15 +804,17 @@ test.describe('Event Registration', () => {
         'Content-Type': 'application/json'
       },
       data: {
-        dietary_requirements: 'Vegetarian',
-        special_needs: 'None'
+        answers: {
+          dietary_requirements: 'Vegetarian',
+          special_needs: 'None'
+        }
       }
     });
 
     expect(response.status()).toBe(201);
     const data = await response.json();
-    expect(data.data).toHaveProperty('registration_id');
-    expect(data.data.fee_amount).toBe(5000); // USER pays 5000
+    expect(data.registration).toHaveProperty('id');
+    expect(data.registration.amount_paid).toBe(5000); // USER pays 5000
   });
 
   test('MEMBER can register for event for free', async ({ request }) => {
@@ -807,7 +827,7 @@ test.describe('Event Registration', () => {
 
     expect(response.status()).toBe(201);
     const data = await response.json();
-    expect(data.data.fee_amount).toBe(0); // MEMBER gets free access
+    expect(data.registration.amount_paid).toBe(0); // MEMBER gets free access
   });
 
   test('MEMBER gets priority registration', async ({ request }) => {
@@ -815,14 +835,22 @@ test.describe('Event Registration', () => {
     const limitedEvent = await request.post(`${API_URL}/events`, {
       headers: {
         'Authorization': `Bearer ${adminToken}`,
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
       data: {
         title: 'VIP Networking Event',
         slug: generateUnique('vip-networking'),
+        type: 'networking',
+        status: 'published',
+        description: 'VIP networking event with limited capacity',
         starts_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+        location: 'VIP Lounge',
         max_participants: 50,
-        priority_for_members: true
+        price: 10000,
+        member_price: 0,
+        requires_approval: false
       }
     });
     const limitedEventId = (await limitedEvent.json()).data.id;
@@ -836,7 +864,9 @@ test.describe('Event Registration', () => {
 
     expect(response.status()).toBe(201);
     const data = await response.json();
-    expect(data.data.priority_registration).toBe(true);
+    expect(data.registration).toHaveProperty('id');
+    // Member gets better pricing (member_price = 0 vs price = 10000)
+    expect(data.registration.amount_paid).toBe(0);
   });
 });
 

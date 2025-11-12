@@ -58,6 +58,14 @@ class Media extends Model
      */
     public function getUrlAttribute(): string
     {
+        // For Supabase storage, manually construct the correct URL
+        if ($this->disk === 'supabase') {
+            $supabaseUrl = config('filesystems.disks.supabase.url');
+            $bucket = config('filesystems.disks.supabase.bucket');
+            // Supabase public URL format: https://{project}.supabase.co/storage/v1/object/public/{bucket}/{path}
+            return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$this->path}";
+        }
+
         return Storage::disk($this->disk)->url($this->path);
     }
 
@@ -67,7 +75,16 @@ class Media extends Model
     public function getThumbnailUrlAttribute(): ?string
     {
         if ($this->metadata && isset($this->metadata['thumbnails']['thumbnail'])) {
-            return Storage::disk($this->disk)->url($this->metadata['thumbnails']['thumbnail']);
+            $thumbnailPath = $this->metadata['thumbnails']['thumbnail'];
+
+            // For Supabase storage, manually construct the correct URL
+            if ($this->disk === 'supabase') {
+                $supabaseUrl = config('filesystems.disks.supabase.url');
+                $bucket = config('filesystems.disks.supabase.bucket');
+                return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$thumbnailPath}";
+            }
+
+            return Storage::disk($this->disk)->url($thumbnailPath);
         }
         return $this->url;
     }

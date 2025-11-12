@@ -1,0 +1,47 @@
+{
+  "timestamp": "2025-11-11T18:31:33.345Z",
+  "tools": {
+    "total": 14,
+    "byCategory": {
+      "db": 4,
+      "deploy": 4,
+      "test": 2,
+      "docs": 2,
+      "media": 2
+    },
+    "averageLOC": 42,
+    "totalLOC": 592
+  },
+  "documentation": {
+    "mainDocs": 5,
+    "categoryDocs": 5,
+    "templates": 3,
+    "total": 13
+  },
+  "examples": 8,
+  "scripts": 5,
+  "context": {
+    "usage": 925,
+    "usagePercent": "0.46",
+    "mcpUsage": 41700,
+    "savings": "97.8%",
+    "additionalTokens": 40775,
+    "availableForWork": 199075
+  },
+  "performance": {
+    "loadTime": "Instant",
+    "memoryUsage": "~5MB",
+    "extensionTime": "10-15 min",
+    "mcpLoadTime": "~2 seconds",
+    "mcpMemoryUsage": "~150MB",
+    "mcpExtensionTime": "2-4 hours"
+  },
+  "files": {
+    "total": 43,
+    "tools": 14,
+    "scripts": 5,
+    "examples": 8,
+    "documentation": 13,
+    "templates": 3
+  }
+}

@@ -46,6 +46,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, error: null });
 
+          // Use Laravel API for authentication
           const response = await authAPI.login(credentials);
           const { user, token } = response;
 
@@ -54,7 +55,7 @@ export const useAuthStore = create<AuthState>()(
 
           set({
             user: {
-              id: user.id.toString(),
+              id: String(user.id),
               email: user.email,
               name: user.name,
               role: user.role || 'guest',
@@ -66,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
             isLoading: false,
           });
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Ошибка входа. Проверьте данные.';
+          const errorMessage = error.response?.data?.message || error.message || 'Ошибка входа. Проверьте данные.';
           set({
             error: errorMessage,
             isLoading: false,
@@ -82,6 +83,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, error: null });
 
+          // Use Laravel API for registration
           const response = await authAPI.register(data);
           const { user, token } = response;
 
@@ -90,7 +92,7 @@ export const useAuthStore = create<AuthState>()(
 
           set({
             user: {
-              id: user.id.toString(),
+              id: String(user.id),
               email: user.email,
               name: user.name,
               role: user.role || 'guest',
@@ -102,7 +104,7 @@ export const useAuthStore = create<AuthState>()(
             isLoading: false,
           });
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || 'Ошибка регистрации. Попробуйте снова.';
+          const errorMessage = error.response?.data?.message || error.message || 'Ошибка регистрации. Попробуйте снова.';
           set({
             error: errorMessage,
             isLoading: false,
@@ -116,10 +118,8 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          const token = get().token;
-          if (token) {
-            await authAPI.logout();
-          }
+          // Use Laravel API to logout (revoke token)
+          await authAPI.logout();
         } catch (error) {
           console.error('Logout error:', error);
         } finally {
@@ -150,29 +150,47 @@ export const useAuthStore = create<AuthState>()(
       },
 
       checkAuth: async () => {
-        const token = get().token;
+        const token = localStorage.getItem('auth_token');
+
         if (!token) {
-          set({ isAuthenticated: false, user: null });
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
           return;
         }
 
         try {
+          // Use Laravel API to get current user
           const response = await authAPI.getUser();
           const user = response.data || response;
 
-          set({
-            user: {
-              id: user.id.toString(),
-              email: user.email,
-              name: user.name,
-              role: user.role || 'guest',
-              roles: user.roles || [],
-              permissions: user.permissions || [],
-            },
-            isAuthenticated: true,
-          });
+          if (user) {
+            set({
+              user: {
+                id: String(user.id),
+                email: user.email,
+                name: user.name,
+                role: user.role || 'guest',
+                roles: user.roles || [],
+                permissions: user.permissions || [],
+              },
+              token,
+              isAuthenticated: true,
+            });
+          } else {
+            // No valid session
+            localStorage.removeItem('auth_token');
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+            });
+          }
         } catch (error) {
-          // Token invalid or expired
+          // Error getting user - token might be invalid
+          console.error('Check auth error:', error);
           localStorage.removeItem('auth_token');
           set({
             user: null,

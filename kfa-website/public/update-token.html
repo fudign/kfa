@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обновление токена</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .token {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Обновление токена авторизации</h1>
+
+        <div class="info">
+            <p><strong>Что это?</strong></p>
+            <p>Эта страница автоматически обновит ваш токен авторизации, чтобы MediaPicker и загрузка изображений заработали.</p>
+        </div>
+
+        <div id="status"></div>
+
+        <button id="updateBtn" onclick="updateToken()">Обновить токен</button>
+
+        <div style="margin-top: 20px;">
+            <p><strong>Новый токен:</strong></p>
+            <div class="token">25|ZbEzuYIJKRbsovedj3tiEmjOLnYAwXO1wKureByE51198614</div>
+        </div>
+    </div>
+
+    <script>
+        function updateToken() {
+            const token = '25|ZbEzuYIJKRbsovedj3tiEmjOLnYAwXO1wKureByE51198614';
+            const statusDiv = document.getElementById('status');
+            const btn = document.getElementById('updateBtn');
+
+            try {
+                // Сохраняем токен в localStorage
+                localStorage.setItem('auth_token', token);
+
+                // Проверяем что токен сохранён
+                const savedToken = localStorage.getItem('auth_token');
+
+                if (savedToken === token) {
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Токен успешно обновлён!<br><br>
+                            <strong>Что дальше?</strong><br>
+                            1. Закройте эту вкладку<br>
+                            2. Вернитесь на <a href="/">главную страницу</a> или <a href="/dashboard">админ-панель</a><br>
+                            3. Обновите страницу (F5)<br>
+                            4. Попробуйте загрузить изображение снова
+                        </div>
+                    `;
+                    btn.disabled = true;
+                    btn.textContent = 'Токен обновлён ✅';
+
+                    // Автоматически перенаправляем через 3 секунды
+                    setTimeout(() => {
+                        window.location.href = '/dashboard/news';
+                    }, 3000);
+                } else {
+                    throw new Error('Token verification failed');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Ошибка при обновлении токена: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Показываем текущий статус токена
+        window.addEventListener('load', () => {
+            const currentToken = localStorage.getItem('auth_token');
+            const statusDiv = document.getElementById('status');
+
+            if (currentToken) {
+                statusDiv.innerHTML = `
+                    <div class="info">
+                        <strong>Текущий токен:</strong><br>
+                        <div class="token">${currentToken.substring(0, 20)}...</div>
+                        <p>Нажмите кнопку ниже для обновления</p>
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="info">
+                        ℹ️ Токен не найден в localStorage.<br>
+                        Нажмите кнопку для установки нового токена.
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

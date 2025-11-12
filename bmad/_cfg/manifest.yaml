@@ -1,11 +1,19 @@
 installation:
-  version: 6.0.0-alpha.8
+  version: 6.0.0-alpha.9-simplified
   installDate: "2025-11-10T09:20:35.187Z"
-  lastUpdated: "2025-11-10T09:20:35.187Z"
+  lastUpdated: "2025-11-12T00:00:00.000Z"
+  simplification: "Phase 3 - Archived core, bmb, bmd, bmm modules"
 modules:
+  - kfa
+archived_modules:
   - core
   - bmb
   - bmd
+  - bmm
 ides:
   - claude-code
   - codex
+notes:
+  - "BMAD simplified: 26K → 200 tokens (99.2% reduction)"
+  - "Use KFA CLI with Prime Prompts instead: kfa prime list"
+  - "Archived modules available in _archive/ directory"

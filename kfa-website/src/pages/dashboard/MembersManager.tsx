@@ -214,7 +214,7 @@ export function MembersManagerPage() {
     resetForm();
   };
 
-  if (!can('manage_members')) {
+  if (!can('members.view')) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">

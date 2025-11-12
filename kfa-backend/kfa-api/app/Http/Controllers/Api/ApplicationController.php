@@ -67,11 +67,23 @@ class ApplicationController extends Controller
      */
     public function store(StoreApplicationRequest $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->id();
-        $data['status'] = 'pending'; // Set default status explicitly
+        $validated = $request->validated();
 
-        $application = MembershipApplication::create($data);
+        // Map camelCase to snake_case for database
+        $application = MembershipApplication::create([
+            'membership_type' => $validated['membershipType'],
+            'first_name' => $validated['firstName'],
+            'last_name' => $validated['lastName'],
+            'organization_name' => $validated['organizationName'] ?? null,
+            'position' => $validated['position'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'experience' => $validated['experience'],
+            'motivation' => $validated['motivation'],
+            'user_id' => auth()->id(),
+            'status' => 'pending',
+        ]);
+
         return new ApplicationResource($application);
     }
 

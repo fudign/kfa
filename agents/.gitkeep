@@ -1,0 +1,12 @@
+# This directory stores agent execution outputs
+
+Each ADW execution creates a subdirectory with unique ID:
+agents/{adw_id}/
+
+These outputs are useful for:
+- Debugging failed runs
+- Understanding agent decisions
+- Tracking execution history
+- Performance metrics
+
+Note: Add agents/ to .gitignore if you don't want to commit outputs.

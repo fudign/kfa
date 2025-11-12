@@ -11,11 +11,27 @@ class MembershipApplication extends Model
         'user_id',
         'membership_type',
         'status',
-        'organization',
+        'first_name',
+        'last_name',
+        'organization_name',
         'position',
-        'experience_years',
-        'education',
+        'email',
+        'phone',
+        'experience',
         'motivation',
+        'rejection_reason',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
+     * Default values for attributes
+     */
+    protected $attributes = [
+        'status' => 'pending',
     ];
 
     public function user(): BelongsTo

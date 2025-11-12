@@ -1,0 +1,67 @@
+{
+  "command": {
+    "cache status": {
+      "count": 2,
+      "totalDuration": 16,
+      "avgDuration": 8,
+      "successCount": 2,
+      "failureCount": 0
+    },
+    "db status": {
+      "count": 4,
+      "totalDuration": 76,
+      "avgDuration": 19,
+      "successCount": 4,
+      "failureCount": 0
+    },
+    "agent list": {
+      "count": 2,
+      "totalDuration": 9,
+      "avgDuration": 4.5,
+      "successCount": 2,
+      "failureCount": 0
+    },
+    "history show": {
+      "count": 3,
+      "totalDuration": 31,
+      "avgDuration": 10.333333333333334,
+      "successCount": 3,
+      "failureCount": 0
+    },
+    "project metrics": {
+      "count": 3,
+      "totalDuration": 28,
+      "avgDuration": 9.333333333333334,
+      "successCount": 3,
+      "failureCount": 0
+    },
+    "prime list": {
+      "count": 3,
+      "totalDuration": 16,
+      "avgDuration": 5.333333333333333,
+      "successCount": 3,
+      "failureCount": 0
+    },
+    "prime show": {
+      "count": 3,
+      "totalDuration": 18,
+      "avgDuration": 6,
+      "successCount": 3,
+      "failureCount": 0
+    },
+    "project info": {
+      "count": 1,
+      "totalDuration": 4,
+      "avgDuration": 4,
+      "successCount": 1,
+      "failureCount": 0
+    },
+    "adw check": {
+      "count": 1,
+      "totalDuration": 10,
+      "avgDuration": 10,
+      "successCount": 1,
+      "failureCount": 0
+    }
+  }
+}
