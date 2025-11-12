@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { authAPI } from '@/services/api';
+import * as supabaseAuth from '@/lib/supabase-auth';
 
 interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'member' | 'user' | 'guest'; // Legacy field for backward compatibility
+  role: 'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'; // Supabase and Legacy roles
   roles: string[]; // Spatie roles: ['admin', 'editor', etc.]
   permissions: string[]; // Spatie permissions: ['media.upload', 'content.create', etc.]
 }
@@ -46,28 +46,27 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, error: null });
 
-          // Use Laravel API for authentication
-          const response = await authAPI.login(credentials);
-          const { user, token } = response;
+          // Use Supabase Auth for authentication
+          const { user, token } = await supabaseAuth.signIn(credentials);
 
           // Save token to localStorage
           localStorage.setItem('auth_token', token);
 
           set({
             user: {
-              id: String(user.id),
+              id: user.id,
               email: user.email,
               name: user.name,
-              role: user.role || 'guest',
-              roles: user.roles || [],
-              permissions: user.permissions || [],
+              role: user.role,
+              roles: user.roles,
+              permissions: user.permissions,
             },
             token,
             isAuthenticated: true,
             isLoading: false,
           });
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || error.message || 'Ошибка входа. Проверьте данные.';
+          const errorMessage = error.message || 'Ошибка входа. Проверьте данные.';
           set({
             error: errorMessage,
             isLoading: false,
@@ -83,28 +82,31 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, error: null });
 
-          // Use Laravel API for registration
-          const response = await authAPI.register(data);
-          const { user, token } = response;
+          // Use Supabase Auth for registration
+          const { user, token } = await supabaseAuth.signUp({
+            email: data.email,
+            password: data.password,
+            name: data.name,
+          });
 
           // Save token to localStorage
           localStorage.setItem('auth_token', token);
 
           set({
             user: {
-              id: String(user.id),
+              id: user.id,
               email: user.email,
               name: user.name,
-              role: user.role || 'guest',
-              roles: user.roles || [],
-              permissions: user.permissions || [],
+              role: user.role,
+              roles: user.roles,
+              permissions: user.permissions,
             },
             token,
             isAuthenticated: true,
             isLoading: false,
           });
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || error.message || 'Ошибка регистрации. Попробуйте снова.';
+          const errorMessage = error.message || 'Ошибка регистрации. Попробуйте снова.';
           set({
             error: errorMessage,
             isLoading: false,
@@ -118,8 +120,8 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          // Use Laravel API to logout (revoke token)
-          await authAPI.logout();
+          // Use Supabase Auth to sign out
+          await supabaseAuth.signOut();
         } catch (error) {
           console.error('Logout error:', error);
         } finally {
@@ -150,31 +152,20 @@ export const useAuthStore = create<AuthState>()(
       },
 
       checkAuth: async () => {
-        const token = localStorage.getItem('auth_token');
-
-        if (!token) {
-          set({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-          });
-          return;
-        }
-
         try {
-          // Use Laravel API to get current user
-          const response = await authAPI.getUser();
-          const user = response.data || response;
+          // Use Supabase Auth to get current user
+          const user = await supabaseAuth.getCurrentUser();
 
           if (user) {
+            const token = localStorage.getItem('auth_token') || '';
             set({
               user: {
-                id: String(user.id),
+                id: user.id,
                 email: user.email,
                 name: user.name,
-                role: user.role || 'guest',
-                roles: user.roles || [],
-                permissions: user.permissions || [],
+                role: user.role,
+                roles: user.roles,
+                permissions: user.permissions,
               },
               token,
               isAuthenticated: true,

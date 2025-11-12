@@ -59,7 +59,7 @@ export interface User {
   is_moderator: boolean;
   is_editor: boolean;
   is_member: boolean;
-  role?: 'admin' | 'member' | 'user' | 'guest';  // Для обратной совместимости
+  role?: 'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest';  // Supabase и обратная совместимость
 }
 
 export interface Media {

@@ -49,7 +49,7 @@ export function useRoleRedirect() {
    * Получить URL домашней страницы для роли
    * Все пользователи после логина идут на /dashboard/
    */
-  const getRoleHomePage = (_role: 'admin' | 'member' | 'user' | 'guest'): string => {
+  const getRoleHomePage = (_role: 'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'): string => {
     // Все роли идут на общую страницу dashboard
     // Параметр _role зарезервирован для будущего использования
     return '/dashboard/';
@@ -59,7 +59,7 @@ export function useRoleRedirect() {
    * Проверить, имеет ли пользователь определенную роль
    */
   const hasRole = useCallback(
-    (roles: Array<'admin' | 'member' | 'user' | 'guest'>): boolean => {
+    (roles: Array<'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'>): boolean => {
       if (!user) return false;
       return roles.includes(user.role);
     },

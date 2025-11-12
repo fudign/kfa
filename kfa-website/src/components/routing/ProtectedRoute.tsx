@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 interface ProtectedRouteProps {
   children: ReactNode;
   // Legacy API (для обратной совместимости)
-  allowedRoles?: Array<'admin' | 'member' | 'user' | 'guest'>;
+  allowedRoles?: Array<'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'>;
   redirectTo?: string;
   // New RBAC API
   requireAuth?: boolean;
@@ -91,7 +91,7 @@ export function ProtectedRoute({
  * Получить домашнюю страницу для роли
  * Все пользователи после логина идут на /dashboard/
  */
-function getRoleHomePage(_role: 'admin' | 'member' | 'user' | 'guest'): string {
+function getRoleHomePage(_role: 'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'): string {
   // Все роли идут на общую страницу dashboard
   // Параметр _role зарезервирован для будущего использования
   return '/dashboard/';

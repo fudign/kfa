@@ -11,7 +11,7 @@ export interface User {
   email: string
   name: string
   avatar_url?: string
-  role: 'admin' | 'editor' | 'moderator' | 'member' | 'guest'
+  role: 'admin' | 'editor' | 'moderator' | 'member' | 'user' | 'guest'
   roles: string[]
   permissions: string[]
 }
