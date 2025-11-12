@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, MapPin, X, Loader2, AlertCircle, Filter, Award, FileText } from 'lucide-react';
+import { Clock, MapPin, X, Loader2, AlertCircle, Filter, Award, FileText } from 'lucide-react';
 import { eventsAPI, EventRegistration } from '@/services/api';
 
 const statusColors: Record<string, string> = {

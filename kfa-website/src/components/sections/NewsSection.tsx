@@ -5,33 +5,63 @@ import { newsAPI } from '@/services/api';
 import type { News } from '@/types';
 
 // Fallback hardcoded news items (if API fails or no news in database)
-const fallbackNewsItems = [
+const fallbackNewsItems: News[] = [
   {
     id: 1,
     title: 'Добро пожаловать в КФА',
-    excerpt: 'Кыргызский Финансовый Альянс - профессиональное объединение участников рынка ценных бумаг.',
-    published_at: '2025-10-15',
-    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800',
-    category: 'regulation',
     slug: 'dobro-pozhalovat-v-kfa',
+    content: 'Кыргызский Финансовый Альянс - профессиональное объединение участников рынка ценных бумаг.',
+    excerpt: 'Кыргызский Финансовый Альянс - профессиональное объединение участников рынка ценных бумаг.',
+    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800',
+    status: 'published',
+    featured: true,
+    reading_time: 5,
+    published_at: '2025-10-15',
+    created_at: '2025-10-15',
+    updated_at: '2025-10-15',
+    author: { id: 1, name: 'КФА', email: 'info@kfa.kg' },
+    is_published: true,
+    is_draft: false,
+    is_pending: false,
+    can_edit: false,
   },
   {
     id: 2,
     title: 'Новые стандарты профессиональной деятельности',
-    excerpt: 'Внедрение новых стандартов для повышения качества услуг на рынке.',
-    published_at: '2025-10-10',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800',
-    category: 'events',
     slug: 'novye-standarty',
+    content: 'Внедрение новых стандартов для повышения качества услуг на рынке.',
+    excerpt: 'Внедрение новых стандартов для повышения качества услуг на рынке.',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800',
+    status: 'published',
+    featured: true,
+    reading_time: 5,
+    published_at: '2025-10-10',
+    created_at: '2025-10-10',
+    updated_at: '2025-10-10',
+    author: { id: 1, name: 'КФА', email: 'info@kfa.kg' },
+    is_published: true,
+    is_draft: false,
+    is_pending: false,
+    can_edit: false,
   },
   {
     id: 3,
     title: 'Аналитический отчет: Рынок ценных бумаг',
-    excerpt: 'Комплексный анализ рынка ценных бумаг за 2025 год.',
-    published_at: '2025-10-05',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800',
-    category: 'analytics',
     slug: 'analiticheskij-otchet',
+    content: 'Комплексный анализ рынка ценных бумаг за 2025 год.',
+    excerpt: 'Комплексный анализ рынка ценных бумаг за 2025 год.',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800',
+    status: 'published',
+    featured: true,
+    reading_time: 5,
+    published_at: '2025-10-05',
+    created_at: '2025-10-05',
+    updated_at: '2025-10-05',
+    author: { id: 1, name: 'КФА', email: 'info@kfa.kg' },
+    is_published: true,
+    is_draft: false,
+    is_pending: false,
+    can_edit: false,
   },
 ];
 
@@ -51,7 +81,7 @@ export function NewsSection() {
       const response = await newsAPI.getAll({
         status: 'published',
         featured: true,
-        limit: 3,
+        per_page: 3,
       });
 
       if (response.data && response.data.length > 0) {
@@ -75,13 +105,6 @@ export function NewsSection() {
       month: 'long',
       day: 'numeric',
     });
-  };
-
-  const getCategoryLabel = (category?: string) => {
-    // Try translation first, fallback to category name
-    const translationKey = `news.categories.${category || 'regulation'}`;
-    const translated = t(translationKey);
-    return translated !== translationKey ? translated : (category || 'Новости');
   };
 
   return (
@@ -125,9 +148,11 @@ export function NewsSection() {
                       alt={item.title}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-medium text-primary-700 shadow-kfa-sm dark:bg-neutral-800 dark:text-primary-400">
-                      {getCategoryLabel(item.category)}
-                    </div>
+                    {item.featured && (
+                      <div className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-medium text-primary-700 shadow-kfa-sm dark:bg-neutral-800 dark:text-primary-400">
+                        {t('news.featured') || 'Избранное'}
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
