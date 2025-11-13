@@ -143,14 +143,8 @@ export function NewsPage() {
                       </h3>
 
                       {article.excerpt && (
-                        <p className="mb-3 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:mb-4 md:text-base">
+                        <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-base">
                           {article.excerpt}
-                        </p>
-                      )}
-
-                      {article.author && (
-                        <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-500 md:mb-4 md:text-sm">
-                          Автор: {article.author.name}
                         </p>
                       )}
 
