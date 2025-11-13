@@ -2,7 +2,12 @@ import { Media } from './index';
 
 export type NewsStatus =
   | 'draft'
+  | 'submitted'
+  | 'pending'
+  | 'approved'
+  | 'rejected'
   | 'published'
+  | 'unpublished'
   | 'archived';
 
 export interface News {
@@ -48,6 +53,7 @@ export interface NewsFilters {
   author_id?: number;
   featured?: boolean;
   search?: string;
+  category?: string;
   from_date?: string;
   to_date?: string;
   sort_by?: 'published_at' | 'created_at' | 'title' | 'status';

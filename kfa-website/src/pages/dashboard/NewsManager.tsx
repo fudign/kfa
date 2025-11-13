@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MediaPicker } from '@/components/cms/MediaPicker';
+import { RichTextEditor } from '@/components/cms/RichTextEditor';
+import { ImageUploadZone } from '@/components/cms/ImageUploadZone';
+import { NewsPreview } from '@/components/cms/NewsPreview';
 import { supabaseNewsAPI as newsAPI } from '@/lib/supabase-news';
 import { useAuthStore } from '@/stores/authStore';
 import type { News, PaginatedResponse, Media } from '@/types';
@@ -14,7 +17,8 @@ import {
   X,
   Save,
   CheckCircle,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Eye
 } from 'lucide-react';
 
 export function NewsManagerPage() {
@@ -26,6 +30,7 @@ export function NewsManagerPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [editingNews, setEditingNews] = useState<News | null>(null);
   const [formData, setFormData] = useState({
     title: '',
@@ -508,22 +513,12 @@ export function NewsManagerPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Контент <span className="text-red-500">*</span>
                   </label>
-                  <textarea
+                  <RichTextEditor
                     value={formData.content}
-                    onChange={(e) =>
-                      setFormData({ ...formData, content: e.target.value })
-                    }
-                    rows={10}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
-                      formErrors.content
-                        ? 'border-red-500'
-                        : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                    placeholder="Введите текст новости"
+                    onChange={(content) => setFormData({ ...formData, content })}
+                    placeholder="Введите текст новости (поддерживается Markdown)"
+                    error={formErrors.content}
                   />
-                  {formErrors.content && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.content}</p>
-                  )}
                 </div>
 
                 {/* Image */}
@@ -531,49 +526,33 @@ export function NewsManagerPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Изображение
                   </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="url"
-                      value={formData.image}
-                      onChange={(e) =>
-                        setFormData({ ...formData, image: e.target.value })
-                      }
-                      className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
-                        formErrors.image
-                          ? 'border-red-500'
-                          : 'border-gray-300 dark:border-gray-600'
-                      }`}
-                      placeholder="https://example.com/image.jpg"
-                    />
+                  <ImageUploadZone
+                    value={formData.image}
+                    onChange={(url, mediaId) => {
+                      setFormData({
+                        ...formData,
+                        image: url,
+                        featured_image_id: mediaId || null,
+                      });
+                    }}
+                    onError={(error) => {
+                      console.error('Image upload error:', error);
+                      alert(error);
+                    }}
+                  />
+                  {formErrors.image && (
+                    <p className="mt-2 text-sm text-red-500">{formErrors.image}</p>
+                  )}
+                  <div className="mt-2">
                     <button
                       type="button"
                       onClick={() => setShowMediaPicker(true)}
-                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
                     >
                       <ImageIcon className="w-4 h-4" />
-                      Выбрать
+                      Или выбрать из медиатеки
                     </button>
                   </div>
-                  {formErrors.image && (
-                    <p className="mt-1 text-sm text-red-500">{formErrors.image}</p>
-                  )}
-                  {formData.image && (
-                    <div className="mt-2 relative inline-block">
-                      <img
-                        src={formData.image}
-                        alt="Preview"
-                        className="w-32 h-32 rounded object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setFormData({ ...formData, image: '', featured_image_id: null })}
-                        className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg"
-                        title="Удалить изображение"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  )}
                 </div>
 
                 {/* Status and Featured */}
@@ -616,21 +595,31 @@ export function NewsManagerPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex justify-between gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <button
                     type="button"
-                    onClick={handleCancel}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    onClick={() => setShowPreview(true)}
+                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                   >
-                    Отмена
+                    <Eye className="w-4 h-4" />
+                    Предпросмотр
                   </button>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
-                  >
-                    <Save className="w-4 h-4" />
-                    {editingNews ? 'Сохранить изменения' : 'Создать новость'}
-                  </button>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={handleCancel}
+                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    >
+                      Отмена
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+                    >
+                      <Save className="w-4 h-4" />
+                      {editingNews ? 'Сохранить изменения' : 'Создать новость'}
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -643,6 +632,17 @@ export function NewsManagerPage() {
           onClose={() => setShowMediaPicker(false)}
           onSelect={handleMediaSelect}
           accept="image"
+        />
+
+        {/* News Preview Modal */}
+        <NewsPreview
+          title={formData.title}
+          excerpt={formData.excerpt}
+          content={formData.content}
+          image={formData.image}
+          featured={formData.featured}
+          isOpen={showPreview}
+          onClose={() => setShowPreview(false)}
         />
       </div>
     </DashboardLayout>
