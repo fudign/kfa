@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Search, ArrowRight } from 'lucide-react';
 import { SEO } from '@/components/seo';
-import { newsAPI } from '@/services/api/news';
-import type { News } from '@/types/news';
+import { supabaseNewsAPI as newsAPI } from '@/lib/supabase-news';
+import type { News } from '@/types';
 
 function NewsHeroSection() {
   return (
@@ -107,7 +107,7 @@ export function NewsPage() {
           ) : filteredNews.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8">
               {filteredNews.map((article) => {
-                const imageUrl = article.featured_image?.url || article.image;
+                const imageUrl = article.image || '';
                 const publishDate = article.published_at || article.created_at;
 
                 return (
