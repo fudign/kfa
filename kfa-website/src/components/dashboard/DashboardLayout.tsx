@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useRef, useLayoutEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -121,6 +121,38 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout, hasAnyRole, hasAnyPermission, hasAllPermissions } = useAuthStore();
+  const navRef = useRef<HTMLElement>(null);
+  const scrollPositionRef = useRef<number>(0);
+
+  // Сохраняем позицию скролла при скролле
+  const handleNavScroll = () => {
+    if (navRef.current) {
+      scrollPositionRef.current = navRef.current.scrollTop;
+    }
+  };
+
+  // Обработчик клика на ссылку - сохраняем позицию ДО навигации
+  const handleLinkClick = () => {
+    if (navRef.current) {
+      scrollPositionRef.current = navRef.current.scrollTop;
+    }
+    setSidebarOpen(false);
+  };
+
+  // Восстанавливаем позицию скролла синхронно ПЕРЕД отрисовкой
+  useLayoutEffect(() => {
+    const navElement = navRef.current;
+    if (!navElement) return;
+
+    // Восстанавливаем позицию
+    navElement.scrollTop = scrollPositionRef.current;
+
+    // Слушаем скролл для сохранения позиции
+    navElement.addEventListener('scroll', handleNavScroll);
+    return () => {
+      navElement.removeEventListener('scroll', handleNavScroll);
+    };
+  }, [location.pathname]);
 
   const isActive = (path: string) => {
     if (path === '/dashboard') {
@@ -192,7 +224,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto p-4">
+          <nav ref={navRef} className="flex-1 overflow-y-auto p-4">
             {/* Основное меню */}
             <ul className="space-y-1">
               {visibleNavItems.map((item) => {
@@ -201,7 +233,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <li key={item.to}>
                     <Link
                       to={item.to}
-                      onClick={() => setSidebarOpen(false)}
+                      onClick={handleLinkClick}
+                      preventScrollReset={true}
                       className={`flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
                         isActive(item.to)
                           ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
@@ -232,7 +265,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                       <li key={item.to}>
                         <Link
                           to={item.to}
-                          onClick={() => setSidebarOpen(false)}
+                          onClick={handleLinkClick}
+                          preventScrollReset={true}
                           className={`flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
                             isActive(item.to)
                               ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'

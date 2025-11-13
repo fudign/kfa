@@ -32,6 +32,7 @@
 ```
 
 **Что изменилось:**
+
 - ✅ Заменили `SUPABASE_KEY` на `SUPABASE_SERVICE_ROLE_KEY` для полных прав доступа
 - ✅ Убрали дублирование `/storage/v1` из endpoint
 - ✅ Установили `throw => false` для production
@@ -43,15 +44,18 @@
 ### Шаг 1: Проверить Supabase Bucket
 
 #### 1.1 Войти в Supabase Dashboard
+
 ```
 https://supabase.com/dashboard
 ```
 
 #### 1.2 Открыть Проект
+
 - Project: `eofneihisbhucxcydvac`
 - URL: https://eofneihisbhucxcydvac.supabase.co
 
 #### 1.3 Перейти в Storage
+
 - В боковом меню найти **"Storage"**
 - Проверить список buckets
 
@@ -70,6 +74,7 @@ https://supabase.com/dashboard
 #### 1.5 Настроить Policies для Bucket
 
 **ВАЖНО**: Bucket должен разрешать:
+
 - ✅ **SELECT** (чтение) - для всех
 - ✅ **INSERT** (запись) - для authenticated users или service_role
 - ✅ **UPDATE** (обновление) - для authenticated users или service_role
@@ -121,6 +126,7 @@ FILESYSTEM_DISK=supabase
 ```
 
 **⚠️ ВАЖНО**:
+
 - Убедитесь что `SUPABASE_SERVICE_ROLE_KEY` содержит **service_role** key, НЕ anon key
 - Service role key начинается с `eyJ...` и содержит `"role":"service_role"`
 
@@ -151,6 +157,7 @@ php artisan serve --port=8000
 6. Дождитесь загрузки
 
 **Ожидаемый результат:**
+
 - ✅ Изображение загружается
 - ✅ Появляется в списке медиа
 - ✅ Отображается превью
@@ -163,6 +170,7 @@ php test-upload.php
 ```
 
 **Ожидаемый результат:**
+
 ```
 ✅ SUCCESS: Path is valid!
 Path: 2025/11/12/abc123-image.png
@@ -176,11 +184,13 @@ URL: https://eofneihisbhucxcydvac.supabase.co/object/public/media/2025/11/12/abc
 ### Проблема 1: Path все еще "0" или false
 
 **Причины:**
+
 - Bucket "media" не существует в Supabase
 - Bucket policies не разрешают запись
 - Service role key неправильный
 
 **Решение:**
+
 1. Проверить bucket существует (Шаг 1)
 2. Проверить policies (Шаг 1.5)
 3. Проверить `.env` содержит правильный service_role key
@@ -188,11 +198,13 @@ URL: https://eofneihisbhucxcydvac.supabase.co/object/public/media/2025/11/12/abc
 ### Проблема 2: Error "Unable to write file"
 
 **Причины:**
+
 - Bucket не существует
 - Policies запрещают запись
 - Неправильный API key
 
 **Решение:**
+
 1. Создать bucket (Шаг 1.4)
 2. Настроить policies (Шаг 1.5)
 3. Использовать service_role key в `.env`
@@ -200,11 +212,13 @@ URL: https://eofneihisbhucxcydvac.supabase.co/object/public/media/2025/11/12/abc
 ### Проблема 3: Изображения не отображаются
 
 **Причины:**
+
 - Bucket не публичный
 - Policies не разрешают чтение
 - CORS не настроен
 
 **Решение:**
+
 1. Сделать bucket публичным
 2. Добавить policy для публичного чтения
 3. Настроить CORS в Supabase:
@@ -214,9 +228,11 @@ URL: https://eofneihisbhucxcydvac.supabase.co/object/public/media/2025/11/12/abc
 ### Проблема 4: Error "endpoint is not specified"
 
 **Причина:**
+
 - Старая конфигурация filesystems.php
 
 **Решение:**
+
 - Убедитесь что `filesystems.php` обновлён (см. раздел "Исправления Применённые")
 
 ---
@@ -286,6 +302,6 @@ url: "https://eofneihisbhucxcydvac.supabase.co/object/public/media/2025/11/12/ab
 
 **Важно**: Основная проблема в том, что **bucket "media" скорее всего не существует в Supabase**. Создайте его по инструкциям выше!
 
-*Обновлено: 2025-11-12*
-*Все изменения конфигурации уже применены в коде*
-*Осталось только создать bucket в Supabase Dashboard*
+_Обновлено: 2025-11-12_
+_Все изменения конфигурации уже применены в коде_
+_Осталось только создать bucket в Supabase Dashboard_

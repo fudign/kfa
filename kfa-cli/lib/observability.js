@@ -123,11 +123,7 @@ class Observability {
     this._appendToJSONL(path.join(this.historyDir, 'errors.jsonl'), entry);
 
     // Write detailed error log
-    const errorLog = path.join(
-      this.logsDir,
-      'errors',
-      Date.now() + '.log'
-    );
+    const errorLog = path.join(this.logsDir, 'errors', Date.now() + '.log');
     fs.writeFileSync(errorLog, JSON.stringify(entry, null, 2));
 
     // Update error metrics
@@ -336,14 +332,9 @@ class Observability {
    */
   _writeLog(category, name, entry) {
     try {
-      const logFile = path.join(
-        this.logsDir,
-        category,
-        new Date().toISOString().split('T')[0] + '.log'
-      );
+      const logFile = path.join(this.logsDir, category, new Date().toISOString().split('T')[0] + '.log');
 
-      const logEntry = '[' + entry.timestamp + '] ' + name + ': ' +
-        JSON.stringify(entry) + '\n';
+      const logEntry = '[' + entry.timestamp + '] ' + name + ': ' + JSON.stringify(entry) + '\n';
 
       fs.appendFileSync(logFile, logEntry);
     } catch (err) {

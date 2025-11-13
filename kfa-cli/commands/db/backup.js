@@ -3,10 +3,10 @@ const { outputJSON, outputSuccess, outputError, outputText } = require('../../li
 
 async function execute(args) {
   const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
-  
+
   const db = new DatabaseClient();
   const result = await db.backup();
-  
+
   if (format === 'json') {
     outputJSON(result);
   } else {
@@ -18,7 +18,7 @@ async function execute(args) {
       outputError('Backup failed: ' + result.error);
     }
   }
-  
+
   process.exit(result.success ? 0 : 1);
 }
 

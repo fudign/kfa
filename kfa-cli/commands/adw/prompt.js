@@ -7,7 +7,7 @@ const { outputInfo, outputSuccess, outputError, parseFormat } = require('../../l
  */
 async function execute(args) {
   // Parse arguments
-  const promptIndex = args.findIndex(arg => !arg.startsWith('--'));
+  const promptIndex = args.findIndex((arg) => !arg.startsWith('--'));
 
   if (promptIndex === -1) {
     outputError('Usage: kfa adw prompt "<prompt>" [options]');
@@ -67,7 +67,6 @@ async function execute(args) {
         }
       }
     }
-
   } catch (err) {
     if (format === 'json') {
       console.log(JSON.stringify({ error: err.message || err.error }, null, 2));

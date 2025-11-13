@@ -50,7 +50,6 @@ function execute(args) {
 
       outputInfo('\nResults: ' + result.summaryPath);
     }
-
   } catch (err) {
     if (format === 'json') {
       console.log(JSON.stringify({ error: String(err) }, null, 2));

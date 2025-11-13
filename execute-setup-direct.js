@@ -9,7 +9,8 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 
 const SUPABASE_URL = 'https://eofneihisbhucxcydvac.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
+const SUPABASE_SERVICE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
 
 // PostgreSQL connection
 const DB_HOST = 'aws-0-ap-southeast-1.pooler.supabase.com';
@@ -19,8 +20,44 @@ const DB_USER = 'postgres.eofneihisbhucxcydvac';
 const DB_PASSWORD = 'egD.SYGb.F5Hm3r';
 
 const permissionSets = {
-  admin: ['content.view', 'content.create', 'content.edit', 'content.delete', 'content.publish', 'media.view', 'media.upload', 'media.edit', 'media.delete', 'events.view', 'events.create', 'events.edit', 'events.delete', 'members.view', 'members.edit', 'partners.view', 'partners.create', 'partners.edit', 'partners.delete', 'settings.view', 'settings.edit', 'analytics.view', 'users.view', 'users.manage'],
-  editor: ['content.view', 'content.create', 'content.edit', 'content.publish', 'media.view', 'media.upload', 'media.edit', 'events.view', 'events.create', 'events.edit'],
+  admin: [
+    'content.view',
+    'content.create',
+    'content.edit',
+    'content.delete',
+    'content.publish',
+    'media.view',
+    'media.upload',
+    'media.edit',
+    'media.delete',
+    'events.view',
+    'events.create',
+    'events.edit',
+    'events.delete',
+    'members.view',
+    'members.edit',
+    'partners.view',
+    'partners.create',
+    'partners.edit',
+    'partners.delete',
+    'settings.view',
+    'settings.edit',
+    'analytics.view',
+    'users.view',
+    'users.manage',
+  ],
+  editor: [
+    'content.view',
+    'content.create',
+    'content.edit',
+    'content.publish',
+    'media.view',
+    'media.upload',
+    'media.edit',
+    'events.view',
+    'events.create',
+    'events.edit',
+  ],
   moderator: ['content.view', 'content.edit', 'media.view', 'events.view', 'members.view'],
   member: ['content.view'],
 };
@@ -42,7 +79,7 @@ async function main() {
     process.exit(1);
   }
 
-  const kfaUsers = authData.users.filter(u => u.email && u.email.includes('@kfa.kg'));
+  const kfaUsers = authData.users.filter((u) => u.email && u.email.includes('@kfa.kg'));
   console.log(`✅ Found ${kfaUsers.length} KFA users\n`);
 
   // Connect to PostgreSQL
@@ -179,14 +216,7 @@ ON CONFLICT (id) DO UPDATE SET
 `;
 
     try {
-      await pgClient.query(insertSQL, [
-        user.id,
-        user.email,
-        user.user_metadata?.name || user.email,
-        role,
-        roles,
-        permissions,
-      ]);
+      await pgClient.query(insertSQL, [user.id, user.email, user.user_metadata?.name || user.email, role, roles, permissions]);
 
       console.log(`   ✅ ${user.email.padEnd(25)} (${role.padEnd(10)}): ${permissions.length} permissions`);
     } catch (error) {
@@ -203,7 +233,7 @@ ON CONFLICT (id) DO UPDATE SET
     const result = await pgClient.query(verifySQL);
 
     console.log('✅ Profiles in database:');
-    result.rows.forEach(row => {
+    result.rows.forEach((row) => {
       console.log(`   - ${row.email.padEnd(25)} (${row.role.padEnd(10)}): ${row.perm_count} permissions`);
     });
   } catch (error) {

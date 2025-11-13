@@ -64,7 +64,6 @@ async function execute(args) {
       success('Operation completed');
       console.log(result);
     }
-
   } catch (err) {
     if (spinner) spinner.fail('Failed');
 

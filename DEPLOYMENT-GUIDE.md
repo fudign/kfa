@@ -7,12 +7,14 @@
 ## 📋 Prerequisites
 
 ### Required Services:
+
 - ✅ Supabase Account (Database + Auth + Storage)
 - ✅ Railway Account (Backend hosting)
 - ✅ Vercel Account (Frontend hosting)
 - ✅ Domain (optional, recommended)
 
 ### Local Requirements:
+
 - PHP 8.1+
 - Node.js 18+
 - Composer
@@ -23,6 +25,7 @@
 ## 🗄️ Database Setup (Supabase)
 
 ### 1. Create Supabase Project
+
 ```
 1. Go to: https://supabase.com/dashboard
 2. Click "New Project"
@@ -34,6 +37,7 @@
 ```
 
 ### 2. Execute SQL
+
 ```sql
 -- Copy entire content from: EXECUTE-THIS-IN-SUPABASE.sql
 -- Paste in: SQL Editor
@@ -47,6 +51,7 @@
 ```
 
 ### 3. Get Database Credentials
+
 ```
 Settings → Database → Connection String
 
@@ -59,6 +64,7 @@ Save these values:
 ```
 
 ### 4. Configure Storage Buckets
+
 ```javascript
 // In Supabase Dashboard → Storage
 // Create buckets:
@@ -74,6 +80,7 @@ Save these values:
 ## 🖥️ Backend Deployment (Railway)
 
 ### 1. Prepare Backend
+
 ```bash
 cd kfa-backend/kfa-api
 
@@ -82,6 +89,7 @@ cp .env .env.production
 ```
 
 **Edit .env.production:**
+
 ```env
 APP_NAME=КФА
 APP_ENV=production
@@ -111,6 +119,7 @@ FRONTEND_URL=https://kfa-website.vercel.app
 ```
 
 ### 2. Deploy to Railway
+
 ```bash
 # Install Railway CLI
 npm install -g @railway/cli
@@ -143,6 +152,7 @@ railway up
 ```
 
 ### 3. Run Migrations on Railway
+
 ```bash
 # In Railway Dashboard → Service → Deploy
 # Add build command:
@@ -153,6 +163,7 @@ railway run php artisan migrate --force
 ```
 
 ### 4. Verify Deployment
+
 ```bash
 # Test API
 curl https://kfa-api.railway.app/api/news
@@ -165,6 +176,7 @@ curl https://kfa-api.railway.app/api/news
 ## 🌐 Frontend Deployment (Vercel)
 
 ### 1. Prepare Frontend
+
 ```bash
 cd kfa-website
 
@@ -173,6 +185,7 @@ cp .env .env.production
 ```
 
 **Edit .env.production:**
+
 ```env
 # API
 VITE_API_URL=https://kfa-api.railway.app/api
@@ -187,6 +200,7 @@ VITE_APP_URL=https://kfa-website.vercel.app
 ```
 
 ### 2. Deploy to Vercel
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -209,6 +223,7 @@ vercel
 ```
 
 ### 3. Configure Custom Domain (Optional)
+
 ```
 Vercel Dashboard → Settings → Domains
 Add domain: www.kfa.kg
@@ -219,6 +234,7 @@ CNAME: www → cname.vercel-dns.com
 ```
 
 ### 4. Verify Deployment
+
 ```bash
 # Visit your site
 open https://kfa-website.vercel.app
@@ -231,6 +247,7 @@ open https://kfa-website.vercel.app
 ## 🔒 Security Checklist
 
 ### Backend (Railway):
+
 - [ ] APP_DEBUG=false
 - [ ] APP_ENV=production
 - [ ] Unique APP_KEY generated
@@ -240,12 +257,14 @@ open https://kfa-website.vercel.app
 - [ ] HTTPS enforced
 
 ### Frontend (Vercel):
+
 - [ ] Environment variables set
 - [ ] API URL points to production
 - [ ] HTTPS enabled
 - [ ] Security headers configured
 
 ### Database (Supabase):
+
 - [ ] RLS policies enabled
 - [ ] Strong password used
 - [ ] SSL enforced
@@ -256,6 +275,7 @@ open https://kfa-website.vercel.app
 ## 📊 Post-Deployment Tasks
 
 ### 1. Create Admin User
+
 ```bash
 # Via Railway CLI
 railway run php artisan tinker
@@ -271,6 +291,7 @@ $user->assignRole('admin');
 ```
 
 ### 2. Seed Initial Data
+
 ```bash
 # Run seeders
 railway run php artisan db:seed --class=CertificationProgramSeeder
@@ -278,6 +299,7 @@ railway run php artisan db:seed --class=NewsSeeder
 ```
 
 ### 3. Configure Monitoring
+
 ```
 - Railway: Check Logs tab
 - Vercel: Check Analytics
@@ -285,6 +307,7 @@ railway run php artisan db:seed --class=NewsSeeder
 ```
 
 ### 4. Setup Backups
+
 ```
 Supabase Dashboard → Database → Backups
 - Enable automatic backups
@@ -298,6 +321,7 @@ Supabase Dashboard → Database → Backups
 ### GitHub Actions (Recommended)
 
 **Create `.github/workflows/deploy.yml`:**
+
 ```yaml
 name: Deploy to Production
 
@@ -335,7 +359,9 @@ jobs:
 ## 🐛 Troubleshooting
 
 ### Issue: 500 Error on Backend
+
 **Solution:**
+
 ```bash
 # Check logs
 railway logs
@@ -347,7 +373,9 @@ railway logs
 ```
 
 ### Issue: CORS Error
+
 **Solution:**
+
 ```env
 # In .env
 SANCTUM_STATEFUL_DOMAINS=your-frontend-domain.com
@@ -360,7 +388,9 @@ SESSION_DOMAIN=.railway.app
 ```
 
 ### Issue: Database Connection Failed
+
 **Solution:**
+
 ```bash
 # Verify Supabase credentials
 # Check if IP is whitelisted (if needed)
@@ -369,7 +399,9 @@ railway run php artisan migrate:status
 ```
 
 ### Issue: Frontend Not Loading
+
 **Solution:**
+
 ```bash
 # Check environment variables
 vercel env ls
@@ -383,6 +415,7 @@ vercel --prod
 ## 📈 Performance Optimization
 
 ### Backend:
+
 ```bash
 # Cache config
 railway run php artisan config:cache
@@ -395,6 +428,7 @@ opcache.memory_consumption=128
 ```
 
 ### Frontend:
+
 ```bash
 # Optimize build
 npm run build
@@ -404,6 +438,7 @@ npx vite-bundle-visualizer
 ```
 
 ### Database:
+
 ```sql
 -- Add indexes for frequently queried fields
 CREATE INDEX idx_users_email ON users(email);
@@ -416,6 +451,7 @@ CREATE INDEX idx_payments_user ON payments(user_id);
 ## 🔐 Environment Variables Summary
 
 ### Backend (.env.production):
+
 ```
 APP_NAME=КФА
 APP_ENV=production
@@ -439,6 +475,7 @@ SANCTUM_STATEFUL_DOMAINS=kfa-website.vercel.app
 ```
 
 ### Frontend (.env.production):
+
 ```
 VITE_API_URL=https://kfa-api.railway.app/api
 VITE_SUPABASE_URL=https://xxx.supabase.co
@@ -452,6 +489,7 @@ VITE_APP_URL=https://kfa-website.vercel.app
 ## ✅ Deployment Checklist
 
 ### Pre-Deployment:
+
 - [ ] Code reviewed and tested
 - [ ] Environment variables prepared
 - [ ] Database SQL script ready
@@ -459,6 +497,7 @@ VITE_APP_URL=https://kfa-website.vercel.app
 - [ ] Tests passing
 
 ### Deployment:
+
 - [ ] Supabase project created
 - [ ] SQL executed in Supabase
 - [ ] Backend deployed to Railway
@@ -467,6 +506,7 @@ VITE_APP_URL=https://kfa-website.vercel.app
 - [ ] Environment variables configured
 
 ### Post-Deployment:
+
 - [ ] Admin user created
 - [ ] Initial data seeded
 - [ ] API endpoints tested
@@ -483,6 +523,7 @@ VITE_APP_URL=https://kfa-website.vercel.app
 Your КФА application is now live in production!
 
 **Next Steps:**
+
 1. Share URL with stakeholders
 2. Monitor logs for first 24 hours
 3. Test all critical user flows
@@ -491,4 +532,4 @@ Your КФА application is now live in production!
 
 ---
 
-*Deployment Guide v1.0.0 - Updated: 2025-11-13*
+_Deployment Guide v1.0.0 - Updated: 2025-11-13_

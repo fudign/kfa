@@ -28,8 +28,8 @@ function execute(args) {
           cache: cacheStats,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
   } else {
     displayMetricsText(metricsData, cacheStats, period);
@@ -47,15 +47,10 @@ function displayMetricsText(metricsData, cacheStats, period) {
   if (metrics.command && Object.keys(metrics.command).length > 0) {
     outputInfo('Commands:');
     Object.entries(metrics.command).forEach(([cmd, data]) => {
-      const successRate = data.count > 0
-        ? ((data.successCount || 0) / data.count * 100).toFixed(1)
-        : '0.0';
+      const successRate = data.count > 0 ? (((data.successCount || 0) / data.count) * 100).toFixed(1) : '0.0';
 
       console.log(
-        '  ' + cmd +
-        ': ' + data.count + ' runs' +
-        ', avg ' + data.avgDuration.toFixed(0) + 'ms' +
-        ', success ' + successRate + '%'
+        '  ' + cmd + ': ' + data.count + ' runs' + ', avg ' + data.avgDuration.toFixed(0) + 'ms' + ', success ' + successRate + '%',
       );
     });
     console.log('');
@@ -76,9 +71,7 @@ function displayMetricsText(metricsData, cacheStats, period) {
       console.log('  Total Cost: $' + agentData.cost.toFixed(4));
     }
 
-    const agentSuccessRate = agentData.count > 0
-      ? ((agentData.successCount || 0) / agentData.count * 100).toFixed(1)
-      : '0.0';
+    const agentSuccessRate = agentData.count > 0 ? (((agentData.successCount || 0) / agentData.count) * 100).toFixed(1) : '0.0';
     console.log('  Success Rate: ' + agentSuccessRate + '%');
     console.log('');
   }
@@ -91,10 +84,7 @@ function displayMetricsText(metricsData, cacheStats, period) {
   if (cacheStats.namespaces && cacheStats.namespaces.length > 0) {
     console.log('  Namespaces:');
     cacheStats.namespaces.forEach((ns) => {
-      console.log(
-        '    ' + ns.namespace + ': ' + ns.files + ' files (' +
-        formatBytes(ns.size) + ')'
-      );
+      console.log('    ' + ns.namespace + ': ' + ns.files + ' files (' + formatBytes(ns.size) + ')');
     });
   }
   console.log('');
@@ -109,17 +99,9 @@ function displayMetricsText(metricsData, cacheStats, period) {
   }
 
   // Summary
-  const totalCommands = Object.values(metrics.command || {}).reduce(
-    (sum, data) => sum + data.count,
-    0
-  );
-  const totalAgentRuns = (metrics.agent && metrics.agent.run)
-    ? metrics.agent.run.count || 0
-    : 0;
-  const totalErrors = Object.values(metrics.errors || {}).reduce(
-    (sum, data) => sum + (data.count || 0),
-    0
-  );
+  const totalCommands = Object.values(metrics.command || {}).reduce((sum, data) => sum + data.count, 0);
+  const totalAgentRuns = metrics.agent && metrics.agent.run ? metrics.agent.run.count || 0 : 0;
+  const totalErrors = Object.values(metrics.errors || {}).reduce((sum, data) => sum + (data.count || 0), 0);
 
   outputInfo('Summary:');
   console.log('  Total Operations: ' + (totalCommands + totalAgentRuns));

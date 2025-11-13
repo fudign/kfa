@@ -7,6 +7,7 @@
 ## 🔥 Критические Шаги (Обязательно!)
 
 ### □ 1. Выполнить SQL в Supabase
+
 ```
 Файл: EXECUTE-THIS-IN-SUPABASE.sql
 URL: https://supabase.com/dashboard/project/YOUR_PROJECT/sql
@@ -16,12 +17,14 @@ URL: https://supabase.com/dashboard/project/YOUR_PROJECT/sql
 ```
 
 ### □ 2. Проверить Backend .env
+
 ```bash
 cd kfa-backend/kfa-api
 cat .env | grep DB_
 ```
 
 Должно быть:
+
 - ✅ DB_CONNECTION=pgsql
 - ✅ DB_HOST=(ваш Supabase host)
 - ✅ DB_DATABASE=postgres
@@ -29,6 +32,7 @@ cat .env | grep DB_
 - ✅ DB_PASSWORD=(ваш пароль)
 
 ### □ 3. Запустить Backend
+
 ```bash
 cd kfa-backend/kfa-api
 php artisan serve
@@ -37,6 +41,7 @@ php artisan serve
 Проверка: http://127.0.0.1:8000/api/news
 
 ### □ 4. Запустить Frontend
+
 ```bash
 cd kfa-website
 npm run dev
@@ -49,6 +54,7 @@ npm run dev
 ## 🎯 Проверка Работоспособности
 
 ### □ 5. Тест API
+
 ```bash
 # News API
 curl http://127.0.0.1:8000/api/news
@@ -57,6 +63,7 @@ curl http://127.0.0.1:8000/api/news
 ```
 
 ### □ 6. Тест Login
+
 1. Открыть: http://localhost:3000/auth/login
 2. Попробовать войти (или зарегистрироваться)
 3. Должно перенаправить на dashboard
@@ -66,12 +73,14 @@ curl http://127.0.0.1:8000/api/news
 ## 🧪 Опционально: Запустить Тесты
 
 ### □ 7. E2E Тесты
+
 ```bash
 cd kfa-website
 npm test tests/e2e/business-processes.spec.ts
 ```
 
 **Ожидаемые результаты:**
+
 - ✅ Membership Application Process - все тесты проходят
 - ✅ Payment Processing - все тесты проходят
 - ✅ Event Registration - все тесты проходят
@@ -81,6 +90,7 @@ npm test tests/e2e/business-processes.spec.ts
 ## 📊 Что Готово
 
 ### Backend API (100%):
+
 - ✅ Membership Applications (9 endpoints)
 - ✅ Payments (8 endpoints)
 - ✅ Certifications (14 endpoints)
@@ -88,6 +98,7 @@ npm test tests/e2e/business-processes.spec.ts
 - ✅ News, Media, Partners, Documents
 
 ### Frontend (95%):
+
 - ✅ Authentication
 - ✅ Dashboard
 - ✅ CMS (News, Events, Media)
@@ -95,6 +106,7 @@ npm test tests/e2e/business-processes.spec.ts
 - ✅ Profile Management
 
 ### Tests (75%):
+
 - ✅ Business Processes Tests - обновлены
 - ✅ CMS Tests - работают
 - ✅ Auth Tests - работают
@@ -104,6 +116,7 @@ npm test tests/e2e/business-processes.spec.ts
 ## 🚨 Если Что-то Не Работает
 
 ### Backend не запускается:
+
 ```bash
 cd kfa-backend/kfa-api
 composer install
@@ -112,6 +125,7 @@ php artisan serve
 ```
 
 ### Frontend не запускается:
+
 ```bash
 cd kfa-website
 rm -rf node_modules package-lock.json
@@ -120,6 +134,7 @@ npm run dev
 ```
 
 ### Database connection error:
+
 1. Проверить .env файл
 2. Проверить что Supabase проект активен
 3. Проверить что SQL был выполнен
@@ -129,6 +144,7 @@ npm run dev
 ## 📝 Следующие Шаги
 
 После успешного запуска:
+
 1. Создать тестовые аккаунты (admin, member, user)
 2. Протестировать основные функции
 3. Запустить полный набор E2E тестов
@@ -143,4 +159,4 @@ npm run dev
 **Время выполнения:** ~10 минут
 **Следующий файл:** NEXT-STEPS.md (детальная инструкция)
 
-*Обновлено: 2025-11-13*
+_Обновлено: 2025-11-13_

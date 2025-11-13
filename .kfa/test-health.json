@@ -1,0 +1,19 @@
+{
+  "status": "healthy",
+  "score": 100,
+  "checks": {
+    "nodeModules": true,
+    "packageJson": true,
+    "envFile": true,
+    "backendSetup": true,
+    "frontendSetup": true
+  },
+  "details": {
+    "nodeModules": "✓ Present",
+    "packageJson": "✓ bmad-method v6.0.0-alpha.0",
+    "envFile": "✓ Present",
+    "backendSetup": "✓ Laravel ready",
+    "frontendSetup": "✓ React ready"
+  },
+  "timestamp": "2025-11-13T11:21:22.974Z"
+}

@@ -14,6 +14,7 @@ cp templates/command.template.js commands/<category>/<command>.js
 ### 2. Edit the File
 
 Replace placeholders:
+
 - `[COMMAND NAME]` - Name of your command
 - `[Brief description]` - Short description
 - `[category]` - Command category (db, test, deploy, etc.)
@@ -113,6 +114,7 @@ commands/
 ## Best Practices
 
 1. **Always support both JSON and text output**
+
    ```javascript
    const format = flags.format || 'text';
    if (format === 'json') {
@@ -123,6 +125,7 @@ commands/
    ```
 
 2. **Use caching for repeated operations**
+
    ```javascript
    const cache = new Cache('category', { ttl: 6 * 60 * 60 });
    const cached = cache.get(key);
@@ -130,6 +133,7 @@ commands/
    ```
 
 3. **Show progress for long operations**
+
    ```javascript
    const spinner = new Spinner('Processing...');
    spinner.start();
@@ -138,6 +142,7 @@ commands/
    ```
 
 4. **Handle errors gracefully**
+
    ```javascript
    try {
      await doWork();

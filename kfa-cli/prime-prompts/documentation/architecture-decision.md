@@ -21,25 +21,32 @@ Date: YYYY-MM-DD
 Status: Proposed | Accepted | Deprecated | Superseded
 
 ## Context
+
 What is the issue that we're seeing?
 
 ## Decision
+
 What is the change that we're proposing?
 
 ## Consequences
+
 What becomes easier or more difficult?
 
 ### Positive
+
 - ...
 
 ### Negative
+
 - ...
 
 ## Alternatives Considered
+
 1. Alternative 1: ...
 2. Alternative 2: ...
 
 ## References
+
 - Link 1
 - Link 2
 ```

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, Instagram } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
+import { useSettings } from '@/contexts/SettingsContext';
 
 const navigationLinks = [
   {
@@ -41,31 +42,43 @@ const navigationLinks = [
   },
 ];
 
-const socialLinks = [
-  {
-    name: 'Facebook',
-    icon: Facebook,
-    href: 'https://facebook.com/kfa',
-  },
-  {
-    name: 'Twitter',
-    icon: Twitter,
-    href: 'https://twitter.com/kfa',
-  },
-  {
-    name: 'LinkedIn',
-    icon: Linkedin,
-    href: 'https://linkedin.com/company/kfa',
-  },
-  {
-    name: 'YouTube',
-    icon: Youtube,
-    href: 'https://youtube.com/@kfa',
-  },
-];
-
 export function Footer() {
   const { t } = useTranslation('common');
+  const { getSetting } = useSettings();
+
+  // Динамические ссылки на социальные сети из настроек
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      icon: Facebook,
+      href: getSetting('social_facebook', 'https://facebook.com/kfa.kg'),
+    },
+    {
+      name: 'Instagram',
+      icon: Instagram,
+      href: getSetting('social_instagram', 'https://instagram.com/kfa.kg'),
+    },
+    {
+      name: 'LinkedIn',
+      icon: Linkedin,
+      href: getSetting('social_linkedin', 'https://linkedin.com/company/kfa-kg'),
+    },
+    {
+      name: 'Twitter',
+      icon: Twitter,
+      href: getSetting('social_twitter', 'https://twitter.com/kfa_kg'),
+    },
+    {
+      name: 'YouTube',
+      icon: Youtube,
+      href: getSetting('social_youtube', 'https://youtube.com/@kfa'),
+    },
+  ].filter(social => social.href && social.href !== '#');
+
+  // Контактная информация из настроек
+  const contactEmail = getSetting('contact_email', 'info@kfa.kg');
+  const contactPhone = getSetting('contact_phone', '+996 312 123 456');
+  const officeAddress = getSetting('office_address') || t('footer.contact.address');
 
   return (
     <footer className="bg-primary-900 text-white">
@@ -87,26 +100,26 @@ export function Footer() {
                 <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent-400" />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm leading-relaxed text-primary-100">
-                    {t('footer.contact.address')}
+                    {officeAddress}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
-                  href="tel:+996312123456"
+                  href={`tel:${contactPhone.replace(/[^+\d]/g, '')}`}
                   className="text-sm text-primary-100 transition-colors hover:text-white"
                 >
-                  +996 (312) 12-34-56
+                  {contactPhone}
                 </a>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 flex-shrink-0 text-accent-400" />
                 <a
-                  href="mailto:info@kfa.kg"
+                  href={`mailto:${contactEmail}`}
                   className="text-sm text-primary-100 transition-colors hover:text-white"
                 >
-                  info@kfa.kg
+                  {contactEmail}
                 </a>
               </div>
             </div>

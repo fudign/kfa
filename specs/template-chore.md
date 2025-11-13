@@ -9,6 +9,7 @@
 Опишите текущее состояние проекта и почему нужна эта задача.
 
 Например:
+
 - Текущая система аутентификации работает, но нет логирования
 - Пользователи сообщают о проблемах с входом
 - Нужна возможность отслеживать ошибки
@@ -18,6 +19,7 @@
 Конкретная, измеримая цель задачи.
 
 Например:
+
 - Добавить логирование во все authentication endpoints
 - Логи должны включать: timestamp, user ID, action, status
 - Логи сохраняются в БД и доступны через admin panel
@@ -50,15 +52,18 @@
 ## Files to Modify
 
 ### Backend
+
 - `kfa-backend/database/migrations/YYYY_MM_DD_create_auth_logs_table.php` (new)
 - `kfa-backend/app/Services/AuthLogger.php` (new)
 - `kfa-backend/app/Http/Controllers/AuthController.php` (modify)
 
 ### Frontend (если нужно)
+
 - `kfa-website/src/pages/admin/AuthLogs.tsx` (new)
 - `kfa-website/src/services/api.ts` (modify)
 
 ### Tests
+
 - `kfa-backend/tests/Unit/AuthLoggerTest.php` (new)
 - `kfa-website/tests/e2e/auth-logging.spec.ts` (new)
 
@@ -93,16 +98,19 @@ GET /api/admin/auth-logs/{id}
 ## Tests
 
 ### Unit Tests
+
 - [ ] AuthLogger::log() creates record in database
 - [ ] AuthLogger::log() handles missing user_id
 - [ ] AuthLogger::log() validates action types
 
 ### Integration Tests
+
 - [ ] POST /api/login creates auth log on success
 - [ ] POST /api/login creates auth log on failure
 - [ ] POST /api/logout creates auth log
 
 ### E2E Tests
+
 - [ ] Admin can view auth logs in panel
 - [ ] Admin can filter logs by user
 - [ ] Admin can filter logs by date range
@@ -110,10 +118,12 @@ GET /api/admin/auth-logs/{id}
 ## Dependencies
 
 **Requires:**
+
 - User authentication system (completed)
 - Admin panel (completed)
 
 **Blocks:**
+
 - Security audit feature (planned)
 
 ## Success Criteria

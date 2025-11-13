@@ -25,13 +25,13 @@ class DatabaseClient {
         host: dbHost,
         database: dbName,
         latency: latency,
-        success: true
+        success: true,
       };
     } catch (error) {
       return {
         status: 'disconnected',
         error: error.message || 'Connection failed',
-        success: false
+        success: false,
       };
     }
   }
@@ -43,14 +43,14 @@ class DatabaseClient {
       return {
         success: true,
         output: result.stdout,
-        message: 'Migrations completed successfully'
+        message: 'Migrations completed successfully',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
         output: error.stdout || '',
-        stderr: error.stderr || ''
+        stderr: error.stderr || '',
       };
     }
   }
@@ -62,14 +62,14 @@ class DatabaseClient {
       return {
         success: true,
         output: result.stdout,
-        message: 'Database seeded successfully'
+        message: 'Database seeded successfully',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
         output: error.stdout || '',
-        stderr: error.stderr || ''
+        stderr: error.stderr || '',
       };
     }
   }
@@ -98,12 +98,12 @@ class DatabaseClient {
         success: true,
         backupFile: backupFile,
         size: stats.size,
-        message: 'Backup created successfully'
+        message: 'Backup created successfully',
       };
     } catch (error) {
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }

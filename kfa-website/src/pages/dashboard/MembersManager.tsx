@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MediaPicker } from '@/components/cms/MediaPicker';
-import { membersAPI } from '@/services/api';
+import { supabaseMembersAPI as membersAPI } from '@/lib/supabase-members';
 import { usePermission } from '@/hooks/usePermission';
 import type { Member, PaginatedResponse, Media } from '@/types';
 import {

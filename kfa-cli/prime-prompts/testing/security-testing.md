@@ -15,6 +15,7 @@ I need security tests for:
 **Context:** {CONTEXT}
 
 ### Test Cases
+
 - SQL injection attempts
 - XSS attack vectors
 - CSRF token validation
@@ -25,6 +26,7 @@ I need security tests for:
 - Session management
 
 ### OWASP Top 10
+
 - Injection
 - Broken authentication
 - Sensitive data exposure
@@ -37,6 +39,7 @@ I need security tests for:
 - Insufficient logging & monitoring
 
 ## Success Criteria
+
 - ✅ Common attacks prevented
 - ✅ Vulnerabilities fixed
 - ✅ Security tests in CI/CD

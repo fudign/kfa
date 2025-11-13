@@ -15,6 +15,7 @@ I need to resolve dependency conflicts:
 **Context:** {CONTEXT}
 
 ### Investigation
+
 - Run `npm ls` or `yarn why`
 - Check peer dependency warnings
 - Review package.json versions
@@ -22,6 +23,7 @@ I need to resolve dependency conflicts:
 - Review lock file conflicts
 
 ### Resolution Strategies
+
 - Update to compatible versions
 - Use resolutions (yarn) or overrides (npm)
 - Find alternative packages
@@ -29,6 +31,7 @@ I need to resolve dependency conflicts:
 - Use peer dependency ranges correctly
 
 ### Testing After Resolution
+
 - Run all tests
 - Test in production-like environment
 - Check for breaking changes
@@ -36,6 +39,7 @@ I need to resolve dependency conflicts:
 - Test build process
 
 ## Success Criteria
+
 - ✅ No dependency warnings
 - ✅ All packages compatible
 - ✅ Build succeeds

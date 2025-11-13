@@ -20,8 +20,8 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 async function checkAndFixBucket() {
@@ -36,11 +36,11 @@ async function checkAndFixBucket() {
   }
 
   console.log('📦 Найдено buckets:', buckets.length);
-  buckets.forEach(b => {
+  buckets.forEach((b) => {
     console.log(`  - ${b.name} (public: ${b.public})`);
   });
 
-  const mediaBucket = buckets.find(b => b.name === 'media');
+  const mediaBucket = buckets.find((b) => b.name === 'media');
 
   if (!mediaBucket) {
     console.log('\n❌ Bucket "media" не найден!');
@@ -49,7 +49,7 @@ async function checkAndFixBucket() {
     const { data, error } = await supabase.storage.createBucket('media', {
       public: true,
       fileSizeLimit: 10485760, // 10MB
-      allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp']
+      allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'],
     });
 
     if (error) {
@@ -66,7 +66,7 @@ async function checkAndFixBucket() {
       console.log('\n⚠️  Bucket НЕ публичный! Делаем его публичным...');
 
       const { data, error } = await supabase.storage.updateBucket('media', {
-        public: true
+        public: true,
       });
 
       if (error) {
@@ -104,11 +104,9 @@ async function checkAndFixBucket() {
 
   console.log('\n=== Шаг 3: Список файлов в bucket ===\n');
 
-  const { data: files, error: filesError } = await supabase.storage
-    .from('media')
-    .list('2025/11/12', {
-      limit: 10
-    });
+  const { data: files, error: filesError } = await supabase.storage.from('media').list('2025/11/12', {
+    limit: 10,
+  });
 
   if (filesError) {
     console.error('❌ Ошибка получения файлов:', filesError);
@@ -117,7 +115,7 @@ async function checkAndFixBucket() {
     if (files.length === 0) {
       console.log('  (пусто)');
     } else {
-      files.forEach(f => {
+      files.forEach((f) => {
         console.log(`  - ${f.name} (${f.metadata?.size || 0} bytes)`);
         const publicUrl = supabase.storage.from('media').getPublicUrl(`2025/11/12/${f.name}`);
         console.log(`    URL: ${publicUrl.data.publicUrl}`);
@@ -131,7 +129,7 @@ checkAndFixBucket()
     console.log('\n✅ Проверка завершена!');
     process.exit(0);
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('\n❌ Ошибка:', err);
     process.exit(1);
   });

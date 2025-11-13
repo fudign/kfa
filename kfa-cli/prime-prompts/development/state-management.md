@@ -68,6 +68,7 @@ Implementation steps:
    - Test integration
 
 File structure:
+
 - src/contexts/{Name}Context.tsx (for Context API)
 - src/hooks/use{Name}.ts (for custom hooks)
 - src/types/{name}State.types.ts

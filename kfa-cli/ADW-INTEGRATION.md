@@ -5,6 +5,7 @@
 ## Что такое ADW?
 
 ADW (AI Developer Workflows) - исполняемые Python скрипты для программной оркестрации агентов Claude Code:
+
 - **adw_prompt.py** - выполнение ad-hoc промптов
 - **adw_slash_command.py** - выполнение slash команд из .claude/commands/
 - **adw_chore_implement.py** - полный workflow (планирование + реализация)
@@ -14,11 +15,13 @@ ADW (AI Developer Workflows) - исполняемые Python скрипты дл
 ### 1. Установка uv (Python package manager)
 
 **Windows:**
+
 ```bash
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 **Linux/Mac:**
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
@@ -26,6 +29,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### 2. Настройка окружения
 
 Создайте `.env` в корне проекта (если еще не создан):
+
 ```bash
 ANTHROPIC_API_KEY=your_api_key_here
 CLAUDE_CODE_PATH=claude
@@ -38,6 +42,7 @@ kfa adw check
 ```
 
 Вывод при успехе:
+
 ```
 ✓ ADW is available
 uv version: 0.x.x
@@ -71,6 +76,7 @@ kfa adw prompt "Quick test" --no-retry
 ```
 
 **Опции:**
+
 - `--model sonnet|opus` - модель Claude (default: sonnet)
 - `--agent-name <name>` - имя агента для tracking
 - `--no-retry` - отключить автоматический retry при ошибке
@@ -78,6 +84,7 @@ kfa adw prompt "Quick test" --no-retry
 
 **Результаты:**
 Сохраняются в `agents/{adw_id}/{agent_name}/`:
+
 - `cc_raw_output.jsonl` - streaming output от Claude Code
 - `cc_raw_output.json` - все сообщения массивом
 - `cc_final_object.json` - последнее сообщение (финальный результат)
@@ -99,11 +106,13 @@ kfa adw slash /review --model opus --agent-name reviewer
 ```
 
 **Опции:**
+
 - `--model sonnet|opus` - модель Claude
 - `--agent-name <name>` - имя агента
 - `--format json` - JSON вывод
 
 **Примеры slash команд:**
+
 - `/chore` - создать план для задачи
 - `/implement` - реализовать план из файла спецификации
 - `/review` - ревью кода
@@ -122,10 +131,12 @@ kfa adw chore "Fix CORS issue in API" --model opus
 ```
 
 **Опции:**
+
 - `--model sonnet|opus` - модель Claude
 - `--format json` - JSON вывод
 
 **Что делает:**
+
 1. Создает план задачи (planner agent)
 2. Реализует план (implementer agent)
 3. Сохраняет результаты обоих этапов
@@ -140,6 +151,7 @@ kfa adw status --format json
 ```
 
 **Вывод:**
+
 - ADW ID (уникальный идентификатор выполнения)
 - Тип (Prompt/Slash Command)
 - Статус (Success/Failed)
@@ -212,6 +224,7 @@ KFA CLI (Node.js)
 ```
 
 **Преимущества интеграции:**
+
 1. Единая точка входа (`kfa` command)
 2. Консистентный интерфейс (все команды в одном стиле)
 3. JSON output для всех команд (композиция)
@@ -221,16 +234,19 @@ KFA CLI (Node.js)
 ## Сравнение: KFA CLI vs Прямые ADW скрипты
 
 ### Прямой вызов ADW:
+
 ```bash
 ./adws/adw_prompt.py "List files" --model sonnet
 ```
 
 ### Через KFA CLI:
+
 ```bash
 kfa adw prompt "List files" --model sonnet
 ```
 
 **Плюсы KFA CLI:**
+
 - Короче (не нужен полный путь)
 - Единый интерфейс со всеми другими командами
 - Консистентная обработка ошибок
@@ -242,6 +258,7 @@ kfa adw prompt "List files" --model sonnet
 ### Ошибка: "ADW not available"
 
 **Решение:** Установите uv:
+
 ```bash
 # Windows
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -253,6 +270,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### Ошибка: "Script not found"
 
 **Решение:** Убедитесь, что запускаете команды из корня проекта KFA:
+
 ```bash
 cd /path/to/kfa-6-alpha
 kfa adw check
@@ -261,6 +279,7 @@ kfa adw check
 ### Ошибка: "ANTHROPIC_API_KEY not found"
 
 **Решение:** Создайте `.env` файл:
+
 ```bash
 echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
 ```
@@ -275,17 +294,20 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
 ## Когда использовать что?
 
 ### Используйте Prime Prompts (`kfa prime`):
+
 - Нужен готовый промпт для копирования
 - Работаете в AI ассистенте (Claude, ChatGPT)
 - Быстрая подсказка без выполнения
 
 ### Используйте ADW (`kfa adw`):
+
 - Автоматизация workflows
 - Программная оркестрация агентов
 - Нужны результаты в файлах (для дальнейшей обработки)
 - Сложные multi-step операции
 
 ### Используйте Agent Tools (`agent-tools/`):
+
 - Легковесные операции (backup, test)
 - Не нужен Claude Code
 - Простые скрипты без AI

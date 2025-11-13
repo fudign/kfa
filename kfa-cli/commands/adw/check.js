@@ -24,7 +24,6 @@ async function execute(args) {
         outputInfo('Install uv: https://astral.sh/uv/install');
       }
     }
-
   } catch (err) {
     if (format === 'json') {
       console.log(JSON.stringify({ available: false, error: String(err) }, null, 2));

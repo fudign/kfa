@@ -67,18 +67,12 @@ function main() {
 
     // Log successful execution
     obs.logCommand(commandName, rest, { success: true, output: '' }, duration);
-
   } catch (error) {
     const duration = Date.now() - startTime;
 
     // Log error
     obs.logError(commandName + ' ' + rest.join(' '), error);
-    obs.logCommand(
-      commandName,
-      rest,
-      { success: false, error: error.message },
-      duration
-    );
+    obs.logCommand(commandName, rest, { success: false, error: error.message }, duration);
 
     console.error('Error executing command: ' + error.message);
     if (process.env.DEBUG) {
@@ -112,8 +106,8 @@ function showCategoryHelp(category) {
     console.error('Error: Unknown command category ' + category);
     process.exit(1);
   }
-  const files = fs.readdirSync(categoryPath).filter(f => f.endsWith('.js'));
-  const subcommands = files.map(f => f.replace('.js', '')).join(', ');
+  const files = fs.readdirSync(categoryPath).filter((f) => f.endsWith('.js'));
+  const subcommands = files.map((f) => f.replace('.js', '')).join(', ');
   console.log('kfa ' + category + ' - Available subcommands: ' + subcommands);
 }
 

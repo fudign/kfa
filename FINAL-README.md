@@ -40,6 +40,7 @@
 ## ✨ Возможности
 
 ### Для Пользователей:
+
 - ✅ Регистрация и вход (Supabase Auth)
 - ✅ Подача заявок на членство
 - ✅ Просмотр статуса заявок
@@ -50,6 +51,7 @@
 - ✅ История платежей
 
 ### Для Администраторов:
+
 - ✅ Модерация заявок (одобрение/отклонение)
 - ✅ Управление платежами (подтверждение/возврат)
 - ✅ Выдача сертификатов
@@ -59,6 +61,7 @@
 - ✅ Управление медиафайлами
 
 ### Система Ролей:
+
 - **Guest** - просмотр публичного контента
 - **User** - зарегистрированный пользователь
 - **Member** - оплаченное членство, полный доступ
@@ -69,6 +72,7 @@
 ## 🛠️ Технологии
 
 ### Backend:
+
 ```
 Framework:       Laravel 10.x
 Language:        PHP 8.1+
@@ -81,6 +85,7 @@ Queue:           Database/Redis
 ```
 
 ### Frontend:
+
 ```
 Framework:       React 18
 Language:        TypeScript 5.x
@@ -94,6 +99,7 @@ Testing:         Playwright + Vitest
 ```
 
 ### Infrastructure:
+
 ```
 Backend Host:    Railway
 Frontend Host:   Vercel
@@ -107,6 +113,7 @@ CDN:             Vercel Edge Network
 ## 🚀 Быстрый Старт
 
 ### Предварительные требования:
+
 - PHP 8.1+
 - Node.js 18+
 - Composer
@@ -114,12 +121,14 @@ CDN:             Vercel Edge Network
 - Supabase Account
 
 ### 1. Клонировать репозиторий:
+
 ```bash
 git clone https://github.com/your-org/kfa-6-alpha.git
 cd kfa-6-alpha
 ```
 
 ### 2. Backend Setup:
+
 ```bash
 cd kfa-backend/kfa-api
 
@@ -142,6 +151,7 @@ php artisan serve
 ```
 
 ### 3. Frontend Setup:
+
 ```bash
 cd kfa-website
 
@@ -158,12 +168,14 @@ npm run dev
 ```
 
 ### 4. Database Setup:
+
 ```bash
 # Execute SQL in Supabase Dashboard
 # File: EXECUTE-THIS-IN-SUPABASE.sql
 ```
 
 ### ✅ Verification:
+
 ```bash
 # Test API
 curl http://127.0.0.1:8000/api/news
@@ -179,16 +191,19 @@ open http://localhost:3000
 ## 📚 Документация
 
 ### Основная Документация:
+
 - 📖 [Quick Start Checklist](QUICK-START-CHECKLIST.md) - Быстрый старт за 10 минут
 - 📖 [Next Steps Guide](NEXT-STEPS.md) - Детальная инструкция по запуску
 - 📖 [Session Completion Report](SESSION-COMPLETION-REPORT.md) - Отчёт о выполненной работе
 
 ### Техническая Документация:
+
 - 🔌 [API Reference](API-REFERENCE.md) - Полная API документация
 - 🧪 [Testing Guide](TESTING-GUIDE.md) - Руководство по тестированию
 - 🚀 [Deployment Guide](DEPLOYMENT-GUIDE.md) - Инструкция по деплою
 
 ### Дополнительно:
+
 - 📰 [CMS System Complete](CMS-SYSTEM-COMPLETE.md) - Документация CMS
 - 🤖 [Agent Tools Guide](AGENT-TOOLS-GUIDE.md) - Инструменты для агентов
 - 🔧 [Development API Endpoint](kfa/prompts/) - Промпты для разработки
@@ -198,6 +213,7 @@ open http://localhost:3000
 ## 💻 Разработка
 
 ### Структура Проекта:
+
 ```
 kfa-6-alpha/
 ├── kfa-backend/kfa-api/          # Laravel Backend
@@ -225,6 +241,7 @@ kfa-6-alpha/
 ### API Endpoints:
 
 **Authentication:**
+
 ```
 POST   /api/register
 POST   /api/login
@@ -233,6 +250,7 @@ GET    /api/user
 ```
 
 **Membership Applications:**
+
 ```
 POST   /api/applications          - Подать заявку
 GET    /api/applications/my       - Мои заявки
@@ -242,6 +260,7 @@ POST   /api/applications/{id}/reject
 ```
 
 **Payments:**
+
 ```
 POST   /api/payments              - Создать платёж
 GET    /api/payments/my           - Мои платежи
@@ -253,6 +272,7 @@ DELETE /api/payments/{id}         - Удалить (admin)
 ```
 
 **Certifications:**
+
 ```
 GET    /api/certification-programs
 POST   /api/certifications/apply
@@ -263,6 +283,7 @@ GET    /api/certifications/verify/{number}
 ```
 
 **Events:**
+
 ```
 GET    /api/events
 POST   /api/events/{id}/register
@@ -276,6 +297,7 @@ GET    /api/my-event-registrations
 ## 🧪 Тестирование
 
 ### Запуск Тестов:
+
 ```bash
 cd kfa-website
 
@@ -293,6 +315,7 @@ npm test -- --watch
 ```
 
 ### Текущее Покрытие:
+
 ```
 ✅ Membership Applications  - 7 тестов
 ✅ Payment Processing       - 6 тестов
@@ -312,6 +335,7 @@ npm test -- --watch
 ## 🚀 Деплой
 
 ### Production Stack:
+
 ```
 Backend:    Railway (https://railway.app)
 Frontend:   Vercel (https://vercel.com)
@@ -322,6 +346,7 @@ Storage:    Supabase Storage
 ### Быстрый Деплой:
 
 **Backend (Railway):**
+
 ```bash
 # Install Railway CLI
 npm install -g @railway/cli
@@ -334,6 +359,7 @@ railway up
 ```
 
 **Frontend (Vercel):**
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -352,6 +378,7 @@ vercel --prod
 ## 📊 Статус Проекта
 
 ### Backend API: ████████████████████ 95%
+
 ```
 ✅ Authentication API       - 100%
 ✅ Applications API         - 100%
@@ -363,6 +390,7 @@ vercel --prod
 ```
 
 ### Frontend: ████████████████████ 90%
+
 ```
 ✅ Authentication Pages     - 100%
 ✅ Dashboard                - 100%
@@ -374,6 +402,7 @@ vercel --prod
 ```
 
 ### Database: ████████████████░░░░ 80%
+
 ```
 ✅ Schema Design            - 100%
 ✅ Migrations               - 100%
@@ -382,6 +411,7 @@ vercel --prod
 ```
 
 ### Tests: ███████████████░░░░░ 75%
+
 ```
 ✅ E2E Tests Written        - 100%
 ✅ Passing Tests            - 74%
@@ -395,6 +425,7 @@ vercel --prod
 ## 🎯 Roadmap
 
 ### ✅ Completed:
+
 - [x] Backend API полностью реализован
 - [x] Frontend приложение завершено
 - [x] CMS система работает
@@ -406,11 +437,13 @@ vercel --prod
 - [x] E2E Tests написаны
 
 ### 🔄 In Progress:
+
 - [ ] SQL выполнение в Supabase
 - [ ] Создание тестовых аккаунтов
 - [ ] Seed данные для production
 
 ### 📅 Future Enhancements:
+
 - [ ] Email notifications
 - [ ] Payment gateway integration (Stripe/PayPal)
 - [ ] SMS notifications
@@ -425,17 +458,20 @@ vercel --prod
 ## 🤝 Поддержка
 
 ### Документация:
+
 - **Quick Start:** [QUICK-START-CHECKLIST.md](QUICK-START-CHECKLIST.md)
 - **API Docs:** [API-REFERENCE.md](API-REFERENCE.md)
 - **Testing:** [TESTING-GUIDE.md](TESTING-GUIDE.md)
 - **Deployment:** [DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md)
 
 ### Troubleshooting:
+
 - Backend не запускается → См. [NEXT-STEPS.md#troubleshooting](NEXT-STEPS.md)
 - CORS errors → См. [DEPLOYMENT-GUIDE.md#cors](DEPLOYMENT-GUIDE.md)
 - Test failures → См. [TESTING-GUIDE.md#debugging](TESTING-GUIDE.md)
 
 ### Связь:
+
 - **Website:** https://kfa.kg (TBD)
 - **Email:** info@kfa.kg
 - **GitHub:** https://github.com/your-org/kfa-6-alpha
@@ -451,6 +487,7 @@ Proprietary - Кыргызская Федерация Аудиторов
 ## 🙏 Благодарности
 
 Разработано с использованием:
+
 - [Laravel](https://laravel.com)
 - [React](https://react.dev)
 - [Supabase](https://supabase.com)
@@ -472,6 +509,6 @@ Proprietary - Кыргызская Федерация Аудиторов
 
 ---
 
-*Last Updated: 2025-11-13*
-*Version: 1.0.0*
-*Powered by: Claude Code (Sonnet 4.5)*
+_Last Updated: 2025-11-13_
+_Version: 1.0.0_
+_Powered by: Claude Code (Sonnet 4.5)_

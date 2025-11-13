@@ -4,10 +4,10 @@ const { outputJSON, outputSuccess, outputError } = require('../../lib/utils');
 async function execute(args) {
   const fresh = args.includes('--fresh');
   const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
-  
+
   const db = new DatabaseClient();
   const result = await db.migrate({ fresh });
-  
+
   if (format === 'json') {
     outputJSON(result);
   } else {
@@ -20,7 +20,7 @@ async function execute(args) {
       }
     }
   }
-  
+
   process.exit(result.success ? 0 : 1);
 }
 

@@ -11,6 +11,7 @@
 ### 1. ❌ Недостающие Permissions
 
 **Проблема**: API требует permissions, которые не были добавлены в базу:
+
 ```
 media.view   - для просмотра медиафайлов  ❌ (отсутствовал)
 media.upload - для загрузки файлов        ❌ (отсутствовал)
@@ -18,6 +19,7 @@ media.delete - для удаления файлов        ❌ (отсутств
 ```
 
 **Решение**: Создан seeder `AddMediaPermissionsSeeder.php`
+
 - ✅ Добавлены permissions в базу
 - ✅ Назначены роли admin
 - ✅ Seeder уже выполнен
@@ -25,6 +27,7 @@ media.delete - для удаления файлов        ❌ (отсутств
 ### 2. ❌ Жестко Закодированный Диск в MediaService
 
 **Проблема**:
+
 ```php
 // MediaService.php - старый код
 $fullPath = $file->storeAs($path, $filename, 'public');  // ❌ Всегда 'public'
@@ -32,11 +35,13 @@ $fullPath = $file->storeAs($path, $filename, 'public');  // ❌ Всегда 'pu
 ```
 
 Но в `.env`:
+
 ```
 FILESYSTEM_DISK=supabase  # ❌ Игнорировалось
 ```
 
 **Решение**: Исправлен MediaService
+
 ```php
 // Теперь использует конфиг из .env
 $disk = config('filesystems.default');  // ✅ 'supabase' из .env
@@ -54,6 +59,7 @@ $fullPath = $file->storeAs($path, $filename, $disk);  // ✅ Используе�
 ## ✅ Что Было Исправлено
 
 ### 1. MediaService.php
+
 - ✅ Использует `config('filesystems.default')` вместо жестко закодированного 'public'
 - ✅ Разные пути для разных дисков:
   - **Supabase**: `2025/01/13/file.jpg` (без префикса 'media/', т.к. bucket уже называется 'media')
@@ -61,11 +67,13 @@ $fullPath = $file->storeAs($path, $filename, $disk);  // ✅ Используе�
 - ✅ Сохраняет правильный disk в базе данных
 
 ### 2. Permissions
+
 - ✅ `media.view` - добавлен и назначен admin
 - ✅ `media.upload` - добавлен и назначен admin
 - ✅ `media.delete` - добавлен и назначен admin
 
 ### 3. API Routes
+
 ```php
 // routes/api.php
 Route::middleware(['auth:sanctum', 'permission:media.view'])->group(function () {
@@ -85,11 +93,13 @@ Route::middleware(['auth:sanctum', 'permission:media.upload'])->group(function (
 ### Шаг 1: Обновить JWT Токен (ОБЯЗАТЕЛЬНО!)
 
 **Откройте эту ссылку:**
+
 ```
 http://localhost:3000/auth/force-logout
 ```
 
 Это автоматически:
+
 1. Очистит старый токен
 2. Перенаправит на страницу входа
 3. После входа вы получите новый токен с `media.upload` permission
@@ -199,6 +209,7 @@ Bucket: media
 ```
 
 **URL формат:**
+
 ```
 https://eofneihisbhucxcydvac.supabase.co/storage/v1/object/public/media/2025/01/13/abc123.jpg
 ```
@@ -216,6 +227,7 @@ storage/app/public/
 ```
 
 **URL формат:**
+
 ```
 http://localhost:8000/storage/media/2025/01/13/abc123.jpg
 ```
@@ -235,6 +247,7 @@ SUPABASE_STORAGE_BUCKET=media
 ```
 
 **Для локальной разработки без Supabase:**
+
 ```env
 # Переключиться на local storage
 FILESYSTEM_DISK=public
@@ -278,6 +291,7 @@ export const mediaAPI = {
 
 **Причина**: Старый JWT токен
 **Решение**:
+
 ```
 http://localhost:3000/auth/force-logout
 ```
@@ -286,6 +300,7 @@ http://localhost:3000/auth/force-logout
 
 **Причина 1**: Неправильный Supabase credentials
 **Решение**: Проверьте `.env`:
+
 ```bash
 cd kfa-backend/kfa-api
 cat .env | grep SUPABASE
@@ -293,6 +308,7 @@ cat .env | grep SUPABASE
 
 **Причина 2**: CORS ошибка в Supabase
 **Решение**:
+
 1. Откройте Supabase Dashboard
 2. Storage → Configuration → CORS
 3. Добавьте:
@@ -304,6 +320,7 @@ cat .env | grep SUPABASE
 
 **Причина 3**: Bucket не существует
 **Решение**:
+
 1. Supabase Dashboard → Storage
 2. Create bucket: `media`
 3. Public: ✅ Yes
@@ -313,6 +330,7 @@ cat .env | grep SUPABASE
 
 **Причина**: URL генерируется неправильно
 **Решение**: Проверьте Media model accessor:
+
 ```php
 // app/Models/Media.php
 public function getUrlAttribute(): string
@@ -325,6 +343,7 @@ public function getUrlAttribute(): string
 
 **Причина**: Не установлен Supabase Flysystem adapter
 **Решение**:
+
 ```bash
 cd kfa-backend/kfa-api
 composer require quix-labs/laravel-supabase-flysystem
@@ -383,6 +402,7 @@ composer require quix-labs/laravel-supabase-flysystem
 ### Управление Медиафайлами
 
 Откройте `/dashboard/media` для:
+
 - 📁 Просмотра всех загруженных файлов
 - 🔍 Поиска по названию
 - 🏷️ Фильтрации по типу (изображения, документы)
@@ -392,12 +412,14 @@ composer require quix-labs/laravel-supabase-flysystem
 ### Типы Файлов
 
 **Поддерживаемые форматы:**
+
 ```
 ✅ Изображения: JPG, JPEG, PNG, GIF, WebP, SVG
 ✅ Документы: PDF, DOC, DOCX
 ```
 
 **Ограничения:**
+
 ```
 Max размер: 5MB
 Max ширина: без ограничений
@@ -411,6 +433,7 @@ Max высота: без ограничений
 ### Изменения в Коде
 
 **1. MediaService.php** (строки 46-93)
+
 ```php
 // До:
 $fullPath = $file->storeAs($path, $filename, 'public');  ❌
@@ -424,6 +447,7 @@ $fullPath = $file->storeAs($path, $filename, $disk);  ✅
 ```
 
 **2. AddMediaPermissionsSeeder.php** (новый файл)
+
 ```php
 $newPermissions = [
     ['name' => 'media.view', ...],
@@ -433,6 +457,7 @@ $newPermissions = [
 ```
 
 **3. routes/api.php** (уже было)
+
 ```php
 Route::middleware(['auth:sanctum', 'permission:media.view'])->group(function () {
     Route::get('/media', [MediaController::class, 'index']);  ✅
@@ -445,5 +470,5 @@ Route::middleware(['auth:sanctum', 'permission:media.upload'])->group(function (
 
 ---
 
-*Разработано: 2025-11-13*
-*Все исправлено! Перелогиньтесь и загружайте изображения!* 🚀📸
+_Разработано: 2025-11-13_
+_Все исправлено! Перелогиньтесь и загружайте изображения!_ 🚀📸

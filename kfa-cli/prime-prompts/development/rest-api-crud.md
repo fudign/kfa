@@ -19,6 +19,7 @@ Please implement the following:
 ### 1. API Endpoints
 
 Create these standard REST endpoints:
+
 - `POST /api/{resource}` - Create new item
 - `GET /api/{resource}` - List all items (with pagination)
 - `GET /api/{resource}/:id` - Get single item
@@ -27,12 +28,14 @@ Create these standard REST endpoints:
 - `DELETE /api/{resource}/:id` - Delete item
 
 ### 2. Request Validation
+
 - Validate request body using Zod or similar
 - Validate path parameters (IDs)
 - Validate query parameters (pagination, filters)
 - Return 400 with detailed error messages for invalid requests
 
 ### 3. Response Format
+
 - Use consistent response structure
 - Include proper HTTP status codes:
   - 200: Success (GET, PUT, PATCH)
@@ -44,6 +47,7 @@ Create these standard REST endpoints:
 - Include pagination metadata for list endpoints
 
 ### 4. Error Handling
+
 - Catch and handle database errors
 - Handle duplicate key errors (409 Conflict)
 - Handle not found errors (404)
@@ -51,18 +55,21 @@ Create these standard REST endpoints:
 - Return user-friendly error messages
 
 ### 5. Database Layer
+
 - Create repository/service layer
 - Use transactions where appropriate
 - Implement proper error handling
 - Include database migrations if needed
 
 ### 6. Middleware
+
 - Add request logging
 - Add error handling middleware
 - Add validation middleware
 - Add authentication if required
 
 ### 7. Tests
+
 - Unit tests for business logic
 - Integration tests for endpoints
 - Test success cases
@@ -71,6 +78,7 @@ Create these standard REST endpoints:
 - Test pagination
 
 ### 8. Documentation
+
 - Add OpenAPI/Swagger documentation
 - Document request/response schemas
 - Include example requests
@@ -79,6 +87,7 @@ Create these standard REST endpoints:
 ## Context Files
 
 Review these for patterns:
+
 - Backend API structure
 - Database models
 - Validation patterns
@@ -88,6 +97,7 @@ Review these for patterns:
 ## Expected Output
 
 Provide:
+
 1. Route handlers (routes/{resource}.ts or similar)
 2. Controller logic (controllers/{Resource}Controller.ts)
 3. Service layer (services/{Resource}Service.ts)

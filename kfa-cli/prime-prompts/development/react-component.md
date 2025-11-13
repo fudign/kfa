@@ -17,42 +17,49 @@ I need you to create a React component with the following requirements:
 Please follow these guidelines:
 
 ### 1. Component Structure
+
 - Use TypeScript with proper type definitions
 - Implement as functional component with hooks
 - Export both named and default exports
 - Include proper JSDoc comments
 
 ### 2. Props Interface
+
 - Define TypeScript interface for all props
 - Include optional props with default values
 - Document each prop with JSDoc
 - Use discriminated unions for variants if applicable
 
 ### 3. State Management
+
 - Use appropriate React hooks (useState, useEffect, useCallback, useMemo)
 - Implement proper cleanup in useEffect
 - Optimize re-renders with memoization when needed
 - Handle loading and error states
 
 ### 4. Styling
+
 - Use CSS modules or styled-components
 - Implement responsive design
 - Follow existing design system patterns
 - Include hover/focus/active states
 
 ### 5. Accessibility
+
 - Add proper ARIA labels
 - Ensure keyboard navigation works
 - Include role attributes where appropriate
 - Handle focus management
 
 ### 6. Testing
+
 - Create test file with vitest/jest
 - Test component rendering
 - Test user interactions
 - Test edge cases and error states
 
 ### 7. Documentation
+
 - Add usage examples in JSDoc
 - Document props and their types
 - Include code example in component file
@@ -61,6 +68,7 @@ Please follow these guidelines:
 ## Context Files
 
 Review these files for patterns and conventions:
+
 - src/components/ - Existing component patterns
 - src/types/ - Type definitions
 - src/styles/ - Styling conventions
@@ -69,6 +77,7 @@ Review these files for patterns and conventions:
 ## Expected Output
 
 Provide:
+
 1. Component file (ComponentName.tsx)
 2. Type definitions (ComponentName.types.ts)
 3. Styles file (ComponentName.module.css or styled.ts)

@@ -6,7 +6,7 @@ This directory contains archived BMAD modules that are not actively used in the 
 
 - **core/** - BMAD Core workflows (brainstorming, party-mode, etc.)
 - **bmb/** - BMAD Builder module
-- **bmd/** - BMAD Documentation module  
+- **bmd/** - BMAD Documentation module
 - **bmm/** - BMAD Manager module
 
 ## Why Archived?
@@ -16,8 +16,9 @@ As part of Phase 3 (BMAD Simplification), we focused the project on KFA-specific
 ## Restoration
 
 If you need any of these modules:
-1. Copy the module from _archive/ back to bmad/
-2. Update bmad/_cfg/manifest.yaml
+
+1. Copy the module from \_archive/ back to bmad/
+2. Update bmad/\_cfg/manifest.yaml
 3. Restart your workflow
 
 ## Date Archived

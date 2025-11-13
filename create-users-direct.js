@@ -10,7 +10,9 @@ require('dotenv').config();
 
 // Supabase credentials from .env
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://eofneihisbhucxcydvac.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
+const SUPABASE_SERVICE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
 
 // PostgreSQL connection (for profiles table)
 const DB_HOST = 'db.eofneihisbhucxcydvac.supabase.co';
@@ -147,12 +149,13 @@ async function main() {
 
           // Try to get existing user
           const { data: users } = await supabase.auth.admin.listUsers();
-          const existingUser = users.users.find(u => u.email === account.email);
+          const existingUser = users.users.find((u) => u.email === account.email);
 
           if (existingUser) {
             // Update profile for existing user
             try {
-              await pgClient.query(`
+              await pgClient.query(
+                `
                 INSERT INTO public.profiles (id, email, name, role, roles)
                 VALUES ($1, $2, $3, $4, $5)
                 ON CONFLICT (id)
@@ -160,7 +163,9 @@ async function main() {
                   name = EXCLUDED.name,
                   role = EXCLUDED.role,
                   roles = EXCLUDED.roles;
-              `, [existingUser.id, account.email, account.name, account.role, account.roles]);
+              `,
+                [existingUser.id, account.email, account.name, account.role, account.roles],
+              );
 
               console.log(`   ✅ Updated profile for ${account.email}`);
             } catch (profileError) {
@@ -180,7 +185,8 @@ async function main() {
 
       // Create profile in profiles table
       try {
-        await pgClient.query(`
+        await pgClient.query(
+          `
           INSERT INTO public.profiles (id, email, name, role, roles)
           VALUES ($1, $2, $3, $4, $5)
           ON CONFLICT (id)
@@ -188,7 +194,9 @@ async function main() {
             name = EXCLUDED.name,
             role = EXCLUDED.role,
             roles = EXCLUDED.roles;
-        `, [authData.user.id, account.email, account.name, account.role, account.roles]);
+        `,
+          [authData.user.id, account.email, account.name, account.role, account.roles],
+        );
 
         console.log(`   ✅ Created profile with role: ${account.role}`);
       } catch (profileError) {
@@ -211,7 +219,7 @@ async function main() {
 
     if (profiles && profiles.rows && profiles.rows.length > 0) {
       console.log('   Users in database:');
-      profiles.rows.forEach(user => {
+      profiles.rows.forEach((user) => {
         console.log(`   - ${user.email}: ${user.role} ${JSON.stringify(user.roles)}`);
       });
       console.log();
@@ -236,7 +244,7 @@ async function main() {
   console.log('╚═══════════════════════════════════════════════════╝\n');
   console.log('✅ Test users ready!\n');
   console.log('📝 Login credentials:\n');
-  TEST_ACCOUNTS.forEach(account => {
+  TEST_ACCOUNTS.forEach((account) => {
     console.log(`   ${account.role.toUpperCase().padEnd(10)} → ${account.email} / ${account.password}`);
   });
   console.log('\n🔗 Test login at: http://localhost:3000/auth/login\n');

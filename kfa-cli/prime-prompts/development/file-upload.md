@@ -19,6 +19,7 @@ Please implement the following:
 ### 1. Frontend Upload Component
 
 **UI Elements:**
+
 - File input or drag-and-drop zone
 - File preview (images, documents)
 - Upload progress indicator
@@ -26,12 +27,14 @@ Please implement the following:
 - Remove file option before upload
 
 **Validation:**
+
 - Check file type (MIME type)
 - Validate file size limits
 - Check file count limits (single vs multiple)
 - Display validation errors clearly
 
 **User Experience:**
+
 - Show upload progress (percentage)
 - Allow upload cancellation
 - Display success/error messages
@@ -41,6 +44,7 @@ Please implement the following:
 ### 2. Backend Upload Handling
 
 **File Processing:**
+
 - Accept multipart/form-data
 - Validate file on server side
 - Generate unique filenames
@@ -48,12 +52,14 @@ Please implement the following:
 - Check for malicious content
 
 **Storage:**
+
 - Save to cloud storage (S3, Cloudinary, Supabase Storage)
 - Or save locally with proper directory structure
 - Store file metadata in database
 - Generate signed URLs if needed
 
 **Security:**
+
 - Validate file types server-side
 - Implement file size limits
 - Scan for viruses if applicable
@@ -63,6 +69,7 @@ Please implement the following:
 ### 3. File Transformations
 
 **Image Processing (if applicable):**
+
 - Resize images to multiple sizes
 - Generate thumbnails
 - Optimize image quality
@@ -70,6 +77,7 @@ Please implement the following:
 - Preserve EXIF data optionally
 
 **Other Processing:**
+
 - Extract metadata
 - Generate previews for documents
 - Create compressed versions
@@ -78,12 +86,14 @@ Please implement the following:
 ### 4. Progress Tracking
 
 **Upload Progress:**
+
 - Track upload progress on client
 - Show percentage completed
 - Display estimated time remaining
 - Handle slow connections gracefully
 
 **Server Progress:**
+
 - Provide progress endpoint if needed
 - Support resumable uploads for large files
 - Implement chunked uploads if needed
@@ -91,6 +101,7 @@ Please implement the following:
 ### 5. Error Handling
 
 **Common Errors:**
+
 - File too large
 - Invalid file type
 - Network errors
@@ -98,6 +109,7 @@ Please implement the following:
 - Upload timeout
 
 **Error Messages:**
+
 - Clear, user-friendly messages
 - Suggest corrective actions
 - Log detailed errors server-side
@@ -106,6 +118,7 @@ Please implement the following:
 ### 6. Database Schema
 
 **File Metadata:**
+
 - File ID (UUID)
 - Original filename
 - File size
@@ -118,6 +131,7 @@ Please implement the following:
 ### 7. API Endpoints
 
 **Endpoints:**
+
 - `POST /api/upload` - Upload file
 - `GET /api/files/:id` - Get file metadata
 - `GET /api/files/:id/download` - Download file
@@ -127,6 +141,7 @@ Please implement the following:
 ### 8. Testing
 
 **Tests:**
+
 - Test successful upload
 - Test file validation errors
 - Test upload cancellation
@@ -138,6 +153,7 @@ Please implement the following:
 ## Context Files
 
 Review these:
+
 - Storage configuration (S3, Cloudinary, etc.)
 - Authentication system
 - Database schema
@@ -147,6 +163,7 @@ Review these:
 ## Expected Output
 
 Provide:
+
 1. Frontend upload component
 2. Backend upload endpoint
 3. File validation logic

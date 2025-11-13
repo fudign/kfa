@@ -8,6 +8,7 @@ cd kfa-cli
 ```
 
 Or local usage:
+
 ```bash
 node kfa-cli/bin/kfa.js <command>
 ```
@@ -15,6 +16,7 @@ node kfa-cli/bin/kfa.js <command>
 ## Essential Commands
 
 ### Check Status
+
 ```bash
 kfa --version
 kfa project info
@@ -23,6 +25,7 @@ kfa db status
 ```
 
 ### Development
+
 ```bash
 kfa dev check          # Check dev environment
 kfa cache status       # Check cache
@@ -30,6 +33,7 @@ kfa cache warm         # Warm cache
 ```
 
 ### Database
+
 ```bash
 kfa db status          # Check DB (cached 6h)
 kfa db migrate         # Run migrations
@@ -38,6 +42,7 @@ kfa db backup          # Create backup
 ```
 
 ### Testing & Deployment
+
 ```bash
 kfa test all           # Run all tests
 kfa deploy verify      # Verify deployment

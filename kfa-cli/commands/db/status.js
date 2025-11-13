@@ -5,9 +5,9 @@ const { outputJSON, outputText, outputSuccess, outputError } = require('../../li
 async function execute(args) {
   const useCache = !args.includes('--no-cache');
   const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
-  
+
   const cache = new Cache('db', { ttl: 6 * 60 * 60 });
-  
+
   if (useCache) {
     const cached = cache.get('status');
     if (cached) {
@@ -22,14 +22,14 @@ async function execute(args) {
       return;
     }
   }
-  
+
   const db = new DatabaseClient();
   const status = await db.checkStatus();
-  
+
   if (useCache && status.success) {
     cache.set('status', status);
   }
-  
+
   if (format === 'json') {
     outputJSON({ ...status, cached: false });
   } else {
@@ -43,7 +43,7 @@ async function execute(args) {
       outputText('  Error: ' + status.error);
     }
   }
-  
+
   process.exit(status.success ? 0 : 1);
 }
 

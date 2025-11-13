@@ -23,30 +23,37 @@ specs/
 **Status:** planned | in-progress | completed
 
 ## Context
+
 Описание текущего состояния и почему нужна эта задача.
 
 ## Objective
+
 Конкретная цель, что должно быть достигнуто.
 
 ## Implementation Plan
+
 1. [ ] Шаг 1: Описание
 2. [ ] Шаг 2: Описание
 3. [ ] Шаг 3: Описание
 
 ## Files to Modify
+
 - `kfa-website/src/components/Auth.tsx`
 - `kfa-backend/app/Http/Controllers/AuthController.php`
 
 ## Tests
+
 - [ ] Unit tests для компонента Auth
 - [ ] E2E test для auth flow
 - [ ] Integration test для API endpoint
 
 ## Dependencies
+
 - Requires: user authentication system
 - Blocks: user profile feature
 
 ## Notes
+
 Дополнительные заметки, ссылки, etc.
 ```
 
@@ -59,23 +66,28 @@ specs/
 **Priority:** High | Medium | Low
 
 ## Description
+
 Подробное описание фичи.
 
 ## User Stories
+
 - As a {user}, I want {goal}, so that {benefit}
 - ...
 
 ## Technical Requirements
+
 - Frontend: React component with form validation
 - Backend: Laravel API endpoint
 - Database: New table for storing data
 
 ## Architecture
+
 - Diagrams
 - Data flow
 - Component hierarchy
 
 ## Implementation Steps
+
 1. Database migration
 2. Backend API
 3. Frontend UI
@@ -83,12 +95,14 @@ specs/
 5. Documentation
 
 ## Testing Strategy
+
 - Unit tests
 - Integration tests
 - E2E tests
 - Manual testing checklist
 
 ## Rollout Plan
+
 - Phase 1: Internal testing
 - Phase 2: Beta users
 - Phase 3: Full release
@@ -97,17 +111,21 @@ specs/
 ## Naming Convention
 
 ### Chores
+
 `chore-{8-char-id}-{kebab-case-name}.md`
 
 Примеры:
+
 - `chore-a1b2c3d4-add-logging.md`
 - `chore-x9y8z7w6-fix-cors-issue.md`
 - `chore-m5n4k3j2-update-dependencies.md`
 
 ### Features
+
 `feature-{kebab-case-name}.md`
 
 Примеры:
+
 - `feature-user-profile.md`
 - `feature-news-filtering.md`
 - `feature-photo-upload.md`

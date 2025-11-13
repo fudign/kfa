@@ -2,13 +2,6 @@
   "name": "kfa-cli",
   "version": "1.0.0",
   "description": "Unified command-line interface for KFA project - Context-efficient AI agent tool",
-  "bin": {
-    "kfa": "./bin/kfa.js"
-  },
-  "main": "bin/kfa.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "kfa",
     "cli",
@@ -16,13 +9,20 @@
     "tools",
     "context-efficient"
   ],
-  "author": "KFA Team",
-  "license": "MIT",
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kfa/kfa-6-alpha"
+  },
+  "license": "MIT",
+  "author": "KFA Team",
+  "main": "bin/kfa.js",
+  "bin": {
+    "kfa": "./bin/kfa.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

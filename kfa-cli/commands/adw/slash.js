@@ -7,7 +7,7 @@ const { outputInfo, outputSuccess, outputError, parseFormat } = require('../../l
  */
 async function execute(args) {
   // Find slash command (starts with /)
-  const commandIndex = args.findIndex(arg => arg.startsWith('/'));
+  const commandIndex = args.findIndex((arg) => arg.startsWith('/'));
 
   if (commandIndex === -1) {
     outputError('Usage: kfa adw slash /command [args...] [options]');
@@ -74,7 +74,6 @@ async function execute(args) {
         }
       }
     }
-
   } catch (err) {
     if (format === 'json') {
       console.log(JSON.stringify({ error: err.message || err.error }, null, 2));

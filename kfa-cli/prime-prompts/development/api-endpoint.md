@@ -59,6 +59,7 @@ Please implement following Laravel REST API best practices:
    - Test authentication/authorization
 
 File structure:
+
 - routes/api.php - Route definition
 - app/Http/Controllers/Api/{Name}Controller.php
 - app/Http/Requests/Store{Name}Request.php

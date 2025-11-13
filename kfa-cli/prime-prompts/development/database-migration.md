@@ -57,11 +57,13 @@ Please create a Laravel migration following best practices:
    - Add to DatabaseSeeder
 
 Files to create/update:
-- database/migrations/{timestamp}_create_{table}_table.php
+
+- database/migrations/{timestamp}_create_{table}\_table.php
 - app/Models/{ModelName}.php
 - database/seeders/{TableName}Seeder.php
 
 Run after creation:
+
 ```bash
 kfa db migrate
 kfa db seed

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Lightbox } from '@/components/ui/Lightbox';
-import { mediaAPI } from '@/services/api';
+import { supabaseMediaAPI as mediaAPI } from '@/lib/supabase-media';
 import { usePermission } from '@/hooks/usePermission';
 import type { Media, PaginatedResponse } from '@/types';
 import {

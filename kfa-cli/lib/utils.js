@@ -87,7 +87,7 @@ function formatDuration(ms) {
 function parseArgs(args) {
   const parsed = {
     flags: {},
-    positional: []
+    positional: [],
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -131,5 +131,5 @@ module.exports = {
   getTimestamp,
   formatDuration,
   parseArgs,
-  parseFormat
+  parseFormat,
 };

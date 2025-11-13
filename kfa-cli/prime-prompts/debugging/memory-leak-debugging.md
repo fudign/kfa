@@ -15,6 +15,7 @@ I need to debug memory leaks:
 **Context:** {CONTEXT}
 
 ### Investigation Steps
+
 1. Reproduce the leak consistently
 2. Take heap snapshots (Chrome DevTools)
 3. Compare snapshots over time
@@ -22,6 +23,7 @@ I need to debug memory leaks:
 5. Trace back to leak source
 
 ### Common Causes
+
 - Event listeners not removed
 - Closures holding references
 - Timers/intervals not cleared
@@ -30,6 +32,7 @@ I need to debug memory leaks:
 - React: useEffect cleanup missing
 
 ### Fixes
+
 - Remove event listeners in cleanup
 - Clear intervals/timeouts
 - Implement WeakMap/WeakSet
@@ -38,6 +41,7 @@ I need to debug memory leaks:
 - Use AbortController for requests
 
 ## Success Criteria
+
 - ✅ Memory usage stable over time
 - ✅ Heap size doesn't grow
 - ✅ No retaining references

@@ -9,6 +9,7 @@ BMAD (Better Model for Agentic Development) - Streamlined for KFA project.
 ## Archived Modules
 
 Archived modules moved to `_archive/` to reduce context usage:
+
 - core/, bmb/, bmd/, bmm/ (26K tokens saved)
 
 ## Recommended Approach

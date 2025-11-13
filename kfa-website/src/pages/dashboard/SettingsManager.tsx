@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { settingsAPI } from '@/services/api';
+import { supabaseSettingsAPI as settingsAPI } from '@/lib/supabase-settings';
 import { usePermission } from '@/hooks/usePermission';
-import type { SiteSetting } from '@/types';
-import { Settings as SettingsIcon, Save, RefreshCw } from 'lucide-react';
+import type { SiteSetting } from '@/lib/supabase-settings';
+import { Settings as SettingsIcon, Save, RefreshCw, X, RotateCcw } from 'lucide-react';
+import { ToastContainer } from '@/components/ui/Toast';
+import { useToast } from '@/hooks/useToast';
 
 export function SettingsManagerPage() {
   const { can } = usePermission();
+  const { toasts, removeToast, success, error: showError } = useToast();
   const [settings, setSettings] = useState<Record<string, SiteSetting[]>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -16,6 +19,19 @@ export function SettingsManagerPage() {
   useEffect(() => {
     loadSettings();
   }, []);
+
+  // Предупреждение о несохраненных изменениях при уходе со страницы
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (Object.keys(editedValues).length > 0) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [editedValues]);
 
   const loadSettings = async () => {
     try {
@@ -52,19 +68,28 @@ export function SettingsManagerPage() {
       });
 
       if (settingsToUpdate.length === 0) {
-        alert('Нет изменений для сохранения');
+        showError('Нет изменений для сохранения');
         return;
       }
 
       await settingsAPI.update(settingsToUpdate);
       setEditedValues({});
       await loadSettings();
-      alert('Настройки успешно сохранены');
-    } catch (error) {
-      console.error('Error saving settings:', error);
-      alert('Ошибка при сохранении настроек');
+      success(`Сохранено ${settingsToUpdate.length} настроек`);
+    } catch (err: any) {
+      console.error('Error saving settings:', err);
+      showError(err.message || 'Ошибка при сохранении настроек');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleCancelChanges = () => {
+    if (Object.keys(editedValues).length === 0) return;
+
+    if (confirm('Вы уверены, что хотите отменить все несохраненные изменения?')) {
+      setEditedValues({});
+      success('Изменения отменены');
     }
   };
 
@@ -91,12 +116,12 @@ export function SettingsManagerPage() {
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={!!value}
-              onChange={(e) => handleValueChange(setting.id, e.target.checked)}
+              checked={value === 'true' || value === true}
+              onChange={(e) => handleValueChange(setting.id, e.target.checked ? 'true' : 'false')}
               className="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-2 focus:ring-primary-500/20"
             />
             <span className="text-sm text-neutral-600 dark:text-neutral-400">
-              {value ? 'Включено' : 'Выключено'}
+              {(value === 'true' || value === true) ? 'Включено' : 'Выключено'}
             </span>
           </label>
         );
@@ -106,25 +131,29 @@ export function SettingsManagerPage() {
           <input
             type="number"
             value={value || ''}
-            onChange={(e) => handleValueChange(setting.id, parseInt(e.target.value) || 0)}
+            onChange={(e) => handleValueChange(setting.id, e.target.value)}
             className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
           />
         );
 
-      case 'json':
+      case 'text':
         return (
           <textarea
-            value={typeof value === 'string' ? value : JSON.stringify(value, null, 2)}
-            onChange={(e) => {
-              try {
-                const parsed = JSON.parse(e.target.value);
-                handleValueChange(setting.id, parsed);
-              } catch {
-                handleValueChange(setting.id, e.target.value);
-              }
-            }}
+            value={value || ''}
+            onChange={(e) => handleValueChange(setting.id, e.target.value)}
             rows={5}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 font-mono text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+          />
+        );
+
+      case 'email':
+      case 'url':
+        return (
+          <input
+            type={setting.type}
+            value={value || ''}
+            onChange={(e) => handleValueChange(setting.id, e.target.value)}
+            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-900"
           />
         );
 
@@ -169,7 +198,7 @@ export function SettingsManagerPage() {
               Конфигурация параметров системы
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={loadSettings}
               disabled={loading}
@@ -178,14 +207,24 @@ export function SettingsManagerPage() {
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               Обновить
             </button>
-            {can('settings.update') && (
+            {hasChanges && (
               <button
                 onClick={handleSave}
-                disabled={!hasChanges || saving}
+                disabled={saving}
                 className="flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
               >
                 <Save className="h-4 w-4" />
                 {saving ? 'Сохранение...' : 'Сохранить изменения'}
+              </button>
+            )}
+            {hasChanges && (
+              <button
+                onClick={handleCancelChanges}
+                disabled={saving}
+                className="flex items-center gap-2 rounded-lg border border-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Отменить
               </button>
             )}
           </div>
@@ -229,18 +268,11 @@ export function SettingsManagerPage() {
                         <div className="flex-1">
                           <div className="mb-1 flex items-center gap-2">
                             <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">
-                              {setting.key}
+                              {setting.label || setting.key}
                             </h3>
-                            {!setting.is_public && (
-                              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-800 dark:bg-red-900/30 dark:text-red-400">
-                                Приватная
-                              </span>
-                            )}
-                            {setting.is_public && (
-                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                Публичная
-                              </span>
-                            )}
+                            <span className="text-xs font-mono text-neutral-400 dark:text-neutral-600">
+                              {setting.key}
+                            </span>
                           </div>
                           {setting.description && (
                             <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -280,27 +312,49 @@ export function SettingsManagerPage() {
           </div>
         )}
 
-        {/* Unsaved Changes Warning */}
+        {/* Unsaved Changes Warning - Floating */}
         {hasChanges && (
-          <div className="fixed bottom-4 right-4 rounded-lg border border-yellow-200 bg-yellow-50 p-4 shadow-lg dark:border-yellow-900 dark:bg-yellow-900/20">
-            <p className="mb-2 font-semibold text-yellow-900 dark:text-yellow-100">
-              У вас есть несохраненные изменения
-            </p>
-            <p className="mb-3 text-sm text-yellow-800 dark:text-yellow-400">
-              {Object.keys(editedValues).length} настро{Object.keys(editedValues).length === 1 ? 'йка' : 'ек'} изменено
-            </p>
-            {can('settings.update') && (
+          <div className="fixed bottom-4 right-4 z-40 min-w-[280px] max-w-[320px] rounded-lg border border-yellow-200 bg-yellow-50 p-4 shadow-xl dark:border-yellow-900 dark:bg-yellow-900/20">
+            <div className="mb-3 flex items-start justify-between">
+              <div className="flex-1">
+                <p className="mb-1 font-semibold text-yellow-900 dark:text-yellow-100">
+                  Несохраненные изменения
+                </p>
+                <p className="text-sm text-yellow-800 dark:text-yellow-400">
+                  {Object.keys(editedValues).length} настро{Object.keys(editedValues).length === 1 ? 'йка' : Object.keys(editedValues).length < 5 ? 'йки' : 'ек'} изменено
+                </p>
+              </div>
+              <button
+                onClick={() => setEditedValues({})}
+                className="ml-2 rounded-lg p-1 text-yellow-700 hover:bg-yellow-100 dark:text-yellow-300 dark:hover:bg-yellow-800/30"
+                title="Скрыть"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleCancelChanges}
+                disabled={saving}
+                className="flex-1 rounded-lg border border-yellow-300 bg-white px-3 py-2 text-sm font-semibold text-yellow-900 transition-colors hover:bg-yellow-100 disabled:opacity-50 dark:border-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-100 dark:hover:bg-yellow-800/60"
+              >
+                Отменить
+              </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
               >
-                {saving ? 'Сохранение...' : 'Сохранить сейчас'}
+                <Save className="h-4 w-4" />
+                {saving ? 'Сохранение...' : 'Сохранить'}
               </button>
-            )}
+            </div>
           </div>
         )}
       </div>
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </DashboardLayout>
   );
 }

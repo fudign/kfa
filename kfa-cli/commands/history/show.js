@@ -72,16 +72,9 @@ function displayCommandsHistory(history) {
     const status = entry.success ? '\u001b[32m✓\u001b[0m' : '\u001b[31m✗\u001b[0m';
     const timestamp = formatTimestamp(entry.timestamp);
     const duration = entry.duration.toFixed(0) + 'ms';
-    const argsStr = entry.args && entry.args.length > 0
-      ? ' ' + entry.args.join(' ')
-      : '';
+    const argsStr = entry.args && entry.args.length > 0 ? ' ' + entry.args.join(' ') : '';
 
-    console.log(
-      status + ' ' +
-      timestamp + ' ' +
-      entry.command + argsStr +
-      ' (' + duration + ')'
-    );
+    console.log(status + ' ' + timestamp + ' ' + entry.command + argsStr + ' (' + duration + ')');
 
     if (!entry.success && entry.error) {
       console.log('   Error: ' + entry.error);
@@ -97,12 +90,7 @@ function displayAgentsHistory(history) {
     const duration = entry.duration.toFixed(0) + 'ms';
     const prompt = truncate(entry.prompt, 60);
 
-    console.log(
-      status + ' ' +
-      timestamp + ' ' +
-      '"' + prompt + '"' +
-      ' (' + duration + ')'
-    );
+    console.log(status + ' ' + timestamp + ' ' + '"' + prompt + '"' + ' (' + duration + ')');
 
     if (entry.tokensUsed) {
       console.log('   Tokens: ' + entry.tokensUsed.toLocaleString());

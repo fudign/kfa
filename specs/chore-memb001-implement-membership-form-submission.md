@@ -10,6 +10,7 @@
 The membership application form (`Join.tsx`) has a TODO comment at line 99 indicating that form submission is not implemented. Users can fill out the form but cannot actually submit their membership applications.
 
 Current situation:
+
 - Frontend form exists with all fields
 - Backend route `/api/applications` exists but requires authentication
 - ApplicationController is empty (no implementation)
@@ -19,6 +20,7 @@ Current situation:
 ## Objective
 
 Implement complete membership application form submission flow:
+
 1. Make `/api/applications` endpoint public (no auth required for membership applications)
 2. Implement backend validation and storage
 3. Connect frontend form to backend API
@@ -31,11 +33,13 @@ Implement complete membership application form submission flow:
 ### 1. Backend Implementation
 
 #### 1.1 Update API Routes
+
 - [x] Make `POST /api/applications` public (remove `auth:sanctum` requirement)
 - [x] Add public route before authenticated routes group
 - [x] Keep rate limiting for security
 
 #### 1.2 Implement ApplicationController
+
 - [x] Implement `store()` method with validation
 - [x] Create membership application record
 - [x] Handle file uploads if needed
@@ -43,6 +47,7 @@ Implement complete membership application form submission flow:
 - [x] Add error handling
 
 #### 1.3 Update StoreApplicationRequest
+
 - [x] Add validation rules for all form fields:
   - membershipType (required, in:individual,corporate)
   - firstName (required, string, max:255)
@@ -56,6 +61,7 @@ Implement complete membership application form submission flow:
   - agreeToTerms (required, accepted)
 
 #### 1.4 Update MembershipApplication Model
+
 - [x] Verify fillable fields
 - [x] Add any necessary accessors/mutators
 - [x] Add status field logic (default: pending)
@@ -63,12 +69,14 @@ Implement complete membership application form submission flow:
 ### 2. Frontend Implementation
 
 #### 2.1 Create API Service
+
 - [x] Create API service in `src/services/api.ts`
 - [x] Add `submitMembershipApplication()` function
 - [x] Handle API errors properly
 - [x] Add TypeScript types
 
 #### 2.2 Update Join.tsx Component
+
 - [x] Replace TODO comment with actual implementation
 - [x] Add loading state during submission
 - [x] Add success message display
@@ -78,6 +86,7 @@ Implement complete membership application form submission flow:
 - [x] Clear form on success
 
 #### 2.3 Add UI Feedback
+
 - [x] Add notification for success
 - [x] Add notification for errors
 - [x] Add form validation feedback
@@ -102,12 +111,14 @@ Implement complete membership application form submission flow:
 ## Files to Modify
 
 ### Backend
+
 - `kfa-backend/kfa-api/routes/api.php` (modify - move applications route to public)
 - `kfa-backend/kfa-api/app/Http/Controllers/ApplicationController.php` (implement store method)
 - `kfa-backend/kfa-api/app/Http/Requests/StoreApplicationRequest.php` (add validation rules)
 - `kfa-backend/kfa-api/app/Models/MembershipApplication.php` (verify/update)
 
 ### Frontend
+
 - `kfa-website/src/services/api/applications.ts` (create new)
 - `kfa-website/src/pages/public/membership/Join.tsx` (implement submission)
 - `kfa-website/src/types/api.ts` (add types)
@@ -172,7 +183,7 @@ export interface MembershipApplicationData {
 }
 
 export async function submitMembershipApplication(
-  data: MembershipApplicationData
+  data: MembershipApplicationData,
 ): Promise<{ success: boolean; data?: any; error?: string }> {
   // Implementation
 }
@@ -193,11 +204,13 @@ export async function submitMembershipApplication(
 ## Dependencies
 
 **Requires:**
+
 - MembershipApplication model (completed)
 - Backend API structure (completed)
 - Frontend form UI (completed)
 
 **Blocks:**
+
 - Email notifications for applications
 - Admin dashboard for application review
 
@@ -223,6 +236,7 @@ export async function submitMembershipApplication(
 All tests performed against `http://localhost:8000/api/applications`
 
 #### Test 1: Individual Membership Submission
+
 ```bash
 POST /api/applications
 {
@@ -242,6 +256,7 @@ Response: {"data": {"id": 3, "status": "pending", ...}}
 ```
 
 #### Test 2: Corporate Membership Submission
+
 ```bash
 POST /api/applications
 {
@@ -257,6 +272,7 @@ Response: {"data": {"id": 4, "status": "pending", ...}}
 ```
 
 #### Test 3: Missing Required Fields Validation
+
 ```bash
 POST /api/applications
 {"membershipType": "individual", "firstName": "Test"}
@@ -277,6 +293,7 @@ Response: {
 ```
 
 #### Test 4: Motivation Min Length Validation
+
 ```bash
 POST /api/applications
 {..., "motivation": "Too short", ...}
@@ -291,6 +308,7 @@ Response: {
 ```
 
 #### Test 5: Duplicate Email Validation
+
 ```bash
 POST /api/applications
 {..., "email": "test123@example.com", ...}  // Already exists
@@ -305,6 +323,7 @@ Response: {
 ```
 
 #### Test 6: Required_if Validation (Corporate Organization Name)
+
 ```bash
 POST /api/applications
 {"membershipType": "corporate", ..., "organizationName": null}
@@ -323,6 +342,7 @@ Response: {
 **Status:** ✅ ALL TESTS PASSED
 
 **Backend:**
+
 - ✅ API endpoint properly configured (public, rate-limited)
 - ✅ ApplicationController fully implemented
 - ✅ Validation rules working correctly
@@ -330,6 +350,7 @@ Response: {
 - ✅ Database records created successfully
 
 **Frontend:**
+
 - ✅ API service implemented (`applicationsAPI.submit()`)
 - ✅ Join.tsx form submission complete
 - ✅ Loading state management
@@ -338,6 +359,7 @@ Response: {
 - ✅ Form disabled during submission
 
 **Validation:**
+
 - ✅ Required fields validation
 - ✅ Min length validation (motivation: 100 chars)
 - ✅ Email uniqueness validation
@@ -345,6 +367,7 @@ Response: {
 - ✅ Custom error messages
 
 **Notes:**
+
 - Railway backend unavailable during testing (502)
 - All tests performed on local Laravel backend
 - Frontend accessible at http://localhost:3000

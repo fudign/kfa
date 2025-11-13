@@ -5,12 +5,14 @@
 ## Что было сделано
 
 ✅ Создана базовая структура:
+
 - `adws/` - Директория для AI Developer Workflows
 - `specs/` - Директория для спецификаций и планов
 - `agents/` - Директория для outputs агентов
 - Документация в каждой директории
 
 ✅ Изучены примеры из tac-8:
+
 - Agent Layer Primitives (базовые ADW)
 - Multi-agent workflows
 - Observability система
@@ -66,6 +68,7 @@ python adws/adw_prompt.py "List all markdown files in docs/"
 ```
 
 Если все работает, вы увидите:
+
 - Output в консоли
 - Созданные файлы в `agents/{adw_id}/ops/`
 
@@ -84,6 +87,7 @@ python adws/adw_prompt.py "Ваш промпт здесь"
 ```
 
 **Примеры:**
+
 ```bash
 # Анализ кода
 python adws/adw_prompt.py "Analyze authentication flow in kfa-website"
@@ -171,6 +175,7 @@ agents/
 ```
 
 **Для отладки:**
+
 - Смотрите `cc_final_object.json` - финальный результат
 - Смотрите `custom_summary_output.json` - краткое резюме
 - Смотрите `cc_raw_output.jsonl` - полный лог (для debugging)
@@ -224,6 +229,7 @@ python adws/adw_slash_command.py /chore "Add photo upload functionality"
 ### Ошибка: "Claude Code CLI is not installed"
 
 Установите Claude Code:
+
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
@@ -241,6 +247,7 @@ chmod +x adws/*.py
 ### Ошибка: ANTHROPIC_API_KEY not found
 
 Добавьте в `.env`:
+
 ```bash
 ANTHROPIC_API_KEY=your_key_here
 ```
@@ -256,6 +263,7 @@ ANTHROPIC_API_KEY=your_key_here
 ### 2. Сохраняйте outputs
 
 Outputs в `agents/` содержат ценную информацию:
+
 - Для debugging
 - Для понимания что сделал агент
 - Для повтора успешных паттернов
@@ -263,6 +271,7 @@ Outputs в `agents/` содержат ценную информацию:
 ### 3. Используйте Specs
 
 Specs помогают:
+
 - Структурировать мысли
 - Дать агенту четкий план
 - Документировать изменения
@@ -292,16 +301,19 @@ node agent-tools/test/run-e2e.js
 ## Следующие шаги
 
 1. **Попробуйте простой пример:**
+
    ```bash
    python adws/adw_prompt.py "List all React components in kfa-website"
    ```
 
 2. **Создайте первый spec:**
+
    ```bash
    python adws/adw_slash_command.py /chore "Your first task"
    ```
 
 3. **Запустите полный workflow:**
+
    ```bash
    python adws/adw_chore_implement.py "Add a small feature"
    ```
@@ -315,6 +327,7 @@ node agent-tools/test/run-e2e.js
 ## Помощь
 
 Если возникли вопросы или проблемы:
+
 1. Проверьте outputs в `agents/{adw_id}/`
 2. Посмотрите примеры в `tac-8/`
 3. Проверьте документацию в `adws/README.md`

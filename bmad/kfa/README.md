@@ -20,6 +20,7 @@ kfa prime use <category>/<prompt> "<context>"
 ## Integration with KFA CLI
 
 KFA CLI provides 20 prime prompts covering:
+
 - Development (6 prompts)
 - Refactoring (4 prompts)
 - Testing (4 prompts)

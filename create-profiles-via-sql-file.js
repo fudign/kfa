@@ -8,7 +8,8 @@ const fs = require('fs');
 const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = 'https://eofneihisbhucxcydvac.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
+const SUPABASE_SERVICE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
 
 async function main() {
   console.log('\n╔═══════════════════════════════════════════════════╗');
@@ -29,13 +30,49 @@ async function main() {
     process.exit(1);
   }
 
-  const kfaUsers = authData.users.filter(u => u.email && u.email.includes('@kfa.kg'));
+  const kfaUsers = authData.users.filter((u) => u.email && u.email.includes('@kfa.kg'));
   console.log(`✅ Found ${kfaUsers.length} KFA users\n`);
 
   // Permission sets
   const permissionSets = {
-    admin: ['content.view', 'content.create', 'content.edit', 'content.delete', 'content.publish', 'media.view', 'media.upload', 'media.edit', 'media.delete', 'events.view', 'events.create', 'events.edit', 'events.delete', 'members.view', 'members.edit', 'partners.view', 'partners.create', 'partners.edit', 'partners.delete', 'settings.view', 'settings.edit', 'analytics.view', 'users.view', 'users.manage'],
-    editor: ['content.view', 'content.create', 'content.edit', 'content.publish', 'media.view', 'media.upload', 'media.edit', 'events.view', 'events.create', 'events.edit'],
+    admin: [
+      'content.view',
+      'content.create',
+      'content.edit',
+      'content.delete',
+      'content.publish',
+      'media.view',
+      'media.upload',
+      'media.edit',
+      'media.delete',
+      'events.view',
+      'events.create',
+      'events.edit',
+      'events.delete',
+      'members.view',
+      'members.edit',
+      'partners.view',
+      'partners.create',
+      'partners.edit',
+      'partners.delete',
+      'settings.view',
+      'settings.edit',
+      'analytics.view',
+      'users.view',
+      'users.manage',
+    ],
+    editor: [
+      'content.view',
+      'content.create',
+      'content.edit',
+      'content.publish',
+      'media.view',
+      'media.upload',
+      'media.edit',
+      'events.view',
+      'events.create',
+      'events.edit',
+    ],
     moderator: ['content.view', 'content.edit', 'media.view', 'events.view', 'members.view'],
     member: ['content.view'],
   };
@@ -66,8 +103,8 @@ VALUES (
   '${user.email}',
   '${user.user_metadata?.name || user.email}',
   '${role}',
-  ARRAY[${roles.map(r => `'${r}'`).join(', ')}],
-  ARRAY[${permissions.map(p => `'${p}'`).join(', ')}]
+  ARRAY[${roles.map((r) => `'${r}'`).join(', ')}],
+  ARRAY[${permissions.map((p) => `'${p}'`).join(', ')}]
 )
 ON CONFLICT (id) DO UPDATE SET
   role = EXCLUDED.role,
@@ -104,7 +141,7 @@ ORDER BY email;
   console.log('   7. Login and check Dashboard → Управление контентом → Новости ✅\n');
 
   console.log('📊 This will create:\n');
-  kfaUsers.forEach(user => {
+  kfaUsers.forEach((user) => {
     const role = user.email.split('@')[0];
     const validRole = ['admin', 'editor', 'moderator', 'member'].includes(role) ? role : 'member';
     const permCount = (permissionSets[validRole] || permissionSets.member).length;

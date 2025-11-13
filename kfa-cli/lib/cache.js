@@ -25,7 +25,9 @@ class Cache {
       }
       return data.value;
     } catch (error) {
-      try { fs.unlinkSync(cacheFile); } catch {}
+      try {
+        fs.unlinkSync(cacheFile);
+      } catch {}
       return null;
     }
   }
@@ -35,10 +37,10 @@ class Cache {
     const ttl = customTtl || this.ttl;
     const data = {
       value,
-      expires: Date.now() + (ttl * 1000),
+      expires: Date.now() + ttl * 1000,
       timestamp: Date.now(),
       key,
-      namespace: this.namespace
+      namespace: this.namespace,
     };
     try {
       fs.writeFileSync(cacheFile, JSON.stringify(data, null, 2));
@@ -62,7 +64,7 @@ class Cache {
     } else {
       if (fs.existsSync(this.cacheDir)) {
         const files = fs.readdirSync(this.cacheDir);
-        files.forEach(file => {
+        files.forEach((file) => {
           try {
             fs.unlinkSync(path.join(this.cacheDir, file));
           } catch {}
@@ -79,14 +81,14 @@ class Cache {
         validEntries: 0,
         expiredEntries: 0,
         totalSize: 0,
-        ttl: this.ttl
+        ttl: this.ttl,
       };
     }
     const files = fs.readdirSync(this.cacheDir);
     let totalSize = 0;
     let validCount = 0;
     let expiredCount = 0;
-    files.forEach(file => {
+    files.forEach((file) => {
       const filepath = path.join(this.cacheDir, file);
       try {
         const stats = fs.statSync(filepath);
@@ -107,7 +109,7 @@ class Cache {
       validEntries: validCount,
       expiredEntries: expiredCount,
       totalSize: totalSize,
-      ttl: this.ttl
+      ttl: this.ttl,
     };
   }
 
@@ -117,7 +119,7 @@ class Cache {
     }
     const files = fs.readdirSync(this.cacheDir);
     let removed = 0;
-    files.forEach(file => {
+    files.forEach((file) => {
       const filepath = path.join(this.cacheDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));

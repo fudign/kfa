@@ -17,11 +17,13 @@ Analyze and improve test coverage for:
 ## Generate Coverage Report
 
 ### Frontend (Vitest)
+
 ```bash
 npm test -- --coverage
 ```
 
 ### Backend (PHPUnit)
+
 ```bash
 php artisan test --coverage
 ```
@@ -115,30 +117,27 @@ php artisan test --coverage
 ## Configuration
 
 ### Vitest (vitest.config.ts)
+
 ```typescript
 export default defineConfig({
   test: {
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      exclude: [
-        'node_modules/',
-        'dist/',
-        '**/*.test.ts',
-        '**/*.spec.ts'
-      ],
+      exclude: ['node_modules/', 'dist/', '**/*.test.ts', '**/*.spec.ts'],
       thresholds: {
         lines: 80,
         branches: 70,
         functions: 80,
-        statements: 80
-      }
-    }
-  }
+        statements: 80,
+      },
+    },
+  },
 });
 ```
 
 ### PHPUnit (phpunit.xml)
+
 ```xml
 <coverage>
   <include>

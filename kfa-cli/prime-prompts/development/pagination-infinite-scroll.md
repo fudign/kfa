@@ -19,6 +19,7 @@ Please implement the following:
 ### 1. Choose Pagination Strategy
 
 **Option A: Traditional Pagination**
+
 - Numbered page buttons
 - Previous/Next buttons
 - Jump to page input
@@ -26,6 +27,7 @@ Please implement the following:
 - Display items X-Y of Z
 
 **Option B: Infinite Scroll**
+
 - Load more as user scrolls
 - Show loading indicator
 - "Load more" button option
@@ -33,6 +35,7 @@ Please implement the following:
 - Handle fast scrolling
 
 **Option C: Hybrid**
+
 - Infinite scroll with pagination fallback
 - Load more button after N auto-loads
 - Combine benefits of both approaches
@@ -40,6 +43,7 @@ Please implement the following:
 ### 2. Frontend Implementation
 
 **UI Components:**
+
 - Results list/grid
 - Loading skeleton/spinner
 - "Load more" button (if applicable)
@@ -48,6 +52,7 @@ Please implement the following:
 - "Back to top" button
 
 **State Management:**
+
 - Track current page/offset
 - Store loaded items
 - Handle loading state
@@ -55,6 +60,7 @@ Please implement the following:
 - Implement optimistic updates
 
 **Scroll Detection (Infinite Scroll):**
+
 - Use Intersection Observer
 - Detect bottom of list reached
 - Load next page automatically
@@ -64,11 +70,13 @@ Please implement the following:
 ### 3. Backend API
 
 **Endpoint Design:**
+
 - `GET /api/{resource}?page=1&limit=20` - Page-based
 - `GET /api/{resource}?offset=0&limit=20` - Offset-based
 - `GET /api/{resource}?cursor={cursor}&limit=20` - Cursor-based (best for infinite scroll)
 
 **Response Format:**
+
 ```json
 {
   "data": [...],
@@ -85,6 +93,7 @@ Please implement the following:
 ```
 
 **Pagination Types:**
+
 - **Offset-based**: Simple but issues with updates
 - **Cursor-based**: Best for real-time data
 - **Keyset pagination**: Most efficient for large datasets
@@ -92,6 +101,7 @@ Please implement the following:
 ### 4. Performance Optimization
 
 **Frontend:**
+
 - Virtual scrolling for very large lists
 - Implement windowing (react-window, react-virtualized)
 - Cache loaded pages
@@ -99,6 +109,7 @@ Please implement the following:
 - Lazy load images/heavy content
 
 **Backend:**
+
 - Use indexes on sort/filter columns
 - Limit maximum page size
 - Use database pagination (LIMIT/OFFSET or cursors)
@@ -108,18 +119,21 @@ Please implement the following:
 ### 5. User Experience
 
 **Loading States:**
+
 - Show skeleton loaders
 - Display "Loading..." message
 - Show progress for known total
 - Disable interactions during load
 
 **Error Handling:**
+
 - Handle network errors
 - Show retry button
 - Display error message
 - Maintain loaded content
 
 **Scroll Position:**
+
 - Save scroll position on navigation
 - Restore position on back button
 - Remember page on return
@@ -128,6 +142,7 @@ Please implement the following:
 ### 6. Edge Cases
 
 **Handle:**
+
 - Empty results (first page)
 - Last page reached
 - No more results
@@ -140,12 +155,14 @@ Please implement the following:
 ### 7. Accessibility
 
 **Keyboard Navigation:**
+
 - Support arrow keys
 - Focus management
 - Skip to page navigation
 - Announce new content to screen readers
 
 **ARIA Attributes:**
+
 - aria-label for page buttons
 - aria-current for active page
 - role="status" for loading
@@ -154,6 +171,7 @@ Please implement the following:
 ### 8. Additional Features
 
 **Nice-to-Have:**
+
 - Remember page per session
 - URL reflects current page
 - Deep linking to pages
@@ -165,6 +183,7 @@ Please implement the following:
 ### 9. Testing
 
 **Tests:**
+
 - Test loading first page
 - Test loading subsequent pages
 - Test reaching last page
@@ -177,6 +196,7 @@ Please implement the following:
 ## Context Files
 
 Review these:
+
 - Existing list/grid components
 - API structure
 - State management approach
@@ -186,6 +206,7 @@ Review these:
 ## Expected Output
 
 Provide:
+
 1. Pagination/scroll component
 2. Backend API endpoint
 3. Pagination logic

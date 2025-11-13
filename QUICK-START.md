@@ -3,6 +3,7 @@
 ## ✅ Что уже готово
 
 ### Frontend (React + Vite)
+
 - ✅ Форма подачи заявки на членство `/join`
 - ✅ API сервис с TypeScript типами
 - ✅ Обработка success/error состояний
@@ -11,6 +12,7 @@
 - ✅ Запущен dev сервер на **http://localhost:3002**
 
 ### Backend (Laravel 11)
+
 - ✅ API endpoint `POST /api/applications` (публичный, с rate limiting)
 - ✅ Полная валидация данных
 - ✅ ApplicationController с обработкой ошибок
@@ -18,6 +20,7 @@
 - ✅ StoreApplicationRequest с validation rules
 
 ### База данных
+
 - ✅ Supabase подключение настроено
 - ✅ SQL скрипт создан: `database-setup.sql`
 - ⏳ **Нужно выполнить SQL в Supabase Dashboard**
@@ -29,6 +32,7 @@
 ### Шаг 1: Создать таблицы в Supabase (ВАЖНО!)
 
 1. Откройте в браузере:
+
    ```
    https://supabase.com/dashboard/project/eofneihisbhucxcydvac/sql/new
    ```
@@ -60,9 +64,11 @@ Backend будет доступен на **http://localhost:8000**
 ## 🔍 Проверка
 
 ### Данные в Supabase
+
 Откройте Table Editor и проверьте таблицу `membership_applications`
 
 ### API напрямую
+
 ```bash
 curl -X POST http://localhost:8000/api/applications \
   -H "Content-Type: application/json" \

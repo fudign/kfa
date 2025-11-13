@@ -96,7 +96,7 @@ await waitFor(() => {
 ```typescript
 // Mock API calls
 vi.mock('../api', () => ({
-  fetchData: vi.fn().mockResolvedValue(mockData)
+  fetchData: vi.fn().mockResolvedValue(mockData),
 }));
 
 // Mock timers
@@ -121,7 +121,7 @@ afterEach(() => {
 // Use fixed test data
 const testUser = {
   id: 'test-user-123',
-  name: 'Test User'
+  name: 'Test User',
 };
 
 // Or seed random generator
@@ -131,19 +131,25 @@ Math.seedrandom('consistent-seed');
 ### 6. Increase Timeouts (Last Resort)
 
 ```typescript
-test('slow operation', async () => {
-  // ...
-}, { timeout: 10000 });
+test(
+  'slow operation',
+  async () => {
+    // ...
+  },
+  { timeout: 10000 },
+);
 ```
 
 ## Testing Fixes
 
 1. **Run Multiple Times**
+
    ```bash
    npm test -- --run --repeat-each=20
    ```
 
 2. **Run in Different Orders**
+
    ```bash
    npm test -- --run --shuffle
    ```

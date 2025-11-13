@@ -12,6 +12,7 @@ cd kfa-cli
 ## Phase 1: Unified CLI (18 commands)
 
 ### Database
+
 ```bash
 kfa db status          # Check DB (cached 6h)
 kfa db migrate         # Run migrations
@@ -20,21 +21,25 @@ kfa db backup          # Create backup
 ```
 
 ### Testing
+
 ```bash
 kfa test all           # Run all tests
 ```
 
 ### Deployment
+
 ```bash
 kfa deploy verify      # Verify deployment
 ```
 
 ### Development
+
 ```bash
 kfa dev check          # Check environment
 ```
 
 ### Cache
+
 ```bash
 kfa cache status       # Show stats
 kfa cache clear        # Clear all
@@ -42,6 +47,7 @@ kfa cache warm         # Warm cache
 ```
 
 ### Project
+
 ```bash
 kfa project info       # Show info
 kfa project health     # Health check
@@ -50,11 +56,13 @@ kfa project health     # Health check
 ## Phase 2: Prime Prompts (20 prompts)
 
 ### List All Prompts
+
 ```bash
 kfa prime list
 ```
 
 Output: 20 prompts in 5 categories
+
 - development (6)
 - refactoring (4)
 - testing (4)
@@ -62,11 +70,13 @@ Output: 20 prompts in 5 categories
 - documentation (3)
 
 ### Show Prompt
+
 ```bash
 kfa prime show development/feature-implementation
 ```
 
 ### Use Prompt
+
 ```bash
 kfa prime use development/feature-implementation "Add news filtering"
 ```
@@ -76,6 +86,7 @@ Output: Ready-to-use prompt with your context
 ## Common Workflows
 
 ### Daily Development
+
 ```bash
 # Morning check
 kfa dev check
@@ -93,6 +104,7 @@ kfa deploy verify
 ```
 
 ### Add New Feature
+
 ```bash
 kfa prime list                                    # Browse prompts
 kfa prime use development/feature-implementation "Add user search"
@@ -102,6 +114,7 @@ kfa deploy verify                                 # Verify
 ```
 
 ### Fix Bug
+
 ```bash
 kfa prime use debugging/find-bug-root-cause "Login fails"
 # Debug with AI assistance
@@ -109,6 +122,7 @@ kfa test all                                      # Verify fix
 ```
 
 ### Add Tests
+
 ```bash
 kfa prime use testing/add-unit-tests "UserService"
 # Implement tests
@@ -116,6 +130,7 @@ kfa test all                                      # Run tests
 ```
 
 ### Refactor Code
+
 ```bash
 kfa prime use refactoring/optimize-performance "News list slow"
 # Implement optimizations
@@ -125,16 +140,19 @@ kfa test all                                      # Verify no regression
 ## Key Features
 
 ### Context Efficiency
+
 - Phase 1: 99% context reduction (25K → 200 tokens)
 - Phase 2: Self-contained prompts (no external context needed)
 - Total: 50K+ tokens freed for actual work!
 
 ### Intelligent Caching
+
 - 6-hour TTL for repeated operations
 - 90%+ hit rate
 - 98% performance improvement
 
 ### Prime Prompts Benefits
+
 - 95% time savings on prompt writing
 - 100% best practices compliance
 - KFA-specific conventions
@@ -188,18 +206,21 @@ kfa prime use <category>/<name> "<context>"
 ## Metrics Summary
 
 ### Phase 1
+
 - 18 commands in 6 categories
 - 99% context reduction
 - 6-hour intelligent caching
 - Zero dependencies
 
 ### Phase 2
+
 - 20 prime prompts in 5 categories
 - 95% time savings
 - 100% best practices
 - KFA-specific
 
 ### Combined Impact
+
 - 50K+ tokens freed
 - 95% faster prompt writing
 - 90%+ cache hit rate
@@ -208,6 +229,7 @@ kfa prime use <category>/<name> "<context>"
 ## What's Next?
 
 Ready for Phase 3: BMAD Simplification
+
 - Simplify 5 modules to 1
 - 26K → 2K tokens (92% reduction)
 - Focus on KFA workflows

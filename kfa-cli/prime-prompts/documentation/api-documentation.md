@@ -55,20 +55,24 @@ For each endpoint include:
 Get list of news articles.
 
 ### Authentication
+
 Required: Yes (Bearer token)
 
 ### Query Parameters
+
 - page (integer, optional): Page number, default 1
 - limit (integer, optional): Items per page, default 10
 - category (string, optional): Filter by category
 
 ### Response 200
+
 {
-  "data": [...],
-  "pagination": {...}
+"data": [...],
+"pagination": {...}
 }
 
 ### Example
+
 curl -H "Authorization: Bearer TOKEN" https://api.kfa.kg/api/news?page=1
 ```
 

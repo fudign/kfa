@@ -212,10 +212,7 @@ class PythonAdapter {
     const latestDir = dirs[0];
 
     // Find summary file
-    const summaryFiles = this._findFilesRecursive(
-      latestDir.path,
-      'custom_summary_output.json'
-    );
+    const summaryFiles = this._findFilesRecursive(latestDir.path, 'custom_summary_output.json');
 
     if (summaryFiles.length === 0) {
       return null;

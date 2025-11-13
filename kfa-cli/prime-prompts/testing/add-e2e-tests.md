@@ -76,10 +76,10 @@ test.describe('Feature Name', () => {
 
   test('should do something', async ({ page }) => {
     // Arrange
-    
+
     // Act
     await page.click('button');
-    
+
     // Assert
     await expect(page).toHaveURL('/success');
   });

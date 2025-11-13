@@ -15,6 +15,7 @@ I need integration tests for:
 **Context:** {CONTEXT}
 
 ### Test Coverage
+
 - Test complete user flows
 - Test API integration
 - Test database operations
@@ -22,6 +23,7 @@ I need integration tests for:
 - Test error scenarios
 
 ### Test Structure
+
 - Setup test database/environment
 - Seed test data
 - Execute test scenario
@@ -29,6 +31,7 @@ I need integration tests for:
 - Cleanup after tests
 
 ### Assertions
+
 - Verify data persistence
 - Check API responses
 - Validate side effects
@@ -36,6 +39,7 @@ I need integration tests for:
 - Verify integrations
 
 ## Success Criteria
+
 - ✅ Full flows tested
 - ✅ Tests are isolated
 - ✅ Tests are repeatable

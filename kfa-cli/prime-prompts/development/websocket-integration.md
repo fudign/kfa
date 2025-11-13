@@ -19,12 +19,14 @@ Please implement the following:
 ### 1. Server-Side Setup
 
 **WebSocket Server:**
+
 - Set up WebSocket server (Socket.io, ws, or native)
 - Implement connection handling
 - Add authentication/authorization
 - Implement room/namespace management if needed
 
 **Event Handlers:**
+
 - Create event listeners for client messages
 - Implement broadcast functionality
 - Handle disconnections gracefully
@@ -33,12 +35,14 @@ Please implement the following:
 ### 2. Client-Side Setup
 
 **WebSocket Client:**
+
 - Create WebSocket client wrapper/service
 - Implement connection management
 - Add automatic reconnection with exponential backoff
 - Handle connection state (connecting, connected, disconnected)
 
 **Event Handling:**
+
 - Subscribe to server events
 - Emit events to server
 - Handle connection errors
@@ -47,12 +51,14 @@ Please implement the following:
 ### 3. Message Protocol
 
 **Message Format:**
+
 - Define consistent message structure
 - Include message types/events
 - Add timestamps
 - Include sender/recipient information
 
 **Data Validation:**
+
 - Validate incoming messages
 - Sanitize user input
 - Handle malformed messages
@@ -61,12 +67,14 @@ Please implement the following:
 ### 4. State Management
 
 **Connection State:**
+
 - Track connection status
 - Store pending messages
 - Implement message acknowledgment
 - Handle duplicate messages
 
 **UI Updates:**
+
 - Update UI based on connection state
 - Show connection indicators
 - Display real-time data updates
@@ -75,12 +83,14 @@ Please implement the following:
 ### 5. Error Handling
 
 **Connection Errors:**
+
 - Handle network failures
 - Implement retry logic
 - Show user-friendly error messages
 - Log errors for debugging
 
 **Message Errors:**
+
 - Handle invalid messages
 - Implement timeout for responses
 - Queue failed messages for retry
@@ -89,12 +99,14 @@ Please implement the following:
 ### 6. Security
 
 **Authentication:**
+
 - Implement WebSocket authentication
 - Validate session tokens
 - Handle expired tokens
 - Implement heartbeat/ping-pong
 
 **Authorization:**
+
 - Check user permissions for events
 - Validate room/channel access
 - Prevent unauthorized data access
@@ -103,12 +115,14 @@ Please implement the following:
 ### 7. Performance
 
 **Optimization:**
+
 - Implement message batching if applicable
 - Use binary protocol if needed
 - Compress large messages
 - Limit message size
 
 **Scaling:**
+
 - Consider horizontal scaling (Redis adapter)
 - Implement load balancing strategy
 - Handle server restarts gracefully
@@ -117,6 +131,7 @@ Please implement the following:
 ### 8. Testing
 
 **Tests:**
+
 - Unit tests for message handling
 - Integration tests for full flow
 - Test connection scenarios
@@ -126,6 +141,7 @@ Please implement the following:
 ## Context Files
 
 Review these files:
+
 - Existing WebSocket setup (if any)
 - Authentication system
 - API structure
@@ -134,6 +150,7 @@ Review these files:
 ## Expected Output
 
 Provide:
+
 1. Server-side WebSocket setup
 2. Client-side WebSocket service/hook
 3. Message type definitions

@@ -80,7 +80,6 @@ async function execute(args) {
     if (!testResult.success) {
       process.exit(1);
     }
-
   } catch (err) {
     if (spinner) spinner.fail('Unit tests failed');
 
@@ -110,8 +109,8 @@ async function runVitest(cwd) {
 
     proc.on('close', (code) => {
       // Parse output for test results
-      const passed = (output.match(/(\d+) passed/)?.[1]) || 0;
-      const failed = (output.match(/(\d+) failed/)?.[1]) || 0;
+      const passed = output.match(/(\d+) passed/)?.[1] || 0;
+      const failed = output.match(/(\d+) failed/)?.[1] || 0;
       const total = parseInt(passed) + parseInt(failed);
 
       resolve({

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Clock, MapPin, Users } from 'lucide-react';
 import { SEO } from '@/components/seo';
+import { useSettings } from '@/contexts/SettingsContext';
 
 interface Event {
   id: number;
@@ -112,7 +113,13 @@ function EventsHeroSection() {
 }
 
 export function EventsPage() {
+  const { getSettingNumber } = useSettings();
   const [selectedType, setSelectedType] = useState<string>('all');
+
+  // Настройка количества событий на странице (для использования с API)
+  const eventsPerPage = getSettingNumber('events_per_page', 9);
+  // TODO: Использовать eventsPerPage при загрузке событий через API
+  // const response = await eventsAPI.getAll({ per_page: eventsPerPage });
 
   const filteredEvents = events.filter((event) => {
     return selectedType === 'all' || event.type === selectedType;

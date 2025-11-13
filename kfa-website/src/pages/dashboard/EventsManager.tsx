@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MediaPicker } from '@/components/cms/MediaPicker';
-import { eventsAPI } from '@/services/api';
+import { supabaseEventsAPI as eventsAPI } from '@/lib/supabase-events';
 import { usePermission } from '@/hooks/usePermission';
 import type { Event, PaginatedResponse, Media } from '@/types';
 import { eventsSchema } from '@/schemas/events.schema';

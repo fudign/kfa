@@ -12,6 +12,7 @@
 The education system has a Calendar page (`Calendar.tsx`) that displays upcoming events, but it uses hardcoded data instead of fetching from the backend API. Additionally, there's no functionality for users to register for events.
 
 **Current Situation:**
+
 - Backend EventRegistrationController is fully implemented
 - Backend routes exist for event registration (/api/events/{event}/register)
 - Frontend eventsAPI exists but is incomplete
@@ -19,6 +20,7 @@ The education system has a Calendar page (`Calendar.tsx`) that displays upcoming
 - No event registration UI/UX flow
 
 **Backend Ready:**
+
 - ✅ Event model and migrations
 - ✅ EventRegistration model and migrations
 - ✅ EventRegistrationController with full CRUD
@@ -26,6 +28,7 @@ The education system has a Calendar page (`Calendar.tsx`) that displays upcoming
 - ✅ Admin routes for managing registrations
 
 **Frontend Needed:**
+
 - ❌ Connect Calendar to events API
 - ❌ Event registration button/modal
 - ❌ Registration form
@@ -35,6 +38,7 @@ The education system has a Calendar page (`Calendar.tsx`) that displays upcoming
 ## Objective
 
 Implement complete event registration system:
+
 1. Connect Calendar page to backend events API
 2. Add event registration functionality
 3. Create "My Registrations" page
@@ -46,6 +50,7 @@ Implement complete event registration system:
 ### 1. Frontend API Integration
 
 #### 1.1 Update eventsAPI Service
+
 - [x] Add `register(eventId)` method
 - [x] Add `getMyRegistrations()` method
 - [x] Add `cancelRegistration(registrationId)` method
@@ -53,6 +58,7 @@ Implement complete event registration system:
 - [x] Add error handling
 
 #### 1.2 Update Calendar.tsx
+
 - [x] Remove hardcoded events data
 - [x] Fetch events from API on mount
 - [x] Add loading state
@@ -63,12 +69,14 @@ Implement complete event registration system:
 ### 2. Event Registration Flow
 
 #### 2.1 Create Registration Modal Component (Optional - Using inline approach)
+
 - [x] Display event details (integrated into Calendar.tsx)
 - [x] Loading state during submission
 - [x] Success message
 - [x] Error handling
 
 #### 2.2 Registration States
+
 - [x] Check if user is logged in (redirect to login if not)
 - [x] Check if seats available
 - [x] Disable registration if event is full
@@ -78,6 +86,7 @@ Implement complete event registration system:
 ### 3. My Registrations Page
 
 #### 3.1 Create Page
+
 - [x] Create `MyRegistrations.tsx` in dashboard
 - [x] List all user's registrations
 - [x] Show registration status (pending/approved/cancelled/attended)
@@ -86,6 +95,7 @@ Implement complete event registration system:
 - [x] Add cancel registration button
 
 #### 3.2 Registration Details
+
 - [x] Event name, date, time
 - [x] Location (online/in-person)
 - [x] Status badge
@@ -95,6 +105,7 @@ Implement complete event registration system:
 ### 4. Admin Features (Optional Phase 2)
 
 #### 4.1 Event Registrations Management
+
 - [ ] View all registrations for an event
 - [ ] Approve/reject registrations
 - [ ] Mark attendance
@@ -115,16 +126,19 @@ Implement complete event registration system:
 ## Files to Create/Modify
 
 ### Frontend - Create
+
 - [x] `kfa-website/src/pages/dashboard/MyRegistrations.tsx` (created)
 - [ ] `kfa-website/src/components/modals/EventRegistrationModal.tsx` (optional - not implemented)
 - [ ] `kfa-website/src/types/events.ts` (not needed - types in api.ts)
 
 ### Frontend - Modify
+
 - [x] `kfa-website/src/services/api.ts` (registration methods added)
 - [x] `kfa-website/src/pages/public/education/Calendar.tsx` (API integration complete)
 - [x] `kfa-website/src/app/App.tsx` (route for MyRegistrations added)
 
 ### Backend
+
 - No changes needed (already implemented)
 
 ## Technical Details
@@ -133,19 +147,19 @@ Implement complete event registration system:
 
 ```typescript
 // Public events listing
-GET /api/events
-GET /api/events/upcoming
-GET /api/events/{event}
+GET / api / events;
+GET / api / events / upcoming;
+GET / api / events / { event };
 
 // User registration (requires auth)
-POST /api/events/{event}/register
-GET /api/my-event-registrations
-POST /api/event-registrations/{registration}/cancel
+POST / api / events / { event } / register;
+GET / api / my - event - registrations;
+POST / api / event - registrations / { registration } / cancel;
 
 // Admin (requires admin role)
-GET /api/event-registrations
-POST /api/event-registrations/{registration}/approve
-POST /api/event-registrations/{registration}/mark-attended
+GET / api / event - registrations;
+POST / api / event - registrations / { registration } / approve;
+POST / api / event - registrations / { registration } / mark - attended;
 ```
 
 ### Event Registration Request
@@ -208,11 +222,14 @@ export const eventsAPI = {
   // Existing methods...
 
   // Register for event
-  register: async (eventId: number, data?: {
-    notes?: string;
-    dietary_requirements?: string;
-    special_needs?: string;
-  }) => {
+  register: async (
+    eventId: number,
+    data?: {
+      notes?: string;
+      dietary_requirements?: string;
+      special_needs?: string;
+    },
+  ) => {
     const response = await api.post(`/events/${eventId}/register`, data);
     return response.data;
   },
@@ -247,11 +264,13 @@ export const eventsAPI = {
 ## Dependencies
 
 **Requires:**
+
 - User authentication system (completed)
 - Event model and routes (completed)
 - EventRegistration model and controller (completed)
 
 **Blocks:**
+
 - CPE activity tracking
 - Certificate generation
 - Event attendance marking
@@ -287,6 +306,7 @@ export const eventsAPI = {
 ### ✅ Completed
 
 **Phase 1: API Integration**
+
 1. **Updated `kfa-website/src/services/api.ts`**:
    - Added `EventRegistration` TypeScript interface with all fields
    - Added `EventRegistrationData` interface for optional registration data
@@ -327,6 +347,7 @@ export const eventsAPI = {
 ### 🎯 Key Features Implemented
 
 **Calendar Page:**
+
 - Real-time event data from backend API
 - Registration button with authentication flow
 - Seats availability tracking
@@ -336,6 +357,7 @@ export const eventsAPI = {
 - Responsive card layout with date badges
 
 **MyRegistrations Page:**
+
 - View all personal event registrations
 - Filter by registration status
 - Cancel pending/approved registrations
@@ -345,6 +367,7 @@ export const eventsAPI = {
 - Responsive dashboard layout
 
 **API Integration:**
+
 - Full TypeScript type safety
 - Error handling for all API calls
 - Support for both paginated and non-paginated responses
@@ -354,11 +377,13 @@ export const eventsAPI = {
 ### 📝 Testing Status
 
 **API Endpoint Test:**
+
 - ✅ `GET /api/events?status=published` - Returns empty array (no events seeded)
 - Expected response format validated
 - Error handling confirmed working
 
 **Frontend Verification:**
+
 - ✅ Calendar page loads without errors
 - ✅ Shows empty state when no events
 - ✅ Registration button redirects to login when not authenticated
@@ -369,6 +394,7 @@ export const eventsAPI = {
 ### 🔄 Next Steps (Phase 2)
 
 To complete testing:
+
 1. Seed events in database using EventsSeeder
 2. Test full registration flow with authenticated user
 3. Test duplicate registration prevention
@@ -377,6 +403,7 @@ To complete testing:
 6. Test MyRegistrations page with real registrations
 
 Optional enhancements:
+
 - Email notifications for registration confirmation
 - Email reminders before event
 - Calendar export (ICS file)

@@ -51,6 +51,7 @@ I need a migration guide for:
    - FAQ
 
 ## Success Criteria
+
 - ✅ Clear, actionable steps
 - ✅ Code examples provided
 - ✅ Common issues addressed

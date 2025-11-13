@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, Search, ArrowRight } from 'lucide-react';
 import { SEO } from '@/components/seo';
 import { supabaseNewsAPI as newsAPI } from '@/lib/supabase-news';
+import { useSettings } from '@/contexts/SettingsContext';
 import type { News } from '@/types';
 
 function NewsHeroSection() {
@@ -32,18 +33,22 @@ function NewsHeroSection() {
 }
 
 export function NewsPage() {
+  const { getSettingNumber } = useSettings();
   const [searchQuery, setSearchQuery] = useState('');
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Получить настройку количества новостей на странице
+  const newsPerPage = getSettingNumber('news_per_page', 12);
+
   useEffect(() => {
     loadNews();
-  }, []);
+  }, [newsPerPage]);
 
   const loadNews = async () => {
     try {
       setLoading(true);
-      const response = await newsAPI.getAll({ status: 'published', per_page: 100 });
+      const response = await newsAPI.getAll({ status: 'published', per_page: newsPerPage });
       setNews(response.data);
     } catch (error) {
       console.error('Error loading news:', error);

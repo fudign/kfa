@@ -115,6 +115,7 @@ Implement full-stack authentication following KFA architecture:
    - Test token expiration handling
 
 Files to create:
+
 - Backend:
   - app/Http/Controllers/Api/AuthController.php
   - app/Http/Requests/LoginRequest.php

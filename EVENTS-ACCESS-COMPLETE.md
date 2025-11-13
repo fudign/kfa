@@ -10,12 +10,14 @@
 ### ✅ Исправлен Permission Check в EventsManager
 
 **Проблема:**
+
 ```typescript
 // До (неправильный permission)
 if (!can('manage_events')) {  ❌
 ```
 
 **Решение:**
+
 ```typescript
 // После (правильный permission)
 if (!can('events.view')) {  ✅
@@ -24,6 +26,7 @@ if (!can('events.view')) {  ✅
 ### ✅ Проверены Permissions в БД
 
 **Все events permissions существуют:**
+
 ```
 ✅ events.view   - просмотр событий
 ✅ events.create - создание событий
@@ -171,6 +174,7 @@ GET    /api/events/{id}/registrations     - список зарегистрир�
 ### Что Было Исправлено:
 
 **1. EventsManager.tsx (строка 195)**
+
 ```typescript
 // До:
 if (!can('manage_events')) {  ❌
@@ -180,6 +184,7 @@ if (!can('events.view')) {  ✅
 ```
 
 **2. Permissions в БД:**
+
 ```sql
 -- Все события permissions существуют:
 SELECT name FROM permissions
@@ -193,6 +198,7 @@ AND permission_id IN (SELECT id FROM permissions WHERE name LIKE 'events.%');
 ```
 
 **3. Sidebar Configuration (DashboardLayout.tsx)**
+
 ```typescript
 {
   to: '/dashboard/events',
@@ -277,6 +283,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 **Причина**: Старый JWT токен без `events.view` permission
 
 **Решение**:
+
 ```
 http://localhost:3000/auth/force-logout
 ```
@@ -345,5 +352,5 @@ http://localhost:3000/auth/force-logout
 
 ---
 
-*Разработано: 2025-11-13*
-*Просто перелогиньтесь и управляйте событиями!* 🚀📅
+_Разработано: 2025-11-13_
+_Просто перелогиньтесь и управляйте событиями!_ 🚀📅

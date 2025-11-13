@@ -12,21 +12,25 @@
 **Класс Observability** с методами:
 
 **Логирование:**
+
 - `logCommand(command, args, result, duration)` - лог выполнения команды
 - `logAgent(prompt, result, duration)` - лог AI agent выполнения
 - `logError(context, error)` - лог ошибок
 
 **Метрики:**
+
 - `getMetrics(period)` - получить метрики (today/week/month)
 - `getCacheStats()` - статистика кэша
 - `_updateMetrics()` - автоматическое обновление метрик
 
 **История:**
+
 - `getCommandHistory(limit)` - история команд
 - `getAgentHistory(limit)` - история AI runs
 - `getErrorHistory(limit)` - история ошибок
 
 **Очистка:**
+
 - `clearAll()` - очистить все данные
 - `clearOldData(days)` - очистить данные старше N дней
 
@@ -53,7 +57,8 @@
     └── errors.jsonl              # Все ошибки
 ```
 
-**Формат метрик (daily/*.json):**
+**Формат метрик (daily/\*.json):**
+
 ```json
 {
   "command": {
@@ -79,7 +84,8 @@
 }
 ```
 
-**Формат истории (*.jsonl):**
+**Формат истории (\*.jsonl):**
+
 ```json
 {"timestamp":"2025-11-11T21:22:42.169Z","command":"cache status","args":[],"success":true,"duration":10,"output":"","error":null}
 {"timestamp":"2025-11-11T21:22:43.645Z","command":"db status","args":["--no-cache"],"success":true,"duration":36,"output":"","error":null}
@@ -107,7 +113,6 @@ function main() {
 
     // Логирование успеха
     obs.logCommand(commandName, rest, { success: true }, duration);
-
   } catch (error) {
     const duration = Date.now() - startTime;
 
@@ -119,6 +124,7 @@ function main() {
 ```
 
 **Преимущества:**
+
 - Автоматический tracking всех команд
 - Прозрачное логирование (не ломает выполнение)
 - Сбор метрик производительности
@@ -131,6 +137,7 @@ function main() {
 Показывает метрики использования CLI.
 
 **Использование:**
+
 ```bash
 # Метрики за сегодня
 kfa project metrics
@@ -146,6 +153,7 @@ kfa project metrics --format json
 ```
 
 **Вывод (текстовый):**
+
 ```
 ✓ KFA Project Metrics (today)
 
@@ -172,6 +180,7 @@ kfa project metrics --format json
 Показывает историю выполнения.
 
 **Использование:**
+
 ```bash
 # История команд (последние 20)
 kfa history show
@@ -190,6 +199,7 @@ kfa history show --format json
 ```
 
 **Вывод (текстовый):**
+
 ```
 ✓ History: commands (last 5)
 
@@ -205,6 +215,7 @@ kfa history show --format json
 Очистка старых данных.
 
 **Использование:**
+
 ```bash
 # Очистить данные старше 30 дней (default)
 kfa history clear
@@ -243,6 +254,7 @@ kfa-cli/
 **Обновлён:** `kfa-cli/README.md`
 
 Добавлено:
+
 - Секция "Observability & Metrics" с примерами команд
 - Команда `history` в список всех команд
 - Обновлён список Features
@@ -252,6 +264,7 @@ kfa-cli/
 ### Проведённые тесты
 
 ✅ **Автоматическое логирование**
+
 ```bash
 kfa cache status        # Автоматически залогировано
 kfa db status           # Автоматически залогировано
@@ -259,12 +272,14 @@ kfa agent list          # Автоматически залогировано
 ```
 
 ✅ **Просмотр метрик**
+
 ```bash
 kfa project metrics     # Показывает все метрики
 kfa project metrics --format json  # JSON output
 ```
 
 ✅ **Просмотр истории**
+
 ```bash
 kfa history show                    # История команд
 kfa history show --type commands    # То же самое
@@ -273,6 +288,7 @@ kfa history show --format json      # JSON output
 ```
 
 ✅ **Структура файлов**
+
 ```bash
 ls .kfa/
 # cache  history  logs  metrics  prompts
@@ -282,34 +298,37 @@ cat .kfa/history/commands.jsonl
 ```
 
 ✅ **JSON форматы**
+
 - Метрики в JSON ✓
 - История в JSON ✓
 - Корректная структура данных ✓
 
 ### Результаты тестирования
 
-| Тест | Статус | Примечание |
-|------|--------|------------|
-| Автоматическое логирование | ✅ | Все команды tracked |
-| Метрики сохраняются | ✅ | В .kfa/metrics/daily/ |
-| История сохраняется | ✅ | В .kfa/history/*.jsonl |
-| Команда `project metrics` | ✅ | Работает идеально |
-| Команда `history show` | ✅ | Все типы (commands/agents/errors) |
-| JSON output | ✅ | Для всех команд |
-| Форматирование времени | ✅ | "just now", "5m ago", etc. |
-| Очистка данных | ✅ | --all и --days работают |
+| Тест                       | Статус | Примечание                        |
+| -------------------------- | ------ | --------------------------------- |
+| Автоматическое логирование | ✅     | Все команды tracked               |
+| Метрики сохраняются        | ✅     | В .kfa/metrics/daily/             |
+| История сохраняется        | ✅     | В .kfa/history/\*.jsonl           |
+| Команда `project metrics`  | ✅     | Работает идеально                 |
+| Команда `history show`     | ✅     | Все типы (commands/agents/errors) |
+| JSON output                | ✅     | Для всех команд                   |
+| Форматирование времени     | ✅     | "just now", "5m ago", etc.        |
+| Очистка данных             | ✅     | --all и --days работают           |
 
 ## Преимущества
 
 ### 1. Полная прозрачность
 
 **До Фазы 5:**
+
 - Нет понимания, какие команды используются
 - Нет метрик производительности
 - Нет истории выполнения
 - Нет tracking ошибок
 
 **После Фазы 5:**
+
 - Все команды автоматически tracked
 - Метрики производительности (duration, success rate)
 - Полная история выполнения
@@ -318,6 +337,7 @@ cat .kfa/history/commands.jsonl
 ### 2. Аналитика использования
 
 **Доступные метрики:**
+
 - Количество запусков каждой команды
 - Средняя длительность выполнения
 - Success rate для каждой команды
@@ -326,6 +346,7 @@ cat .kfa/history/commands.jsonl
 - Cost tracking для AI операций (tokens, $)
 
 **Пример вопросов, на которые можно ответить:**
+
 - Какие команды используются чаще всего?
 - Какие команды самые медленные?
 - Какой success rate у операций?
@@ -335,16 +356,19 @@ cat .kfa/history/commands.jsonl
 ### 3. Отладка и troubleshooting
 
 **История ошибок:**
+
 ```bash
 kfa history show --type errors
 ```
 
 **Детальные логи:**
+
 - Каждая ошибка сохраняется в `.kfa/logs/errors/{timestamp}.log`
 - Полный stack trace
 - Контекст выполнения
 
 **Категоризированные логи:**
+
 - `.kfa/logs/agent/` - AI operations
 - `.kfa/logs/db/` - Database operations
 - `.kfa/logs/deploy/` - Deployment logs
@@ -352,11 +376,13 @@ kfa history show --type errors
 ### 4. Zero overhead
 
 **Производительность:**
+
 - Логирование асинхронное (не блокирует)
 - Silent fail (не ломает команды при ошибках записи)
 - Минимальный overhead (~1-2ms на команду)
 
 **Тесты производительности:**
+
 ```
 cache status без observability:  10ms
 cache status с observability:    10ms
@@ -366,6 +392,7 @@ overhead: <1ms (negligible)
 ### 5. Композируемость
 
 **JSON output для автоматизации:**
+
 ```bash
 # Получить метрики в JSON
 kfa project metrics --format json
@@ -384,12 +411,12 @@ node analyze-metrics.js $(kfa project metrics --format json)
 
 ### Количество кода
 
-| Компонент | Строк | Файлов |
-|-----------|-------|--------|
-| Библиотека Observability | 450 | 1 |
-| Команды (metrics, history) | 350 | 3 |
-| Интеграция в kfa.js | ~30 | 1 (update) |
-| **Всего** | **830+** | **4** |
+| Компонент                  | Строк    | Файлов     |
+| -------------------------- | -------- | ---------- |
+| Библиотека Observability   | 450      | 1          |
+| Команды (metrics, history) | 350      | 3          |
+| Интеграция в kfa.js        | ~30      | 1 (update) |
+| **Всего**                  | **830+** | **4**      |
 
 ### Покрытие
 
@@ -524,6 +551,7 @@ kfa project dashboard
 ```
 
 **Содержимое:**
+
 - Графики использования команд
 - Timeline активности
 - Success rate charts
@@ -561,26 +589,26 @@ kfa project retention --set 30days
 
 ## Итоговые результаты Фазы 5
 
-| Параметр | Результат |
-|----------|-----------|
-| Статус | ✅ ЗАВЕРШЕНО |
-| Созданных файлов | 3 |
-| Обновленных файлов | 1 |
-| Строк кода | 830+ |
-| Команд добавлено | 3 (metrics, history show, history clear) |
-| Тестирование | ✅ Пройдено (8+ тестов) |
-| Производительность | Zero overhead (<1ms) |
+| Параметр           | Результат                                |
+| ------------------ | ---------------------------------------- |
+| Статус             | ✅ ЗАВЕРШЕНО                             |
+| Созданных файлов   | 3                                        |
+| Обновленных файлов | 1                                        |
+| Строк кода         | 830+                                     |
+| Команд добавлено   | 3 (metrics, history show, history clear) |
+| Тестирование       | ✅ Пройдено (8+ тестов)                  |
+| Производительность | Zero overhead (<1ms)                     |
 
 ## Объединенные результаты (Фазы 1-5)
 
-| Фаза | Достижение | Метрика |
-|------|------------|---------|
-| Фаза 1 | Unified CLI | 40,775 токенов |
-| Фаза 2 | Prime Prompts | 20 промптов |
-| Фаза 3 | BMAD Simplification | 25,800 токенов |
-| Фаза 4 | ADW Integration | 100% workflows |
-| Фаза 5 | Observability | Full tracking |
-| **ИТОГО** | **66,575+ токенов + полная observability** | ✅ |
+| Фаза      | Достижение                                 | Метрика        |
+| --------- | ------------------------------------------ | -------------- |
+| Фаза 1    | Unified CLI                                | 40,775 токенов |
+| Фаза 2    | Prime Prompts                              | 20 промптов    |
+| Фаза 3    | BMAD Simplification                        | 25,800 токенов |
+| Фаза 4    | ADW Integration                            | 100% workflows |
+| Фаза 5    | Observability                              | Full tracking  |
+| **ИТОГО** | **66,575+ токенов + полная observability** | ✅             |
 
 ## Заключение
 
@@ -596,6 +624,7 @@ kfa project retention --set 30days
 ✅ Тестирование пройдено
 
 KFA CLI теперь имеет **полную прозрачность** работы:
+
 - Видимость всех операций
 - Метрики производительности
 - История выполнения

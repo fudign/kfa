@@ -45,7 +45,6 @@ async function execute(args) {
       };
 
       if (spinner) spinner.succeed(`Frontend built in ${formatDuration(duration)}`);
-
     } catch (err) {
       results.frontend = {
         success: false,
@@ -83,7 +82,6 @@ async function execute(args) {
       };
 
       if (spinner) spinner.succeed(`Backend optimized in ${formatDuration(duration)}`);
-
     } catch (err) {
       results.backend = {
         success: false,
@@ -99,8 +97,7 @@ async function execute(args) {
   }
 
   // Determine overall success
-  results.success = (!results.frontend || results.frontend.success) &&
-                    (!results.backend || results.backend.success);
+  results.success = (!results.frontend || results.frontend.success) && (!results.backend || results.backend.success);
 
   // Output results
   if (format === 'json') {

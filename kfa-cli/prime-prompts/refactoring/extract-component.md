@@ -58,6 +58,7 @@ Follow component extraction best practices:
    - Test edge cases
 
 File structure:
+
 - src/components/{ComponentName}.tsx
 - src/components/{ComponentName}.test.tsx
 - src/types/{componentName}.types.ts

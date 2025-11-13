@@ -15,12 +15,14 @@ I need to fix race conditions:
 **Context:** {CONTEXT}
 
 ### Identification
+
 - Intermittent bugs
 - Depends on timing
 - Different results with same input
 - Errors under load/concurrency
 
 ### Common Patterns
+
 - Multiple async operations on same data
 - State updates in wrong order
 - Concurrent API requests
@@ -28,6 +30,7 @@ I need to fix race conditions:
 - Promises resolving out of order
 
 ### Solutions
+
 - Use AbortController for requests
 - Add request cancellation
 - Use request deduplication
@@ -38,6 +41,7 @@ I need to fix race conditions:
 - Implement optimistic UI properly
 
 ## Success Criteria
+
 - ✅ Consistent results
 - ✅ No timing-dependent bugs
 - ✅ Tests with concurrency pass

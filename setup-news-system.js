@@ -8,27 +8,50 @@ const { createClient } = require('@supabase/supabase-js');
 
 // Supabase credentials
 const SUPABASE_URL = 'https://eofneihisbhucxcydvac.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
+const SUPABASE_SERVICE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
 
 // Permission sets by role
 const PERMISSION_SETS = {
   admin: [
-    'content.view', 'content.create', 'content.edit', 'content.delete', 'content.publish',
-    'media.view', 'media.upload', 'media.edit', 'media.delete',
-    'events.view', 'events.create', 'events.edit', 'events.delete',
-    'members.view', 'members.edit',
-    'partners.view', 'partners.create', 'partners.edit', 'partners.delete',
-    'settings.view', 'settings.edit',
-    'analytics.view', 'users.view', 'users.manage',
+    'content.view',
+    'content.create',
+    'content.edit',
+    'content.delete',
+    'content.publish',
+    'media.view',
+    'media.upload',
+    'media.edit',
+    'media.delete',
+    'events.view',
+    'events.create',
+    'events.edit',
+    'events.delete',
+    'members.view',
+    'members.edit',
+    'partners.view',
+    'partners.create',
+    'partners.edit',
+    'partners.delete',
+    'settings.view',
+    'settings.edit',
+    'analytics.view',
+    'users.view',
+    'users.manage',
   ],
   editor: [
-    'content.view', 'content.create', 'content.edit', 'content.publish',
-    'media.view', 'media.upload', 'media.edit',
-    'events.view', 'events.create', 'events.edit',
+    'content.view',
+    'content.create',
+    'content.edit',
+    'content.publish',
+    'media.view',
+    'media.upload',
+    'media.edit',
+    'events.view',
+    'events.create',
+    'events.edit',
   ],
-  moderator: [
-    'content.view', 'content.edit', 'media.view', 'events.view', 'members.view',
-  ],
+  moderator: ['content.view', 'content.edit', 'media.view', 'events.view', 'members.view'],
   member: ['content.view'],
 };
 
@@ -227,11 +250,11 @@ async function executeSql(supabase, sql, description) {
       const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec`, {
         method: 'POST',
         headers: {
-          'apikey': SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+          apikey: SUPABASE_SERVICE_KEY,
+          Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: sql })
+        body: JSON.stringify({ query: sql }),
       });
 
       if (!response.ok) {
@@ -265,10 +288,7 @@ async function main() {
   console.log('\n═══ STEP 1: Setup Profiles Table ═══');
 
   // Try to check if profiles table exists
-  const { data: existingProfiles, error: checkError } = await supabase
-    .from('profiles')
-    .select('id')
-    .limit(1);
+  const { data: existingProfiles, error: checkError } = await supabase.from('profiles').select('id').limit(1);
 
   if (checkError && checkError.message.includes('does not exist')) {
     console.log('📊 Profiles table does NOT exist - creating...');
@@ -327,7 +347,7 @@ async function main() {
 
     // Get auth users
     const { data: authUsers } = await supabase.auth.admin.listUsers();
-    const kfaUsers = authUsers.users.filter(u => u.email && u.email.includes('@kfa.kg'));
+    const kfaUsers = authUsers.users.filter((u) => u.email && u.email.includes('@kfa.kg'));
 
     for (const user of kfaUsers) {
       const role = user.email.split('@')[0]; // admin, editor, moderator, member
@@ -336,16 +356,14 @@ async function main() {
 
       console.log(`   Creating profile: ${user.email} (${validRole})`);
 
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .insert({
-          id: user.id,
-          email: user.email,
-          name: user.user_metadata?.name || user.email,
-          role: validRole,
-          roles: validRole === 'admin' ? ['admin', 'editor', 'moderator', 'member'] : [validRole],
-          permissions: permissions,
-        });
+      const { error: insertError } = await supabase.from('profiles').insert({
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.name || user.email,
+        role: validRole,
+        roles: validRole === 'admin' ? ['admin', 'editor', 'moderator', 'member'] : [validRole],
+        permissions: permissions,
+      });
 
       if (insertError) {
         console.log(`   ⚠️  Failed: ${insertError.message}`);
@@ -363,10 +381,7 @@ async function main() {
       console.log(`   Updating: ${profile.email} (${profile.role})`);
       console.log(`   → Adding ${permissions.length} permissions`);
 
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ permissions })
-        .eq('id', profile.id);
+      const { error: updateError } = await supabase.from('profiles').update({ permissions }).eq('id', profile.id);
 
       if (updateError) {
         console.log(`   ❌ Failed: ${updateError.message}`);
@@ -379,10 +394,7 @@ async function main() {
   // STEP 3: Check news table
   console.log('\n═══ STEP 3: Setup News Table ═══');
 
-  const { data: existingNews, error: newsCheckError } = await supabase
-    .from('news')
-    .select('id')
-    .limit(1);
+  const { data: existingNews, error: newsCheckError } = await supabase.from('news').select('id').limit(1);
 
   if (newsCheckError && newsCheckError.message.includes('does not exist')) {
     console.log('📊 News table does NOT exist');
@@ -396,9 +408,7 @@ async function main() {
     console.log('✅ News table exists');
 
     // Check if we have news
-    const { data: allNews, count } = await supabase
-      .from('news')
-      .select('*', { count: 'exact' });
+    const { data: allNews, count } = await supabase.from('news').select('*', { count: 'exact' });
 
     console.log(`   Found ${count || 0} news items`);
 
@@ -409,7 +419,8 @@ async function main() {
         {
           title: 'Добро пожаловать в КФА',
           slug: 'dobro-pozhalovat-v-kfa',
-          content: 'Кыргызский Финансовый Альянс рад приветствовать вас! Мы являемся саморегулируемой организацией профессиональных участников рынка ценных бумаг Кыргызской Республики.',
+          content:
+            'Кыргызский Финансовый Альянс рад приветствовать вас! Мы являемся саморегулируемой организацией профессиональных участников рынка ценных бумаг Кыргызской Республики.',
           excerpt: 'Кыргызский Финансовый Альянс - профессиональное объединение участников рынка ценных бумаг.',
           image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800',
           status: 'published',
@@ -431,7 +442,8 @@ async function main() {
         {
           title: 'Аналитический отчет: Рынок ценных бумаг Кыргызстана в 2025',
           slug: 'analiticheskij-otchet-rynok-cennyh-bumag-2025',
-          content: 'Представляем вашему вниманию комплексный анализ состояния и перспектив развития рынка ценных бумаг Кыргызской Республики.',
+          content:
+            'Представляем вашему вниманию комплексный анализ состояния и перспектив развития рынка ценных бумаг Кыргызской Республики.',
           excerpt: 'Комплексный анализ рынка ценных бумаг за 2025 год.',
           image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800',
           status: 'published',
@@ -442,9 +454,7 @@ async function main() {
       ];
 
       for (const news of sampleNews) {
-        const { error: insertError } = await supabase
-          .from('news')
-          .insert(news);
+        const { error: insertError } = await supabase.from('news').insert(news);
 
         if (insertError) {
           console.log(`   ⚠️  Failed to create: ${news.title}`);
@@ -459,25 +469,20 @@ async function main() {
   // STEP 4: Verify everything
   console.log('\n═══ STEP 4: Verification ═══');
 
-  const { data: finalProfiles } = await supabase
-    .from('profiles')
-    .select('email, role, permissions')
-    .order('email');
+  const { data: finalProfiles } = await supabase.from('profiles').select('email, role, permissions').order('email');
 
   if (finalProfiles) {
     console.log('\n✅ User Permissions:');
-    finalProfiles.forEach(user => {
+    finalProfiles.forEach((user) => {
       console.log(`   - ${user.email.padEnd(25)} (${user.role.padEnd(10)}): ${user.permissions?.length || 0} permissions`);
     });
   }
 
-  const { data: finalNews, count: newsCount } = await supabase
-    .from('news')
-    .select('title, status, featured', { count: 'exact' });
+  const { data: finalNews, count: newsCount } = await supabase.from('news').select('title, status, featured', { count: 'exact' });
 
   if (finalNews) {
     console.log(`\n✅ News in database: ${newsCount || 0}`);
-    finalNews.forEach(news => {
+    finalNews.forEach((news) => {
       const featured = news.featured ? '⭐' : '  ';
       console.log(`   ${featured} ${news.title} (${news.status})`);
     });

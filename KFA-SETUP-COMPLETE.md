@@ -21,6 +21,7 @@ adws/
 ```
 
 **Адаптации для KFA:**
+
 - Добавлена поддержка Windows environment variables
 - Настроено для работы с KFA структурой проекта
 - Готово к использованию!
@@ -50,6 +51,7 @@ agent-tools/supabase/
 ```
 
 **Возможности:**
+
 - Тест подключения к Supabase
 - Проверка всех storage buckets (media, documents, avatars)
 - JSON output для автоматизации
@@ -63,6 +65,7 @@ agent-tools/railway/
 ```
 
 **Возможности:**
+
 - Проверка Railway backend deployment
 - Health check API
 - Response time измерение
@@ -76,6 +79,7 @@ agent-tools/vercel/
 ```
 
 **Возможности:**
+
 - Проверка Vercel frontend deployment
 - Cache status
 - Response time измерение
@@ -286,11 +290,13 @@ bash agent-tools/examples/kfa-dev-workflow.sh         # Dev check
 ### Immediate (Прямо сейчас)
 
 1. **Установить uv:**
+
    ```powershell
    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
    ```
 
 2. **Первый тест:**
+
    ```bash
    python adws/adw_prompt.py "List all React components in kfa-website"
    ```
@@ -460,6 +466,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ### Ошибка: "ANTHROPIC_API_KEY not found"
 
 Добавьте в `.env`:
+
 ```bash
 ANTHROPIC_API_KEY=your_key_here
 ```
@@ -477,6 +484,7 @@ chmod +x adws/*.py
 ✅ **Проект KFA теперь полностью готов к agentic development!**
 
 Вы можете:
+
 - 🤖 Программно оркестрировать агентов через ADW
 - 📋 Создавать структурированные планы в specs/
 - 🔧 Использовать легковесные agent-tools
@@ -486,6 +494,7 @@ chmod +x adws/*.py
 **Начните с:** [KFA-ADW-QUICKSTART.md](KFA-ADW-QUICKSTART.md)
 
 **Первая команда:**
+
 ```bash
 python adws/adw_prompt.py "List all React components in kfa-website"
 ```
@@ -494,5 +503,5 @@ python adws/adw_prompt.py "List all React components in kfa-website"
 
 **Успехов в агентной разработке! 🎉**
 
-*Generated with agentic development principles*
-*Based on tac-8 examples and BMAD Core*
+_Generated with agentic development principles_
+_Based on tac-8 examples and BMAD Core_

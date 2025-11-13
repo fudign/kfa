@@ -9,9 +9,11 @@
 ## 🔐 Authentication
 
 ### POST /register
+
 Регистрация нового пользователя.
 
 **Body:**
+
 ```json
 {
   "name": "John Doe",
@@ -22,6 +24,7 @@
 ```
 
 **Response 201:**
+
 ```json
 {
   "user": {
@@ -36,9 +39,11 @@
 ---
 
 ### POST /login
+
 Вход в систему.
 
 **Body:**
+
 ```json
 {
   "email": "john@example.com",
@@ -47,6 +52,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "user": { ... },
@@ -57,11 +63,13 @@
 ---
 
 ### POST /logout
+
 Выход из системы.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Response 200:**
+
 ```json
 {
   "message": "Logged out successfully"
@@ -73,9 +81,11 @@
 ## 📝 Membership Applications
 
 ### POST /applications
+
 Подать заявку на членство (public).
 
 **Body:**
+
 ```json
 {
   "membershipType": "full",
@@ -91,6 +101,7 @@
 ```
 
 **Response 201:**
+
 ```json
 {
   "success": true,
@@ -106,11 +117,13 @@
 ---
 
 ### GET /applications/my
+
 Получить свои заявки.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -128,15 +141,18 @@
 ---
 
 ### GET /applications (Admin)
+
 Получить все заявки.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Query Parameters:**
+
 - `status` - фильтр по статусу
 - `page` - номер страницы
 
 **Response 200:**
+
 ```json
 {
   "data": [...],
@@ -148,11 +164,13 @@
 ---
 
 ### GET /applications/pending (Admin)
+
 Получить заявки в статусе pending.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -170,11 +188,13 @@
 ---
 
 ### POST /applications/{id}/approve (Admin)
+
 Одобрить заявку.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -190,11 +210,13 @@
 ---
 
 ### POST /applications/{id}/reject (Admin)
+
 Отклонить заявку.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Body:**
+
 ```json
 {
   "reason": "Insufficient documentation"
@@ -202,6 +224,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -219,11 +242,13 @@
 ## 💳 Payments
 
 ### POST /payments
+
 Создать платёж.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Body:**
+
 ```json
 {
   "application_id": 1,
@@ -233,12 +258,14 @@
 ```
 
 **Payment Types:**
+
 - `membership_fee`
 - `subscription`
 - `donation`
 - `other`
 
 **Response 201:**
+
 ```json
 {
   "success": true,
@@ -256,11 +283,13 @@
 ---
 
 ### GET /payments/my
+
 Получить свои платежи.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -279,6 +308,7 @@
 ---
 
 ### GET /payments/{id}
+
 Получить конкретный платёж.
 
 **Headers:** `Authorization: Bearer {token}`
@@ -286,6 +316,7 @@
 **Access:** Owner or Admin
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -302,11 +333,13 @@
 ---
 
 ### GET /payments (Admin)
+
 Получить все платежи.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "data": [...],
@@ -318,11 +351,13 @@
 ---
 
 ### POST /payments/{id}/confirm (Admin)
+
 Подтвердить платёж.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -337,11 +372,13 @@
 ---
 
 ### POST /payments/{id}/fail (Admin)
+
 Отклонить платёж.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Body:**
+
 ```json
 {
   "reason": "Invalid bank transfer"
@@ -349,6 +386,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -364,11 +402,13 @@
 ---
 
 ### POST /payments/{id}/refund (Admin)
+
 Вернуть средства.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Body:**
+
 ```json
 {
   "reason": "User requested refund"
@@ -376,6 +416,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -391,11 +432,13 @@
 ---
 
 ### DELETE /payments/{id} (Admin)
+
 Удалить платёж (только pending/failed).
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "success": true,
@@ -408,14 +451,17 @@
 ## 🎓 Certifications
 
 ### GET /certification-programs
+
 Получить все программы сертификации.
 
 **Query Parameters:**
+
 - `type` - basic/specialized
 - `is_active` - true/false
 - `search` - поиск по названию
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -434,11 +480,13 @@
 ---
 
 ### GET /my-certifications
+
 Получить свои сертификаты.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -457,11 +505,13 @@
 ---
 
 ### POST /certifications/apply
+
 Подать заявку на сертификацию.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Body:**
+
 ```json
 {
   "certification_program_id": 1,
@@ -470,6 +520,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "data": {
@@ -484,11 +535,13 @@
 ---
 
 ### POST /certifications/{id}/approve (Admin)
+
 Одобрить заявку на сертификацию.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Response 200:**
+
 ```json
 {
   "data": {
@@ -501,11 +554,13 @@
 ---
 
 ### POST /certifications/{id}/issue (Admin)
+
 Выдать сертификат после сдачи экзамена.
 
 **Headers:** `Authorization: Bearer {admin_token}`
 
 **Body:**
+
 ```json
 {
   "exam_score": 85,
@@ -518,6 +573,7 @@
 ```
 
 **Response 200:**
+
 ```json
 {
   "data": {
@@ -533,9 +589,11 @@
 ---
 
 ### GET /certifications/verify/{certificateNumber}
+
 Проверить сертификат (public).
 
 **Response 200:**
+
 ```json
 {
   "valid": true,
@@ -556,14 +614,17 @@
 ## 🎫 Events
 
 ### GET /events
+
 Получить все события.
 
 **Query Parameters:**
+
 - `type` - conference/workshop/webinar/networking/exam
 - `status` - draft/published/cancelled/completed
 - `upcoming` - true (только предстоящие)
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -583,11 +644,13 @@
 ---
 
 ### POST /events/{id}/register
+
 Зарегистрироваться на событие.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Body:**
+
 ```json
 {
   "answers": {
@@ -598,6 +661,7 @@
 ```
 
 **Response 201:**
+
 ```json
 {
   "message": "Successfully registered for event",
@@ -614,15 +678,18 @@
 ---
 
 ### GET /my-event-registrations
+
 Получить свои регистрации на события.
 
 **Headers:** `Authorization: Bearer {token}`
 
 **Query Parameters:**
+
 - `status` - pending/approved/cancelled
 - `upcoming` - true
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -641,14 +708,17 @@
 ## 📰 News & Content
 
 ### GET /news
+
 Получить все новости (public).
 
 **Query Parameters:**
+
 - `status` - draft/published/archived
 - `search` - поиск по заголовку
 - `category` - фильтр по категории
 
 **Response 200:**
+
 ```json
 {
   "data": [
@@ -669,6 +739,7 @@
 ## 🔒 Error Responses
 
 ### 401 Unauthorized
+
 ```json
 {
   "message": "Unauthenticated"
@@ -676,6 +747,7 @@
 ```
 
 ### 403 Forbidden
+
 ```json
 {
   "success": false,
@@ -684,6 +756,7 @@
 ```
 
 ### 404 Not Found
+
 ```json
 {
   "message": "Resource not found"
@@ -691,6 +764,7 @@
 ```
 
 ### 422 Validation Error
+
 ```json
 {
   "message": "The given data was invalid",
@@ -701,6 +775,7 @@
 ```
 
 ### 500 Server Error
+
 ```json
 {
   "success": false,
@@ -739,13 +814,17 @@
 ## 💡 Best Practices
 
 ### Pagination
+
 Все list endpoints поддерживают пагинацию:
+
 ```
 GET /api/news?page=2&per_page=20
 ```
 
 ### Error Handling
+
 Всегда проверяйте `success` field:
+
 ```javascript
 if (response.data.success) {
   // Success
@@ -755,9 +834,10 @@ if (response.data.success) {
 ```
 
 ### Rate Limiting
+
 - Auth endpoints: 5 requests/minute
 - Other endpoints: 60 requests/minute
 
 ---
 
-*API Reference v1.0.0 - Updated: 2025-11-13*
+_API Reference v1.0.0 - Updated: 2025-11-13_

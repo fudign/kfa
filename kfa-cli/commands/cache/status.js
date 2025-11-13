@@ -5,9 +5,9 @@ const path = require('path');
 
 function execute(args) {
   const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
-  
+
   const cacheRoot = path.join(process.cwd(), '.kfa', 'cache');
-  
+
   if (!fs.existsSync(cacheRoot)) {
     if (format === 'json') {
       outputJSON({ namespaces: [], totalSize: 0, totalEntries: 0 });
@@ -16,26 +16,26 @@ function execute(args) {
     }
     return;
   }
-  
+
   const namespaces = fs.readdirSync(cacheRoot);
   const allStats = {};
   let totalSize = 0;
   let totalEntries = 0;
-  
-  namespaces.forEach(ns => {
+
+  namespaces.forEach((ns) => {
     const cache = new Cache(ns);
     const stats = cache.stats();
     allStats[ns] = stats;
     totalSize += stats.totalSize;
     totalEntries += stats.totalEntries;
   });
-  
+
   if (format === 'json') {
     outputJSON({ namespaces: allStats, totalSize, totalEntries });
   } else {
     outputSuccess('Cache Status:');
     outputText('');
-    namespaces.forEach(ns => {
+    namespaces.forEach((ns) => {
       const stats = allStats[ns];
       outputText('  ' + ns + ':');
       outputText('    Entries: ' + stats.validEntries + ' valid, ' + stats.expiredEntries + ' expired');

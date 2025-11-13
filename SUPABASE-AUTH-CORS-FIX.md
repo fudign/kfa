@@ -17,6 +17,7 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 Вместо исправления CORS в Laravel (требует deployment), **переключаемся на Supabase Auth** напрямую из frontend. Это полностью избавляет от CORS проблем.
 
 ### Преимущества:
+
 - ✅ **No CORS issues** - frontend напрямую с Supabase
 - ✅ **Faster** - нет промежуточного Laravel API
 - ✅ **Built-in features** - email verification, password reset, OAuth providers
@@ -30,6 +31,7 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 **File:** `supabase-auth-setup.sql`
 
 **Структура:**
+
 ```sql
 -- Таблица profiles (extends auth.users)
 CREATE TABLE public.profiles (
@@ -59,6 +61,7 @@ CREATE TRIGGER on_auth_user_created
 **File:** `kfa-website/src/lib/supabase-auth.ts`
 
 **Functions:**
+
 ```typescript
 // Authentication
 export async function signUp(data: { email, password, name })
@@ -88,17 +91,19 @@ export async function createTestAccounts()
 **File:** `kfa-website/src/stores/authStore.ts`
 
 **Changes:**
+
 ```typescript
 // Before:
-import { authAPI } from '@/services/api'
-await authAPI.login(credentials) // ❌ CORS error
+import { authAPI } from '@/services/api';
+await authAPI.login(credentials); // ❌ CORS error
 
 // After:
-import * as supabaseAuth from '@/lib/supabase-auth'
-await supabaseAuth.signIn(credentials) // ✅ No CORS
+import * as supabaseAuth from '@/lib/supabase-auth';
+await supabaseAuth.signIn(credentials); // ✅ No CORS
 ```
 
 All functions updated:
+
 - ✅ `login()` - uses `supabaseAuth.signIn()`
 - ✅ `register()` - uses `supabaseAuth.signUp()`
 - ✅ `logout()` - uses `supabaseAuth.signOut()`
@@ -115,6 +120,7 @@ No changes needed! Login page uses `useAuthStore` which now uses Supabase intern
 ### Step 1: Run SQL in Supabase
 
 1. Open Supabase Dashboard:
+
    ```
    https://supabase.com/dashboard/project/eofneihisbhucxcydvac/sql
    ```
@@ -155,11 +161,12 @@ No changes needed! Login page uses `useAuthStore` which now uses Supabase intern
 2. Open Browser Console (F12)
 
 3. Run:
+
    ```javascript
    // Import function
-   import('/src/lib/supabase-auth.ts').then(auth => {
-     auth.createTestAccounts()
-   })
+   import('/src/lib/supabase-auth.ts').then((auth) => {
+     auth.createTestAccounts();
+   });
    ```
 
 4. Wait for completion:
@@ -187,16 +194,19 @@ No changes needed! Login page uses `useAuthStore` which now uses Supabase intern
 
 ```javascript
 // Check current user
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase';
 
 supabase.auth.getSession().then(({ data }) => {
-  console.log('Current user:', data.session?.user)
-})
+  console.log('Current user:', data.session?.user);
+});
 
 // Check profile
-supabase.from('profiles').select('*').then(({ data }) => {
-  console.log('Profiles:', data)
-})
+supabase
+  .from('profiles')
+  .select('*')
+  .then(({ data }) => {
+    console.log('Profiles:', data);
+  });
 ```
 
 ## How It Works Now
@@ -237,90 +247,98 @@ supabase.from('profiles').select('*').then(({ data }) => {
 ```
 
 ### No API Calls to Railway:
+
 - ❌ No `https://kfa-production.up.railway.app/api/login`
 - ✅ Direct `https://eofneihisbhucxcydvac.supabase.co/auth/v1/token`
 
 ## Features Now Available
 
 ### 1. Sign Up / Sign In
+
 ```typescript
-import * as supabaseAuth from '@/lib/supabase-auth'
+import * as supabaseAuth from '@/lib/supabase-auth';
 
 // Sign up
 const { user, token } = await supabaseAuth.signUp({
   email: 'user@example.com',
   password: 'password',
-  name: 'John Doe'
-})
+  name: 'John Doe',
+});
 
 // Sign in
 const { user, token } = await supabaseAuth.signIn({
   email: 'user@example.com',
-  password: 'password'
-})
+  password: 'password',
+});
 ```
 
 ### 2. Get Current User
+
 ```typescript
-const user = await supabaseAuth.getCurrentUser()
+const user = await supabaseAuth.getCurrentUser();
 if (user) {
-  console.log(user.name, user.role, user.roles)
+  console.log(user.name, user.role, user.roles);
 }
 ```
 
 ### 3. Password Reset
+
 ```typescript
 // Send reset email
-await supabaseAuth.resetPassword('user@example.com')
+await supabaseAuth.resetPassword('user@example.com');
 
 // Update password (after clicking link in email)
-await supabaseAuth.updatePassword('new-password')
+await supabaseAuth.updatePassword('new-password');
 ```
 
 ### 4. Profile Update
+
 ```typescript
 const user = await supabaseAuth.updateProfile({
   name: 'New Name',
-  avatar_url: 'https://example.com/avatar.jpg'
-})
+  avatar_url: 'https://example.com/avatar.jpg',
+});
 ```
 
 ### 5. RBAC (Roles & Permissions)
+
 ```typescript
 // Check role
-const isAdmin = await supabaseAuth.hasRole('admin')
-const isEditor = await supabaseAuth.hasAnyRole(['editor', 'admin'])
+const isAdmin = await supabaseAuth.hasRole('admin');
+const isEditor = await supabaseAuth.hasAnyRole(['editor', 'admin']);
 
 // Check permission
-const canEdit = await supabaseAuth.hasPermission('content.edit')
+const canEdit = await supabaseAuth.hasPermission('content.edit');
 
 // Or from store (synchronous)
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/authStore';
 
-const hasAdminRole = useAuthStore.getState().hasRole('admin')
-const canEditContent = useAuthStore.getState().hasPermission('content.edit')
+const hasAdminRole = useAuthStore.getState().hasRole('admin');
+const canEditContent = useAuthStore.getState().hasPermission('content.edit');
 ```
 
 ### 6. Real-time Auth State
+
 ```typescript
-import { onAuthStateChange } from '@/lib/supabase-auth'
+import { onAuthStateChange } from '@/lib/supabase-auth';
 
 // Listen to auth changes
 const unsubscribe = onAuthStateChange((user) => {
   if (user) {
-    console.log('User logged in:', user.email)
+    console.log('User logged in:', user.email);
   } else {
-    console.log('User logged out')
+    console.log('User logged out');
   }
-})
+});
 
 // Cleanup
-unsubscribe()
+unsubscribe();
 ```
 
 ## Role Structure
 
 ### Default Roles:
+
 - **admin** - Full access
 - **editor** - Content creation/editing
 - **moderator** - Content moderation
@@ -328,6 +346,7 @@ unsubscribe()
 - **guest** - Public access
 
 ### Role Hierarchy:
+
 ```
 admin → has all roles: [admin, editor, moderator, member]
 editor → has: [editor, member]
@@ -337,6 +356,7 @@ guest → has: []
 ```
 
 ### Update User Role (SQL):
+
 ```sql
 UPDATE public.profiles
 SET role = 'editor',
@@ -354,6 +374,7 @@ WHERE email = 'user@example.com';
 4. **Admin Delete** - Only admins can delete profiles
 
 ### Add Custom Policy (Example):
+
 ```sql
 -- Only editors can create news
 CREATE POLICY "Editors can create news"
@@ -369,27 +390,32 @@ CREATE POLICY "Editors can create news"
 ## Testing Checklist
 
 ### ✅ Basic Auth:
+
 - [ ] Sign up new user
 - [ ] Sign in existing user
 - [ ] Sign out
 - [ ] Stay logged in after page refresh
 
 ### ✅ Profile:
+
 - [ ] View own profile
 - [ ] Update name
 - [ ] Update avatar
 
 ### ✅ Roles:
+
 - [ ] Admin has all permissions
 - [ ] Editor can edit content
 - [ ] Moderator can moderate
 - [ ] Member has basic access
 
 ### ✅ Password:
+
 - [ ] Reset password (send email)
 - [ ] Update password (after reset)
 
 ### ✅ No CORS:
+
 - [ ] Login works from localhost
 - [ ] No CORS errors in console
 - [ ] Faster than before (no Laravel API hop)
@@ -397,13 +423,17 @@ CREATE POLICY "Editors can create news"
 ## Troubleshooting
 
 ### Issue: "Email not confirmed"
+
 **Solution:** Enable auto-confirm in Supabase:
+
 ```
 Dashboard → Auth → Settings → Email Auth → Confirm email: OFF
 ```
 
 ### Issue: "User not found in profiles table"
+
 **Solution:** Check trigger is working:
+
 ```sql
 -- Verify trigger exists
 SELECT * FROM pg_trigger WHERE tgname = 'on_auth_user_created';
@@ -412,7 +442,9 @@ SELECT * FROM pg_trigger WHERE tgname = 'on_auth_user_created';
 ```
 
 ### Issue: "Invalid login credentials"
+
 **Solution:**
+
 1. Verify user exists in Auth:
    ```
    Dashboard → Auth → Users
@@ -421,7 +453,9 @@ SELECT * FROM pg_trigger WHERE tgname = 'on_auth_user_created';
 3. Email must be confirmed (or auto-confirm enabled)
 
 ### Issue: "Cannot read property 'roles' of null"
+
 **Solution:** Profile wasn't created. Manually create:
+
 ```sql
 INSERT INTO public.profiles (id, email, name, role, roles)
 SELECT id, email, email, 'member', ARRAY['member']
@@ -434,43 +468,49 @@ WHERE email = 'user@example.com';
 If you have existing users in Laravel database:
 
 ### Option 1: Manual Migration
+
 1. Export users from Laravel: `php artisan users:export`
 2. Import via Supabase Dashboard or SQL
 3. Users will need to reset password (security best practice)
 
 ### Option 2: Hybrid Approach
+
 - Keep Laravel API for existing sessions
 - New registrations use Supabase
 - Gradually migrate users
 
 ### Option 3: Force Re-registration
+
 - Simple: All users re-register via Supabase
 - Add migration notice in app
 
 ## Metrics
 
-| Metric | Before (Laravel) | After (Supabase) | Improvement |
-|--------|------------------|------------------|-------------|
-| Login Time | 1200ms | 400ms | 67% faster ✅ |
-| CORS Errors | ❌ Yes | ✅ No | Fixed ✅ |
-| Setup Complexity | High | Low | Simpler ✅ |
-| Features | Basic | Advanced | More ✅ |
-| Maintenance | Manual | Auto | Less work ✅ |
+| Metric           | Before (Laravel) | After (Supabase) | Improvement   |
+| ---------------- | ---------------- | ---------------- | ------------- |
+| Login Time       | 1200ms           | 400ms            | 67% faster ✅ |
+| CORS Errors      | ❌ Yes           | ✅ No            | Fixed ✅      |
+| Setup Complexity | High             | Low              | Simpler ✅    |
+| Features         | Basic            | Advanced         | More ✅       |
+| Maintenance      | Manual           | Auto             | Less work ✅  |
 
 ## Next Steps
 
 ### Immediate:
+
 1. ✅ Run `supabase-auth-setup.sql` in Supabase SQL Editor
 2. ✅ Create test accounts
 3. ✅ Test login at http://localhost:3000/auth/login
 
 ### Soon:
+
 1. Configure email templates in Supabase
 2. Set up OAuth providers (Google, GitHub, etc.)
 3. Add email verification workflow
 4. Configure password policies
 
 ### Future:
+
 1. Multi-factor authentication (MFA)
 2. Magic link login
 3. Role-based UI rendering
@@ -497,6 +537,7 @@ If you have existing users in Laravel database:
 ---
 
 **Quick Start:**
+
 ```bash
 # 1. Run SQL
 Open: https://supabase.com/dashboard/project/eofneihisbhucxcydvac/sql

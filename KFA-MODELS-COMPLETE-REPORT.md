@@ -32,6 +32,7 @@
 #### Функционал:
 
 **Fillable Fields (43):**
+
 - Basic: title, slug, description, image
 - Classification: event_type, status, cpe_hours, level
 - Speaker: speaker_id, speaker_name, speaker_bio
@@ -44,11 +45,13 @@
 - Publishing: is_featured, published_at, created_by
 
 **Relationships:**
+
 - `speaker()` → User
 - `creator()` → User
 - `registrations()` → EventRegistration (HasMany)
 
 **Scopes (7):**
+
 - `published()` - опубликованные мероприятия
 - `upcoming()` - предстоящие
 - `past()` - прошедшие
@@ -58,10 +61,12 @@
 - `eventType($type)` - по типу
 
 **Helper Methods:**
+
 - `isRegistrationOpen()` - проверка открыта ли регистрация
 - `hasAvailableSpots()` - есть ли свободные места
 
 **Auto-features:**
+
 - Slug auto-generation from title
 
 ---
@@ -75,6 +80,7 @@
 #### Функционал:
 
 **Fillable Fields (48):**
+
 - Basic: title, slug, description, image
 - Classification: program_type, status, duration, cpe_hours, language, level
 - Instructor: instructor_id, instructor_name, instructor_bio
@@ -88,11 +94,13 @@
 - Publishing: is_featured, published_at, created_by
 
 **Relationships:**
+
 - `instructor()` → User
 - `creator()` → User
 - `enrollments()` → ProgramEnrollment (HasMany)
 
 **Scopes (7):**
+
 - `published()` - опубликованные курсы
 - `enrollmentOpen()` - открыта запись
 - `inProgress()` - в процессе
@@ -102,11 +110,13 @@
 - `language($lang)` - по языку
 
 **Helper Methods:**
+
 - `isEnrollmentOpen()` - проверка открыта ли запись
 - `hasAvailableSpots()` - есть ли места
 - `getAvailableSpots()` - количество свободных мест
 
 **Auto-features:**
+
 - Slug auto-generation from title
 
 ---
@@ -120,6 +130,7 @@
 #### Функционал:
 
 **Fillable Fields (12):**
+
 - event_id, user_id
 - status (pending → approved → attended)
 - amount_paid
@@ -129,24 +140,29 @@
 - cpe_hours_earned
 
 **Relationships:**
+
 - `event()` → Event
 - `user()` → User
 
 **Scopes (5):**
+
 - `pending()`, `approved()`, `attended()`, `noShow()`
 - `status($status)` - по статусу
 
 **Helper Methods:**
+
 - `isApproved()` - одобрена ли регистрация
 - `hasAttended()` - посетил ли пользователь
 - `canMarkAttendance()` - можно ли отметить посещение
 
 **Workflow Methods:**
+
 - `approve()` - одобрить регистрацию (pending → approved)
 - `markAttended()` - отметить посещение (approved → attended) + начисление CPE
 - `issueCertificate()` - выдать сертификат
 
 **Auto-features:**
+
 - registered_at auto-set on creation
 - CPE hours auto-awarded from event on attendance
 
@@ -161,6 +177,7 @@
 #### Функционал:
 
 **Fillable Fields (17):**
+
 - program_id, user_id
 - status (pending → approved → active → completed/failed)
 - amount_paid
@@ -171,19 +188,23 @@
 - cpe_hours_earned
 
 **Relationships:**
+
 - `program()` → Program
 - `user()` → User
 
 **Scopes (6):**
+
 - `pending()`, `approved()`, `active()`, `completed()`, `passed()`
 - `status($status)` - по статусу
 
 **Helper Methods:**
+
 - `isApproved()`, `isActive()`, `isCompleted()`
 - `canStart()` - можно ли начать обучение
 - `canComplete()` - можно ли завершить (progress >= 100%)
 
 **Workflow Methods:**
+
 - `approve()` - одобрить зачисление (pending → approved)
 - `start()` - начать обучение (approved → active)
 - `updateProgress($progress)` - обновить прогресс (0-100%)
@@ -192,6 +213,7 @@
 - `issueCertificate($url)` - выдать сертификат
 
 **Auto-features:**
+
 - enrolled_at auto-set on creation
 - Automatic exam pass/fail based on passing_score
 - CPE hours auto-awarded on completion if passed
@@ -207,6 +229,7 @@
 #### Функционал:
 
 **Fillable Fields (14):**
+
 - user_id
 - activity_type, activity_id (polymorphic)
 - title, description, category
@@ -217,34 +240,41 @@
 - rejection_reason
 
 **Relationships:**
+
 - `user()` → User
 - `approver()` → User (approved_by)
 - `activity()` → Polymorphic (MorphTo)
 
 **Scopes (7):**
+
 - `pending()`, `approved()`, `rejected()`
 - `status($status)`, `category($category)`, `activityType($type)`
 - `forUser($userId)`
 - `dateRange($from, $to)` - фильтр по датам
 
 **Helper Methods:**
+
 - `isApproved()`, `isPending()`, `isRejected()`
 - `canApprove()` - можно ли одобрить
 
 **Workflow Methods:**
+
 - `approve($approverId)` - одобрить активность
 - `reject($reason, $approverId)` - отклонить с причиной
 
 **Static Factory Methods:**
+
 - `createFromEventRegistration($registration)` - auto-create from event
 - `createFromProgramEnrollment($enrollment)` - auto-create from program
 - Both auto-approve КФА activities!
 
 **Reporting Methods:**
+
 - `getTotalHoursForUser($userId, $from, $to)` - общее количество часов
 - `getHoursByCategoryForUser($userId)` - разбивка по категориям
 
 **Utility Methods:**
+
 - `mapEventTypeToCategory($eventType)` - маппинг типов
 
 ---
@@ -295,38 +325,50 @@ CPEActivity (Polymorphic!)
 ## ⭐ ВЫДАЮЩИЕСЯ ФИЧИ
 
 ### 1. Polymorphic CPE Tracking
+
 CPEActivity использует polymorphic relationships для связи с различными источниками НПО часов:
+
 - EventRegistration (посещение мероприятия)
 - ProgramEnrollment (завершение курса)
 - Certification (получение сертификата)
 - External activities (внешние активности)
 
 ### 2. Auto-Award CPE Hours
+
 Автоматическое начисление НПО часов:
+
 - При отметке посещения мероприятия → `markAttended()`
 - При завершении курса (если passed) → `complete()`
 - Автоматическое создание CPEActivity записей
 
 ### 3. Smart Validation
+
 Бизнес-логика защищена методами проверки:
+
 - `canStart()`, `canComplete()`, `canMarkAttendance()`
 - Невозможно выполнить action в неправильном состоянии
 - Защита от некорректных transitions
 
 ### 4. Progress Tracking
+
 ProgramEnrollment отслеживает прогресс обучения:
+
 - progress (0-100%)
 - `updateProgress($progress)` с валидацией
 - Автоматическая проверка `progress >= 100%` при completion
 
 ### 5. Exam Integration
+
 ProgramEnrollment интегрирован с экзаменами:
+
 - `exam_score`, `passing_score`
 - Автоматическая проверка pass/fail
 - CPE часы начисляются только при passed
 
 ### 6. Auto-Timestamps
+
 Автоматическая установка timestamp'ов:
+
 - registered_at, enrolled_at при создании
 - approved_at при approve
 - attended_at при mark attendance
@@ -334,7 +376,9 @@ ProgramEnrollment интегрирован с экзаменами:
 - completed_at при complete
 
 ### 7. Reporting & Analytics
+
 CPEActivity предоставляет методы для отчетности:
+
 - `getTotalHoursForUser()` - общие часы
 - `getHoursByCategoryForUser()` - по категориям
 - Фильтрация по датам, статусу, типу
@@ -367,19 +411,20 @@ Auto-features:            6 total
 
 ### Model Complexity:
 
-| Model | Fillable | Casts | Relations | Scopes | Helpers | Rating |
-|-------|----------|-------|-----------|---------|---------|--------|
-| Event | 43 | 11 | 3 | 7 | 2 | ⭐⭐⭐⭐ |
-| Program | 48 | 13 | 3 | 7 | 3 | ⭐⭐⭐⭐⭐ |
-| EventRegistration | 12 | 7 | 2 | 5 | 6 | ⭐⭐⭐ |
-| ProgramEnrollment | 17 | 10 | 2 | 6 | 9 | ⭐⭐⭐⭐⭐ |
-| CPEActivity | 14 | 4 | 3 | 7 | 9 | ⭐⭐⭐⭐⭐ |
+| Model             | Fillable | Casts | Relations | Scopes | Helpers | Rating     |
+| ----------------- | -------- | ----- | --------- | ------ | ------- | ---------- |
+| Event             | 43       | 11    | 3         | 7      | 2       | ⭐⭐⭐⭐   |
+| Program           | 48       | 13    | 3         | 7      | 3       | ⭐⭐⭐⭐⭐ |
+| EventRegistration | 12       | 7     | 2         | 5      | 6       | ⭐⭐⭐     |
+| ProgramEnrollment | 17       | 10    | 2         | 6      | 9       | ⭐⭐⭐⭐⭐ |
+| CPEActivity       | 14       | 4     | 3         | 7      | 9       | ⭐⭐⭐⭐⭐ |
 
 ---
 
 ## ✅ QUALITY CHECKLIST
 
 ### Code Quality:
+
 - ✅ All properties properly typed
 - ✅ Fillable arrays complete
 - ✅ Casts for all special types (datetime, decimal, boolean, JSON)
@@ -392,6 +437,7 @@ Auto-features:            6 total
 - ✅ Consistent naming conventions
 
 ### Business Logic:
+
 - ✅ Status workflows enforced
 - ✅ Validation before state transitions
 - ✅ Auto-calculation of CPE hours
@@ -401,6 +447,7 @@ Auto-features:            6 total
 - ✅ Factory methods for auto-creation
 
 ### Security:
+
 - ✅ Mass assignment protection (fillable)
 - ✅ Type safety (casts)
 - ✅ Foreign key constraints
@@ -412,6 +459,7 @@ Auto-features:            6 total
 ## 🎯 ГОТОВНОСТЬ К API
 
 Все модели готовы для:
+
 - ✅ CRUD Controllers
 - ✅ API Resources (serialization)
 - ✅ Form validation
@@ -425,7 +473,9 @@ Auto-features:            6 total
 ## 📝 СЛЕДУЮЩИЕ ШАГИ
 
 ### Приоритет 1: API Resources
+
 Создать Resources для сериализации:
+
 - [ ] EventResource
 - [ ] ProgramResource
 - [ ] EventRegistrationResource
@@ -433,7 +483,9 @@ Auto-features:            6 total
 - [ ] CPEActivityResource
 
 ### Приоритет 2: Controllers
+
 Создать Controllers для API:
+
 - [ ] EventController
 - [ ] ProgramController
 - [ ] EventRegistrationController
@@ -441,13 +493,17 @@ Auto-features:            6 total
 - [ ] CPEActivityController
 
 ### Приоритет 3: Seeders
+
 Создать демо-данные:
+
 - [ ] EventsSeeder (5-10 sample events)
 - [ ] ProgramsSeeder (3-5 sample courses)
 - [ ] Demo registrations/enrollments
 
 ### Приоритет 4: Testing
+
 E2E тесты workflows:
+
 - [ ] Event registration → approval → attendance
 - [ ] Program enrollment → progress → completion
 - [ ] CPE activity submission → approval
@@ -459,6 +515,7 @@ E2E тесты workflows:
 **Модели образовательной системы КФА полностью готовы!**
 
 ### Достигнуто:
+
 ✅ 5 полноценных моделей (924 строки кода)
 ✅ 13 relationships
 ✅ 32 scopes для фильтрации
@@ -471,6 +528,7 @@ E2E тесты workflows:
 ✅ Reporting & analytics
 
 ### Готово к использованию:
+
 - ✅ Database schema (32 tables)
 - ✅ Models with full logic
 - ✅ Relationships & scopes
@@ -488,5 +546,5 @@ E2E тесты workflows:
 
 ---
 
-*Powered by: Claude Code + BMAD Method v6.0*
-*Status: MODELS COMPLETE - READY FOR API ✅*
+_Powered by: Claude Code + BMAD Method v6.0_
+_Status: MODELS COMPLETE - READY FOR API ✅_

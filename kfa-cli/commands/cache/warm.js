@@ -4,7 +4,7 @@ const { outputSuccess, outputText, outputInfo } = require('../../lib/utils');
 
 async function execute(args) {
   outputInfo('Warming cache...');
-  
+
   outputText('  - Database status...');
   const db = new DatabaseClient();
   const dbStatus = await db.checkStatus();
@@ -13,7 +13,7 @@ async function execute(args) {
     cache.set('status', dbStatus);
     outputSuccess('    Cached database status');
   }
-  
+
   outputSuccess('Cache warmed successfully');
 }
 

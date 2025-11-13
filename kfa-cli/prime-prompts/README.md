@@ -13,6 +13,7 @@ kfa prime use development/feature-implementation "Add news filtering"
 ## Categories
 
 ### Development (6 prompts)
+
 - `feature-implementation` - Complete feature implementation
 - `api-endpoint` - Create REST API endpoint
 - `database-migration` - Create database migration
@@ -21,23 +22,27 @@ kfa prime use development/feature-implementation "Add news filtering"
 - `authentication-flow` - Implement auth flow
 
 ### Refactoring (4 prompts)
+
 - `extract-component` - Extract reusable component
 - `optimize-performance` - Optimize performance
 - `improve-types` - Improve TypeScript types
 - `remove-duplication` - Remove code duplication
 
 ### Testing (4 prompts)
+
 - `add-unit-tests` - Add unit tests
 - `add-e2e-tests` - Add E2E tests
 - `fix-flaky-test` - Fix flaky tests
 - `test-coverage-analysis` - Analyze test coverage
 
 ### Debugging (3 prompts)
+
 - `find-bug-root-cause` - Find bug root cause
 - `fix-production-issue` - Handle production issues
 - `performance-profiling` - Profile performance
 
 ### Documentation (3 prompts)
+
 - `api-documentation` - Document API endpoints
 - `architecture-decision` - Document architectural decisions
 - `onboarding-guide` - Create onboarding guide
@@ -68,6 +73,7 @@ kfa prime use development/feature-implementation "Add news filtering"
 ## Context Efficiency
 
 Each prompt is self-contained and includes only necessary context:
+
 - No external dependencies
 - Clear instructions
 - Expected outputs defined

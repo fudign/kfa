@@ -13,16 +13,19 @@
 Изучены 3 референсных проекта:
 
 **tac8_app1 - Agent Layer Primitives**
+
 - Базовые ADW (AI Developer Workflows)
 - Модуль agent.py для оркестрации Claude Code
 - Примеры single-file workflows с uv
 
 **tac8_app2 - Multi Agent Todone**
+
 - Мульти-агентная система управления задачами
 - Автоматизация через cron triggers
 - Параллельное выполнение задач
 
 **tac8_app3 - Observability System**
+
 - Мониторинг работы агентов через hooks
 - WebSocket сервер для real-time логов
 - Vue.js dashboard для визуализации
@@ -30,12 +33,14 @@
 ### 2. Анализ текущего состояния KFA
 
 **Что уже есть:**
+
 - ✅ Agent Tools (db, deploy, test, media)
 - ✅ BMAD система (bmad/, .claude/commands/)
 - ✅ Application Layer (kfa-website, kfa-backend)
 - ✅ Документация
 
 **Что отсутствовало:**
+
 - ❌ ADW структура для оркестрации агентов
 - ❌ Specs директория для планов
 - ❌ Agents output директория для логов
@@ -74,6 +79,7 @@ C:\Users\user\Desktop\kfa-6-alpha\
 ### 4. Созданная документация
 
 **KFA-AGENTIC-DEVELOPMENT-PLAN.md** (Полный план развития)
+
 - Анализ текущего состояния
 - Рекомендации по улучшению
 - План внедрения (3 фазы)
@@ -81,18 +87,21 @@ C:\Users\user\Desktop\kfa-6-alpha\
 - Ключевые принципы
 
 **KFA-ADW-QUICKSTART.md** (Быстрый старт)
+
 - Пошаговая инструкция
 - Примеры команд
 - Troubleshooting
 - Best practices
 
 **adws/README.md** (ADW руководство)
+
 - Структура директории
 - Быстрый старт
 - Примеры использования
 - Интеграция с tools
 
 **specs/README.md** (Спецификации)
+
 - Формат spec файлов
 - Naming convention
 - Workflow работы со specs
@@ -105,12 +114,14 @@ C:\Users\user\Desktop\kfa-6-alpha\
 ### 1. Separation of Concerns
 
 **Agentic Layer** (Слой агентов):
+
 - `adws/` - AI Developer Workflows
 - `specs/` - Спецификации и планы
 - `.claude/commands/` - Slash команды
 - `agents/` - Outputs выполнения
 
 **Application Layer** (Слой приложения):
+
 - `kfa-website/` - Frontend
 - `kfa-backend/` - Backend
 - `docs/` - Документация
@@ -157,16 +168,19 @@ python adws/adw_prompt.py "List all markdown files in docs/"
 ### Примеры для KFA
 
 **Добавить новую фичу:**
+
 ```bash
 python adws/adw_chore_implement.py "Add news filtering by category"
 ```
 
 **Исправить баг:**
+
 ```bash
 python adws/adw_chore_implement.py "Fix CORS error in auth endpoint"
 ```
 
 **Проверить состояние:**
+
 ```bash
 node agent-tools/db/status.js > db-status.json
 node agent-tools/test/run-e2e.js > tests.json
@@ -221,12 +235,14 @@ node agent-tools/test/run-e2e.js > tests.json
 ### Immediate (Сейчас)
 
 1. **Скопировать agent.py и ADW скрипты из tac-8**
+
    ```bash
    cp tac-8/tac8_app1__agent_layer_primitives/adws/adw_modules/agent.py adws/adw_modules/
    cp tac-8/tac8_app1__agent_layer_primitives/adws/adw_*.py adws/
    ```
 
 2. **Тестовый запуск**
+
    ```bash
    python adws/adw_prompt.py "List React components in kfa-website"
    ```
@@ -299,23 +315,27 @@ node agent-tools/test/run-e2e.js > tests.json
 ## Выводы
 
 ✅ **Проект KFA имеет отличную базу:**
+
 - Agent Tools (частично)
 - BMAD система
 - Документация
 
 ✅ **Добавлена ADW структура:**
+
 - adws/ для workflows
 - specs/ для планов
 - agents/ для outputs
 - Полная документация
 
 ✅ **Следующий шаг - тестирование:**
+
 - Скопировать модули из tac-8
 - Запустить первый workflow
 - Использовать для реальных задач
 
 🚀 **Результат:**
 Проект KFA теперь готов к agentic development:
+
 - Программная оркестрация агентов
 - Автоматизация workflows
 - Масштабирование через compute

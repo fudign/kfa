@@ -7,16 +7,19 @@
 ## 🎯 Быстрая Навигация
 
 ### Для Быстрого Старта:
+
 1. [START-HERE-UPDATED.md](#start-here-updatedmd) - Начните отсюда!
 2. [QUICK-START-CHECKLIST.md](#quick-start-checklistmd) - 10-минутный запуск
 3. [NEXT-STEPS.md](#next-stepsmd) - Детальная инструкция
 
 ### Для Разработчиков:
+
 1. [API-REFERENCE.md](#api-referencemd) - API документация
 2. [TESTING-GUIDE.md](#testing-guidemd) - Тестирование
 3. [FINAL-README.md](#final-readmemd) - Полный обзор
 
 ### Для DevOps:
+
 1. [DEPLOYMENT-GUIDE.md](#deployment-guidemd) - Production deployment
 2. [EXECUTE-THIS-IN-SUPABASE.sql](#execute-this-in-supabasesql) - Database setup
 
@@ -27,8 +30,10 @@
 ### 🚀 Getting Started
 
 #### START-HERE-UPDATED.md
+
 **Цель:** Первый файл для нового пользователя
 **Содержание:**
+
 - Быстрая навигация по документации
 - Структура проекта
 - Текущий статус
@@ -40,8 +45,10 @@
 ---
 
 #### QUICK-START-CHECKLIST.md
+
 **Цель:** Запустить проект за 10 минут
 **Содержание:**
+
 - ☑ Выполнить SQL в Supabase
 - ☑ Проверить .env файлы
 - ☑ Запустить Backend
@@ -54,8 +61,10 @@
 ---
 
 #### NEXT-STEPS.md
+
 **Цель:** Детальная инструкция по всему процессу
 **Содержание:**
+
 - Что уже готово
 - Что нужно сделать
 - Проверка .env файлов
@@ -72,8 +81,10 @@
 ### 📊 Project Status
 
 #### SESSION-COMPLETION-REPORT.md
+
 **Цель:** Отчёт о выполненной работе
 **Содержание:**
+
 - Выполненные задачи (1-6)
 - Статистика изменений
 - API Coverage
@@ -89,8 +100,10 @@
 ### 🔧 Technical Documentation
 
 #### API-REFERENCE.md
+
 **Цель:** Полная API документация
 **Содержание:**
+
 - Authentication endpoints
 - Membership Applications API
 - Payments API
@@ -106,8 +119,10 @@
 ---
 
 #### TESTING-GUIDE.md
+
 **Цель:** Руководство по тестированию
 **Содержание:**
+
 - Test coverage
 - Quick start commands
 - Test files structure
@@ -123,8 +138,10 @@
 ---
 
 #### DEPLOYMENT-GUIDE.md
+
 **Цель:** Production deployment инструкции
 **Содержание:**
+
 - Prerequisites
 - Database setup (Supabase)
 - Backend deployment (Railway)
@@ -142,8 +159,10 @@
 ### 📝 Specialized Documentation
 
 #### FINAL-README.md
+
 **Цель:** Comprehensive project overview
 **Содержание:**
+
 - Обзор проекта
 - Возможности
 - Технологии
@@ -160,8 +179,10 @@
 ---
 
 #### CMS-SYSTEM-COMPLETE.md
+
 **Цель:** Документация CMS системы
 **Содержание:**
+
 - News module
 - Events module
 - Media management
@@ -178,8 +199,10 @@
 ---
 
 #### AGENT-TOOLS-GUIDE.md
+
 **Цель:** Документация CLI инструментов для агентов
 **Содержание:**
+
 - Agent tools architecture
 - Available tools
 - Usage examples
@@ -195,8 +218,10 @@
 ### 🗄️ Database
 
 #### EXECUTE-THIS-IN-SUPABASE.sql
+
 **Цель:** Database setup для Supabase
 **Содержание:**
+
 - profiles table creation
 - RLS policies
 - Triggers
@@ -210,14 +235,17 @@
 ### 📋 Additional Files
 
 #### AGENT-TOOLS-README.md
+
 - Agent tools overview
 - Installation
 - Usage
 
 #### KFA-FINAL-SESSION-SUMMARY.md
+
 - Session summary from previous work
 
 #### PROJECT-RUNNING.md
+
 - Notes about project running status
 
 ---
@@ -225,6 +253,7 @@
 ## 🗂️ Структура по Категориям
 
 ### Категория: SETUP & GETTING STARTED
+
 ```
 1. START-HERE-UPDATED.md          ← Начните здесь
 2. QUICK-START-CHECKLIST.md       ← 10-минутный старт
@@ -233,6 +262,7 @@
 ```
 
 ### Категория: DEVELOPMENT
+
 ```
 1. API-REFERENCE.md               ← API endpoints
 2. FINAL-README.md                ← Project overview
@@ -241,18 +271,21 @@
 ```
 
 ### Категория: TESTING
+
 ```
 1. TESTING-GUIDE.md               ← Complete testing guide
 2. tests/e2e/*.spec.ts            ← Test files
 ```
 
 ### Категория: DEPLOYMENT
+
 ```
 1. DEPLOYMENT-GUIDE.md            ← Production deployment
 2. .env.example                   ← Environment variables
 ```
 
 ### Категория: REPORTS & STATUS
+
 ```
 1. SESSION-COMPLETION-REPORT.md   ← Last session report
 2. KFA-FINAL-SESSION-SUMMARY.md   ← Previous summary
@@ -264,12 +297,14 @@
 ## 📌 Рекомендуемый Порядок Чтения
 
 ### Для Новичка:
+
 1. START-HERE-UPDATED.md
 2. QUICK-START-CHECKLIST.md
 3. API-REFERENCE.md (по необходимости)
 4. TESTING-GUIDE.md (по необходимости)
 
 ### Для Разработчика:
+
 1. QUICK-START-CHECKLIST.md
 2. FINAL-README.md
 3. API-REFERENCE.md
@@ -277,12 +312,14 @@
 5. CMS-SYSTEM-COMPLETE.md
 
 ### Для DevOps:
+
 1. DEPLOYMENT-GUIDE.md
 2. EXECUTE-THIS-IN-SUPABASE.sql
 3. Environment variables setup
 4. CI/CD configuration
 
 ### Для Project Manager:
+
 1. FINAL-README.md
 2. SESSION-COMPLETION-REPORT.md
 3. Project status section
@@ -292,27 +329,35 @@
 ## 🔍 Поиск По Теме
 
 ### Нужно запустить проект локально?
+
 → [QUICK-START-CHECKLIST.md](#quick-start-checklistmd)
 
 ### Нужно задеплоить в production?
+
 → [DEPLOYMENT-GUIDE.md](#deployment-guidemd)
 
 ### Нужна API документация?
+
 → [API-REFERENCE.md](#api-referencemd)
 
 ### Нужно запустить тесты?
+
 → [TESTING-GUIDE.md](#testing-guidemd)
 
 ### Нужно понять структуру CMS?
+
 → [CMS-SYSTEM-COMPLETE.md](#cms-system-completemd)
 
 ### Нужно настроить database?
+
 → [EXECUTE-THIS-IN-SUPABASE.sql](#execute-this-in-supabasesql)
 
 ### Нужен обзор проекта?
+
 → [FINAL-README.md](#final-readmemd)
 
 ### Нужно понять что было сделано?
+
 → [SESSION-COMPLETION-REPORT.md](#session-completion-reportmd)
 
 ---
@@ -332,12 +377,14 @@
 ## ✅ Проверка Документации
 
 ### Убедитесь что все файлы существуют:
+
 ```bash
 ls -la *.md
 ls -la *.sql
 ```
 
 ### Основные файлы (must-have):
+
 - [x] START-HERE-UPDATED.md
 - [x] QUICK-START-CHECKLIST.md
 - [x] NEXT-STEPS.md
@@ -365,4 +412,4 @@ ls -la *.sql
 
 ---
 
-*Documentation Index - Last Updated: 2025-11-13*
+_Documentation Index - Last Updated: 2025-11-13_

@@ -12,14 +12,14 @@
 
 ### Ключевые достижения
 
-| Метрика | До | После | Улучшение |
-|---------|----|----|-----------|
-| Контекст | 41,700 токенов | ~200 токенов | **99.5% сокращение** |
-| CLI систем | 3 (фрагментированно) | 1 (unified) | **67% упрощение** |
-| Prime Prompts | 0 | 40 | **+40 промптов** |
-| Команд | Разрознено | 25+ команд | **Unified** |
-| Observability | Нет | Полная | **100% tracking** |
-| Производительность (кэш) | N/A | 447ms → 82ms | **82% быстрее** |
+| Метрика                  | До                   | После        | Улучшение            |
+| ------------------------ | -------------------- | ------------ | -------------------- |
+| Контекст                 | 41,700 токенов       | ~200 токенов | **99.5% сокращение** |
+| CLI систем               | 3 (фрагментированно) | 1 (unified)  | **67% упрощение**    |
+| Prime Prompts            | 0                    | 40           | **+40 промптов**     |
+| Команд                   | Разрознено           | 25+ команд   | **Unified**          |
+| Observability            | Нет                  | Полная       | **100% tracking**    |
+| Производительность (кэш) | N/A                  | 447ms → 82ms | **82% быстрее**      |
 
 ---
 
@@ -30,11 +30,13 @@
 ### Создано
 
 **29 файлов:**
+
 - `kfa-cli/bin/kfa.js` - главная точка входа
 - `kfa-cli/lib/` - библиотеки (cache, database, utils, python, observability)
 - `kfa-cli/commands/` - 25+ команд в 9 категориях
 
 **Категории команд:**
+
 - db (4 команды) - Database operations
 - cache (3 команды) - Cache management
 - test (1 команда) - Testing
@@ -55,6 +57,7 @@
 ✅ Zero external dependencies (Node.js built-ins only)
 
 **Контекстная эффективность:**
+
 - До: 25,000 токенов (agent-tools)
 - После: ~200 токенов (README only)
 - **Сохранено: 40,775 токенов**
@@ -68,6 +71,7 @@
 ### Создано
 
 **20 prime prompts** в 5 категориях:
+
 - development (6): feature-implementation, api-endpoint, database-migration, etc.
 - refactoring (4): extract-component, optimize-performance, improve-types, etc.
 - testing (4): add-unit-tests, add-e2e-tests, fix-flaky-test, test-coverage-analysis
@@ -82,6 +86,7 @@
 ✅ Comprehensive (Usage, Template, Success Criteria)
 
 **Экономия времени:**
+
 - До: 10-15 минут на написание промпта
 - После: 30 секунд на использование
 - **Экономия: 95%**
@@ -95,10 +100,11 @@
 ### Изменения
 
 **Архивировано:**
-- bmad/core/ → bmad/_archive/core/
-- bmad/bmb/ → bmad/_archive/bmb/
-- bmad/bmd/ → bmad/_archive/bmd/
-- bmad/bmm/ → bmad/_archive/bmm/
+
+- bmad/core/ → bmad/\_archive/core/
+- bmad/bmb/ → bmad/\_archive/bmb/
+- bmad/bmd/ → bmad/\_archive/bmd/
+- bmad/bmm/ → bmad/\_archive/bmm/
 
 **Активно:** bmad/kfa/ only
 
@@ -110,6 +116,7 @@
 ✅ Обратная совместимость сохранена
 
 **Контекстная эффективность:**
+
 - До: 26,000 токенов (BMAD modules)
 - После: 200 токенов (kfa module only)
 - **Сохранено: 25,800 токенов**
@@ -123,6 +130,7 @@
 ### Создано
 
 **1 адаптер + 5 команд:**
+
 - `kfa-cli/lib/python.js` - PythonAdapter class
 - `kfa adw check` - проверка доступности uv/Python
 - `kfa adw prompt` - ad-hoc промпты через Claude Code
@@ -138,6 +146,7 @@
 ✅ Обратная совместимость (прямые вызовы работают)
 
 **Преимущества:**
+
 - Было: 3 отдельные системы (Python ADW, Node tools, BMAD)
 - Стало: 1 unified система
 - **Упрощение: 67%**
@@ -151,6 +160,7 @@
 ### Создано
 
 **1 библиотека + 3 команды:**
+
 - `kfa-cli/lib/observability.js` (450 строк)
   - Автоматическое логирование команд
   - Сбор метрик производительности
@@ -158,6 +168,7 @@
   - Tracking ошибок
 
 **Структура данных (.kfa/):**
+
 ```
 .kfa/
 ├── logs/           # Категоризированные логи
@@ -167,6 +178,7 @@
 ```
 
 **Команды:**
+
 - `kfa project metrics` - метрики использования
 - `kfa history show` - история выполнения
 - `kfa history clear` - очистка старых данных
@@ -180,6 +192,7 @@
 ✅ Zero performance overhead (<1ms)
 
 **Observability metrics:**
+
 - Total Operations: tracked
 - Command performance: avg duration per command
 - Success rate: tracked per command
@@ -197,22 +210,27 @@
 **20 новых промптов:**
 
 **Development (+6):**
+
 - react-component, rest-api-crud, websocket-integration
 - file-upload, search-functionality, pagination-infinite-scroll
 
 **Refactoring (+4):**
+
 - split-large-file, modernize-legacy-code
 - reduce-complexity, improve-error-handling
 
 **Testing (+4):**
+
 - integration-tests, snapshot-testing
 - performance-testing, security-testing
 
 **Debugging (+3):**
+
 - memory-leak-debugging, race-condition-debugging
 - dependency-conflict
 
 **Documentation (+3):**
+
 - migration-guide, technical-design-doc
 - troubleshooting-guide
 
@@ -224,6 +242,7 @@
 ✅ Единый формат и структура
 
 **Экономия времени:**
+
 - 40 промптов × 15 минут = **600 минут (10 часов) сохранено**
 
 ---
@@ -238,17 +257,18 @@
 
 **Протестировано 25+ команд:**
 
-| Категория | Команд | Результат |
-|-----------|--------|-----------|
-| db | 4 | ✅ Все работают |
-| cache | 3 | ✅ Все работают |
-| project | 3 | ✅ Все работают |
-| prime | 3 | ✅ Все работают |
-| adw | 5 | ✅ Все работают (требует uv) |
-| agent | 2 | ✅ Все работают |
-| history | 2 | ✅ Все работают |
+| Категория | Команд | Результат                    |
+| --------- | ------ | ---------------------------- |
+| db        | 4      | ✅ Все работают              |
+| cache     | 3      | ✅ Все работают              |
+| project   | 3      | ✅ Все работают              |
+| prime     | 3      | ✅ Все работают              |
+| adw       | 5      | ✅ Все работают (требует uv) |
+| agent     | 2      | ✅ Все работают              |
+| history   | 2      | ✅ Все работают              |
 
 **Результаты:**
+
 ```
 ✅ db status - подключение к БД работает (350ms)
 ✅ cache status - показывает кэш статистику
@@ -262,6 +282,7 @@
 #### 2. Prime Prompts (40 промптов)
 
 **Протестировано:**
+
 - ✅ `kfa prime list` - показывает все 40 промптов
 - ✅ `kfa prime show development/react-component` - работает
 - ✅ `kfa prime show refactoring/split-large-file` - работает
@@ -271,6 +292,7 @@
 #### 3. Система кэширования
 
 **Тест производительности:**
+
 ```
 БЕЗ кэша:   447ms (db status --no-cache)
 С кэшем:     82ms (db status)
@@ -278,6 +300,7 @@
 ```
 
 **Результаты:**
+
 - ✅ Кэш работает корректно
 - ✅ TTL 6 часов соблюдается
 - ✅ Cache invalidation работает
@@ -286,6 +309,7 @@
 #### 4. Observability система
 
 **Протестировано:**
+
 ```
 ✅ Команды логируются автоматически
 ✅ Метрики сохраняются в .kfa/metrics/daily/
@@ -301,15 +325,16 @@
 
 **Измерения:**
 
-| Операция | Время | Оценка |
-|----------|-------|--------|
-| kfa prime list | ~5ms | Отлично |
-| kfa db status (cached) | ~82ms | Отлично |
-| kfa project metrics | ~8ms | Отлично |
-| kfa history show | ~7ms | Отлично |
-| Observability overhead | <1ms | Negligible |
+| Операция               | Время | Оценка     |
+| ---------------------- | ----- | ---------- |
+| kfa prime list         | ~5ms  | Отлично    |
+| kfa db status (cached) | ~82ms | Отлично    |
+| kfa project metrics    | ~8ms  | Отлично    |
+| kfa history show       | ~7ms  | Отлично    |
+| Observability overhead | <1ms  | Negligible |
 
 **Результаты:**
+
 - ✅ Все команды выполняются быстро (<100ms)
 - ✅ Кэширование даёт 82% улучшение
 - ✅ Observability не замедляет выполнение
@@ -319,12 +344,12 @@
 
 **Итоговые метрики:**
 
-| Компонент | Токенов (до) | Токенов (после) | Сокращение |
-|-----------|--------------|-----------------|------------|
-| Agent Tools | 25,000 | 200 | 99.2% |
-| BMAD modules | 26,000 | 200 | 99.2% |
-| MCP servers | 41,700 | 0 | 100% |
-| **TOTAL** | **92,700** | **~400** | **99.6%** |
+| Компонент    | Токенов (до) | Токенов (после) | Сокращение |
+| ------------ | ------------ | --------------- | ---------- |
+| Agent Tools  | 25,000       | 200             | 99.2%      |
+| BMAD modules | 26,000       | 200             | 99.2%      |
+| MCP servers  | 41,700       | 0               | 100%       |
+| **TOTAL**    | **92,700**   | **~400**        | **99.6%**  |
 
 **Контекст сохранен: 92,300+ токенов**
 
@@ -334,18 +359,19 @@
 
 ### Созданные компоненты
 
-| Компонент | Файлов | Строк кода |
-|-----------|--------|------------|
-| KFA CLI base | 29 | 2,000+ |
-| Prime Prompts (40) | 40 | 4,000+ |
-| ADW Integration | 6 | 1,020+ |
-| Observability | 4 | 830+ |
-| Documentation | 10+ | 5,000+ |
-| **TOTAL** | **89+** | **12,850+** |
+| Компонент          | Файлов  | Строк кода  |
+| ------------------ | ------- | ----------- |
+| KFA CLI base       | 29      | 2,000+      |
+| Prime Prompts (40) | 40      | 4,000+      |
+| ADW Integration    | 6       | 1,020+      |
+| Observability      | 4       | 830+        |
+| Documentation      | 10+     | 5,000+      |
+| **TOTAL**          | **89+** | **12,850+** |
 
 ### Функциональность
 
 **Команды: 25+**
+
 - db: 4 команды
 - cache: 3 команды
 - test: 1 команда
@@ -358,6 +384,7 @@
 - history: 2 команды
 
 **Prime Prompts: 40**
+
 - development: 12 промптов
 - refactoring: 8 промптов
 - testing: 8 промптов
@@ -366,28 +393,28 @@
 
 ### Производительность
 
-| Метрика | Значение |
-|---------|----------|
-| Контекст сохранен | 92,300+ токенов |
-| Контекстная эффективность | 99.6% |
-| Cache performance improvement | 82% |
-| Observability overhead | <1ms |
-| Команды среднее время | <10ms |
-| Кэш hit rate | ~90%+ |
-| Success rate | 100% |
+| Метрика                       | Значение        |
+| ----------------------------- | --------------- |
+| Контекст сохранен             | 92,300+ токенов |
+| Контекстная эффективность     | 99.6%           |
+| Cache performance improvement | 82%             |
+| Observability overhead        | <1ms            |
+| Команды среднее время         | <10ms           |
+| Кэш hit rate                  | ~90%+           |
+| Success rate                  | 100%            |
 
 ### Качество
 
-| Параметр | Статус |
-|----------|--------|
-| Все команды работают | ✅ |
-| Кэш работает | ✅ |
-| Observability tracking | ✅ |
-| Prime prompts accessible | ✅ |
-| JSON output | ✅ |
-| Error handling | ✅ |
-| Documentation | ✅ |
-| No regressions | ✅ |
+| Параметр                 | Статус |
+| ------------------------ | ------ |
+| Все команды работают     | ✅     |
+| Кэш работает             | ✅     |
+| Observability tracking   | ✅     |
+| Prime prompts accessible | ✅     |
+| JSON output              | ✅     |
+| Error handling           | ✅     |
+| Documentation            | ✅     |
+| No regressions           | ✅     |
 
 ---
 
@@ -396,11 +423,13 @@
 ### 1. Unified Interface
 
 **Было:**
+
 - Python ADW: `./adws/adw_prompt.py "..."`
 - Node tools: `node agent-tools/db/status.js`
 - BMAD: `/bmad:core:workflows:brainstorming`
 
 **Стало:**
+
 ```bash
 kfa <category> <command>
 ```
@@ -408,6 +437,7 @@ kfa <category> <command>
 ### 2. Контекстная эффективность
 
 **99.6% сокращение контекста:**
+
 - Освобождено ~92,300 токенов
 - Progressive disclosure (только README)
 - On-demand loading (команды по запросу)
@@ -447,15 +477,15 @@ kfa <category> <command>
 
 ## Сравнение с альтернативами
 
-| Параметр | MCP | KFA CLI | Преимущество |
-|----------|-----|---------|--------------|
-| Контекст | 41,700 токенов | ~400 токенов | **99.1% меньше** |
-| Установка | Сложная | npm install | **Проще** |
-| Зависимости | Много | 0 (built-ins) | **Zero deps** |
-| Контекст preservation | Теряется | Сохраняется | **100% preserve** |
-| Composability | Сложная | `cmd | cmd` | **Bash pipes** |
-| Скорость | N/A | <10ms | **Fast** |
-| Observability | Нет | Полная | **100% tracking** |
+| Параметр              | MCP            | KFA CLI       | Преимущество      |
+| --------------------- | -------------- | ------------- | ----------------- | -------------- |
+| Контекст              | 41,700 токенов | ~400 токенов  | **99.1% меньше**  |
+| Установка             | Сложная        | npm install   | **Проще**         |
+| Зависимости           | Много          | 0 (built-ins) | **Zero deps**     |
+| Контекст preservation | Теряется       | Сохраняется   | **100% preserve** |
+| Composability         | Сложная        | `cmd          | cmd`              | **Bash pipes** |
+| Скорость              | N/A            | <10ms         | **Fast**          |
+| Observability         | Нет            | Полная        | **100% tracking** |
 
 ---
 
@@ -570,18 +600,21 @@ kfa-6-alpha/
 ### Impact
 
 **Для разработчиков:**
+
 - Единый интерфейс для всех операций
 - 95% экономия времени на промптах
 - Полная прозрачность операций
 - Fast operations (<10ms avg)
 
 **Для проекта:**
+
 - 99.6% контекстная эффективность
 - Упрощенная архитектура (3 системы → 1)
 - Professional-grade tooling
 - Production-ready
 
 **Для AI ассистентов:**
+
 - Минимальный контекст (~400 токенов)
 - Больше токенов для работы
 - Лучшее качество ответов
@@ -591,15 +624,15 @@ kfa-6-alpha/
 
 ## Финальная оценка
 
-| Критерий | Цель | Достигнуто | Статус |
-|----------|------|------------|--------|
-| Контекст <500 токенов | <500 | ~400 | ✅ Превышено |
-| Unified CLI | Да | Да | ✅ |
-| Cache hit rate >90% | >90% | ~90%+ | ✅ |
-| Prime prompts execute | Да | Да | ✅ |
-| Observability captures all | Да | Да | ✅ |
-| No regressions | Да | Да | ✅ |
-| All tests pass | Да | Да | ✅ |
+| Критерий                   | Цель | Достигнуто | Статус       |
+| -------------------------- | ---- | ---------- | ------------ |
+| Контекст <500 токенов      | <500 | ~400       | ✅ Превышено |
+| Unified CLI                | Да   | Да         | ✅           |
+| Cache hit rate >90%        | >90% | ~90%+      | ✅           |
+| Prime prompts execute      | Да   | Да         | ✅           |
+| Observability captures all | Да   | Да         | ✅           |
+| No regressions             | Да   | Да         | ✅           |
+| All tests pass             | Да   | Да         | ✅           |
 
 **Все success criteria выполнены ✅**
 

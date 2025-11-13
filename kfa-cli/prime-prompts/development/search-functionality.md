@@ -19,12 +19,14 @@ Please implement the following:
 ### 1. Search UI
 
 **Search Input:**
+
 - Search bar with clear/reset button
 - Search suggestions/autocomplete
 - Search history (optional)
 - Search shortcuts (keyboard)
 
 **Results Display:**
+
 - Results list with highlights
 - Empty state for no results
 - Loading state during search
@@ -32,6 +34,7 @@ Please implement the following:
 - Pagination or infinite scroll
 
 **Filters & Sorting:**
+
 - Filter chips/tags
 - Multi-select filters
 - Date range filters
@@ -41,6 +44,7 @@ Please implement the following:
 ### 2. Backend Search Logic
 
 **Search Query:**
+
 - Full-text search implementation
 - Fuzzy matching for typos
 - Partial word matching
@@ -48,6 +52,7 @@ Please implement the following:
 - Weighted search (relevance scoring)
 
 **Database Queries:**
+
 - Use full-text search (PostgreSQL, ElasticSearch, etc.)
 - Optimize with indexes
 - Limit result set for performance
@@ -55,6 +60,7 @@ Please implement the following:
 - Implement search result caching
 
 **Filters:**
+
 - Category filters
 - Tag/label filters
 - Date range filters
@@ -65,6 +71,7 @@ Please implement the following:
 ### 3. Search Algorithm
 
 **Text Matching:**
+
 - Case-insensitive search
 - Remove special characters
 - Handle multiple languages if needed
@@ -72,6 +79,7 @@ Please implement the following:
 - Synonym handling
 
 **Ranking:**
+
 - Rank by relevance score
 - Boost exact matches
 - Consider field weights
@@ -81,6 +89,7 @@ Please implement the following:
 ### 4. Performance Optimization
 
 **Database Optimization:**
+
 - Create search indexes
 - Use materialized views if needed
 - Implement query caching
@@ -88,6 +97,7 @@ Please implement the following:
 - Use database-specific features (TRGM, etc.)
 
 **Frontend Optimization:**
+
 - Debounce search input
 - Implement request cancellation
 - Cache search results
@@ -97,6 +107,7 @@ Please implement the following:
 ### 5. Search Features
 
 **Advanced Features:**
+
 - Search suggestions (autocomplete)
 - "Did you mean?" for typos
 - Related searches
@@ -105,6 +116,7 @@ Please implement the following:
 - Saved searches/filters
 
 **Highlighting:**
+
 - Highlight matching terms
 - Show snippets with context
 - Truncate long results
@@ -113,12 +125,14 @@ Please implement the following:
 ### 6. API Endpoints
 
 **Endpoints:**
+
 - `GET /api/search?q={query}` - Basic search
 - `GET /api/search?q={query}&filters={...}` - Search with filters
 - `GET /api/search/suggestions?q={query}` - Autocomplete
 - `GET /api/search/history` - User search history
 
 **Query Parameters:**
+
 - `q` - Search query
 - `page` - Pagination
 - `limit` - Results per page
@@ -129,6 +143,7 @@ Please implement the following:
 ### 7. Error Handling
 
 **Errors:**
+
 - Handle invalid queries
 - Handle timeout errors
 - Handle no results gracefully
@@ -136,6 +151,7 @@ Please implement the following:
 - Log search errors
 
 **User Feedback:**
+
 - Show clear error messages
 - Suggest query refinement
 - Provide search tips
@@ -144,6 +160,7 @@ Please implement the following:
 ### 8. Analytics
 
 **Track Metrics:**
+
 - Popular search terms
 - Zero-result searches
 - Search-to-click rate
@@ -153,6 +170,7 @@ Please implement the following:
 ### 9. Testing
 
 **Tests:**
+
 - Test basic search
 - Test search with filters
 - Test sorting
@@ -165,6 +183,7 @@ Please implement the following:
 ## Context Files
 
 Review these:
+
 - Database schema
 - Existing search implementation
 - Filter structure
@@ -174,6 +193,7 @@ Review these:
 ## Expected Output
 
 Provide:
+
 1. Search UI component
 2. Backend search endpoint
 3. Search query builder

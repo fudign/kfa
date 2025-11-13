@@ -11,6 +11,7 @@
 Проект KFA уже использует передовые практики агентной разработки (BMAD v6, Agent Tools, ADW workflows), но может быть значительно улучшен применением принципов **progressive disclosure**, **unified CLI** и **intelligent caching** из статей о beyond-MCP подходе.
 
 **Ключевые метрики:**
+
 - ✅ Текущая экономия контекста: **97.8%** (agent-tools vs MCP)
 - 🎯 Целевая экономия: **99%+** (с новыми оптимизациями)
 - 📊 Текущий контекст: 925 токенов → Цель: **~200 токенов**
@@ -51,28 +52,33 @@
 #### 1. **Архитектурная Сложность**
 
 **Проблема:**
+
 - Слишком много слоев абстракции
 - BMAD (5 модулей) + ADW (Python) + Agent Tools (Node.js)
 - Два runtime'а (Python + Node.js)
 - Сложная структура директорий
 
 **Влияние:**
+
 - 🔴 High learning curve для новых разработчиков
 - 🔴 Сложность отладки
 - 🔴 Overhead при расширении
 
 **Решение (из статей):**
+
 > "80% времени используйте единый CLI + prime prompt"
 
 #### 2. **Контекстная Перегрузка**
 
 **Проблема:**
+
 - BMAD workflows загружают много YAML конфигов
 - Slash команды требуют загрузки `.claude/commands/**/*.md`
 - Нет progressive disclosure
 - BMM module: 10 агентов + 30+ workflows (огромный контекст)
 
 **Текущее потребление:**
+
 ```
 BMAD Core:     ~3,000 tokens
 BMAD BMB:      ~5,000 tokens
@@ -84,102 +90,122 @@ TOTAL:         ~25,000 tokens (12.5% бюджета)
 ```
 
 **Влияние:**
+
 - 🟡 Остается только 175K токенов для работы
 - 🟡 Медленная загрузка workflows
 
 **Решение (из статей):**
+
 > "Progressive disclosure: загружать только README, остальное по запросу"
 
 #### 3. **Отсутствие Unified CLI**
 
 **Проблема:**
+
 - ADW: Python скрипты (`./adws/adw_prompt.py`)
 - Agent Tools: Node.js скрипты (`node agent-tools/db/status.js`)
 - BMAD: Slash команды (`/bmad:core:workflows:brainstorming`)
 - Три разных способа вызова инструментов
 
 **Влияние:**
+
 - 🔴 Фрагментированный опыт разработки
 - 🔴 Сложность композиции
 - 🔴 Нет единой точки входа
 
 **Решение (из beyond-mcp):**
+
 > "Unified CLI: один инструмент, 13-15 команд, чистый интерфейс"
 
 #### 4. **Отсутствие Интеллектуального Кеширования**
 
 **Проблема:**
+
 - Нет кеширования результатов API запросов
 - Нет кеширования результатов тестов
 - Нет кеширования метаданных проекта
 - Повторные операции выполняются заново
 
 **Влияние:**
+
 - 🟡 Медленные повторные операции
 - 🟡 Лишние API вызовы
 - 🟡 Избыточная нагрузка на БД
 
 **Решение (из beyond-mcp):**
+
 > "Pandas-based caching: 6-hour TTL для поисковых операций"
 
 #### 5. **Недостаточная Интеграция**
 
 **Проблема:**
+
 - Agent Tools и BMAD workflows слабо связаны
 - ADW workflows не используют agent-tools напрямую
 - Нет автоматического обнаружения инструментов
 - Prime prompts не используются
 
 **Влияние:**
+
 - 🟡 Дублирование кода
 - 🟡 Несогласованность
 - 🟡 Упущенная композируемость
 
 **Решение (из статей):**
+
 > "Композиция через файлы: инструменты пишут в файлы, workflows читают"
 
 #### 6. **Сложность Расширения**
 
 **Проблема:**
+
 - Добавление BMAD workflow: 30-60 минут
 - Требует понимание BMAD структуры
 - Требует создание workflow.yaml + instructions.md + template.md
 - Сложная валидация
 
 **Влияние:**
+
 - 🔴 Медленная итерация
 - 🔴 Барьер для контрибьюторов
 
 **Решение (из статей):**
+
 > "Шаблоны инструментов: скопировать -> отредактировать -> готово (5 мин)"
 
 #### 7. **Отсутствие Prime Prompts**
 
 **Проблема:**
+
 - Нет библиотеки готовых промптов
 - Нет best practices промптов
 - Нет шаблонов для частых операций
 
 **Влияние:**
+
 - 🟡 Повторное изобретение велосипеда
 - 🟡 Несогласованность промптов
 
 **Решение (из beyond-mcp):**
+
 > "Prime prompts: 80% задач решаются готовыми промптами"
 
 #### 8. **Недостаточная Observability**
 
 **Проблема:**
+
 - ADW outputs разбросаны по `agents/{adw_id}/`
 - Нет централизованного мониторинга
 - Нет dashboard
 - Сложно найти прошлые результаты
 
 **Влияние:**
+
 - 🟡 Сложность отладки
 - 🟡 Потеря контекста между сессиями
 
 **Решение (из tac-8):**
+
 > "Observability hooks: автоматический сбор метрик"
 
 ---
@@ -189,65 +215,81 @@ TOTAL:         ~25,000 tokens (12.5% бюджета)
 На основе статей "What if you don't need MCP?" и "Beyond MCP", применяем следующие принципы:
 
 ### 1. **Progressive Disclosure**
+
 > Загружать только то, что нужно прямо сейчас
 
 **Применение к KFA:**
+
 - ❌ **Было:** Загрузка всех BMAD модулей (25K токенов)
 - ✅ **Будет:** Загрузка только `kfa-cli/README.md` (200 токенов)
 - 📊 **Экономия:** 99.2%
 
 ### 2. **Unified CLI**
+
 > Один CLI для всех операций
 
 **Применение к KFA:**
+
 - ❌ **Было:** Python ADW + Node tools + BMAD slash commands
 - ✅ **Будет:** `kfa` CLI с 15-20 командами
 - 🚀 **Benefit:** Единый интерфейс, простая композиция
 
 ### 3. **File-Based Composition**
+
 > Результаты в файлы, не в контекст
 
 **Применение к KFA:**
+
 - ❌ **Было:** ADW outputs в произвольных директориях
 - ✅ **Будет:** `.kfa/cache/` для всех результатов
 - 💾 **Benefit:** 0% контекста на передачу данных
 
 ### 4. **Intelligent Caching**
+
 > Кешировать все, что можно кешировать
 
 **Применение к KFA:**
+
 - ❌ **Было:** Нет кеширования
 - ✅ **Будет:** 6-hour TTL кеш для DB queries, API calls, tests
 - ⚡ **Benefit:** 90% быстрее повторные операции
 
 ### 5. **Context Preservation**
+
 > Сохранять контекст между вызовами
 
 **Применение к KFA:**
+
 - ❌ **Было:** MCP теряет контекст на каждый вызов инструмента
 - ✅ **Будет:** Scripts-based: полное сохранение контекста
 - 🧠 **Benefit:** AI агент "помнит" между операциями
 
 ### 6. **Self-Documenting**
+
 > Инструменты документируют сами себя
 
 **Применение к KFA:**
+
 - ❌ **Было:** Документация в отдельных .md файлах
 - ✅ **Будет:** `kfa help <command>` показывает встроенную документацию
 - 📖 **Benefit:** Документация всегда актуальна
 
 ### 7. **Composability**
+
 > Инструменты легко комбинируются
 
 **Применение к KFA:**
+
 - ❌ **Было:** Сложная композиция через ADW workflows
 - ✅ **Будет:** Bash pipes + JSON
 - 🔧 **Benefit:** `kfa db status | kfa analyze | kfa report`
 
 ### 8. **Zero Dependencies**
+
 > Минимум внешних зависимостей
 
 **Применение к KFA:**
+
 - ✅ **Уже есть:** Agent tools используют только Node.js built-ins
 - ✅ **Сохраняем:** Продолжаем этот принцип
 
@@ -258,6 +300,7 @@ TOTAL:         ~25,000 tokens (12.5% бюджета)
 ### Фаза 1: Unified KFA CLI (2-3 дня)
 
 #### Цель
+
 Создать единый CLI `kfa` для замены фрагментированных Python/Node.js инструментов.
 
 #### Структура
@@ -454,9 +497,7 @@ const { outputJSON, outputText } = require('../../lib/utils');
  * Usage: kfa db status [--format json|text] [--no-cache]
  */
 async function execute(args) {
-  const format = args.includes('--format')
-    ? args[args.indexOf('--format') + 1]
-    : 'text';
+  const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
   const useCache = !args.includes('--no-cache');
 
   const cache = new Cache('db', { ttl: 6 * 60 * 60 }); // 6 hours
@@ -514,12 +555,7 @@ class Cache {
   constructor(namespace, options = {}) {
     this.namespace = namespace;
     this.ttl = options.ttl || 3600; // Default 1 hour
-    this.cacheDir = path.join(
-      process.cwd(),
-      '.kfa',
-      'cache',
-      namespace
-    );
+    this.cacheDir = path.join(process.cwd(), '.kfa', 'cache', namespace);
 
     // Create cache directory
     fs.mkdirSync(this.cacheDir, { recursive: true });
@@ -557,8 +593,8 @@ class Cache {
     const cacheFile = this._getCacheFile(key);
     const data = {
       value,
-      expires: Date.now() + (this.ttl * 1000),
-      timestamp: Date.now()
+      expires: Date.now() + this.ttl * 1000,
+      timestamp: Date.now(),
     };
 
     fs.writeFileSync(cacheFile, JSON.stringify(data, null, 2));
@@ -576,7 +612,7 @@ class Cache {
     } else {
       // Clear all cache in namespace
       const files = fs.readdirSync(this.cacheDir);
-      files.forEach(file => {
+      files.forEach((file) => {
         fs.unlinkSync(path.join(this.cacheDir, file));
       });
     }
@@ -591,7 +627,7 @@ class Cache {
     let validCount = 0;
     let expiredCount = 0;
 
-    files.forEach(file => {
+    files.forEach((file) => {
       const filepath = path.join(this.cacheDir, file);
       const stats = fs.statSync(filepath);
       totalSize += stats.size;
@@ -614,7 +650,7 @@ class Cache {
       validEntries: validCount,
       expiredEntries: expiredCount,
       totalSize: totalSize,
-      ttl: this.ttl
+      ttl: this.ttl,
     };
   }
 
@@ -637,20 +673,25 @@ Unified command-line interface for KFA project operations.
 ## Quick Start
 
 \`\`\`bash
+
 # Database
-kfa db status           # Check database status
-kfa db migrate          # Run migrations
+
+kfa db status # Check database status
+kfa db migrate # Run migrations
 
 # Testing
-kfa test all            # Run all tests
+
+kfa test all # Run all tests
 
 # Development
-kfa dev check           # Daily environment check
-kfa dev start           # Start dev servers
+
+kfa dev check # Daily environment check
+kfa dev start # Start dev servers
 
 # Deployment
-kfa deploy build        # Build for production
-kfa deploy verify       # Verify deployment
+
+kfa deploy build # Build for production
+kfa deploy verify # Verify deployment
 \`\`\`
 
 ## Commands
@@ -666,8 +707,8 @@ kfa deploy verify       # Verify deployment
 ## Help
 
 \`\`\`bash
-kfa --help              # Show this help
-kfa <command> --help    # Show command help
+kfa --help # Show this help
+kfa <command> --help # Show command help
 \`\`\`
 
 ## Context Efficiency
@@ -702,6 +743,7 @@ Time to add: ~5 minutes.
 ### Фаза 2: Prime Prompts Library (1 день)
 
 #### Цель
+
 Создать библиотеку готовых промптов для типовых задач.
 
 #### Структура
@@ -843,6 +885,7 @@ kfa prime feature "Add user profile photo upload"
 ### Фаза 3: BMAD Simplification (2-3 дня)
 
 #### Цель
+
 Упростить BMAD структуру, убрать избыточность, интегрировать с KFA CLI.
 
 #### Текущая Проблема
@@ -918,6 +961,7 @@ kfa workflow implement specs/feature-news-filtering.md
 ### Фаза 4: ADW Integration (1-2 дня)
 
 #### Цель
+
 Интегрировать Python ADW с KFA CLI для унификации.
 
 #### Текущая Проблема
@@ -975,7 +1019,7 @@ class ClaudeAgent {
     return new Promise((resolve, reject) => {
       const proc = spawn('python', [script, ...args], {
         cwd: process.cwd(),
-        env: { ...process.env, ...options.env }
+        env: { ...process.env, ...options.env },
       });
 
       let stdout = '';
@@ -1055,7 +1099,7 @@ async function execute(args) {
     console.log('🤖 Running AI agent...');
 
     const result = await agent.run(fullPrompt, {
-      onProgress: (line) => process.stdout.write('.') // Progress indicator
+      onProgress: (line) => process.stdout.write('.'), // Progress indicator
     });
 
     console.log('\n✅ Agent completed');
@@ -1066,7 +1110,6 @@ async function execute(args) {
       const cache = new Cache('agent', { ttl: 24 * 60 * 60 });
       cache.set(fullPrompt, result);
     }
-
   } catch (error) {
     console.error(`❌ Agent failed: ${error.message}`);
     process.exit(1);
@@ -1121,6 +1164,7 @@ kfa agent run "Fresh analysis needed" --no-cache
 ### Фаза 5: Observability & Metrics (1 день)
 
 #### Цель
+
 Добавить централизованную систему observability для отслеживания всех операций.
 
 #### Структура
@@ -1160,7 +1204,7 @@ class Observability {
     this.historyDir = path.join(process.cwd(), '.kfa', 'history');
 
     // Create directories
-    [this.logsDir, this.metricsDir, this.historyDir].forEach(dir => {
+    [this.logsDir, this.metricsDir, this.historyDir].forEach((dir) => {
       fs.mkdirSync(dir, { recursive: true });
     });
   }
@@ -1175,13 +1219,10 @@ class Observability {
       args,
       success: result.success,
       duration,
-      output: result.output?.substring(0, 500) // Truncate
+      output: result.output?.substring(0, 500), // Truncate
     };
 
-    this._appendToJSONL(
-      path.join(this.historyDir, 'commands.jsonl'),
-      entry
-    );
+    this._appendToJSONL(path.join(this.historyDir, 'commands.jsonl'), entry);
 
     // Update metrics
     this._updateMetrics('command', command, duration);
@@ -1197,18 +1238,15 @@ class Observability {
       success: result.success,
       duration,
       tokensUsed: result.tokensUsed || null,
-      cost: result.cost || null
+      cost: result.cost || null,
     };
 
-    this._appendToJSONL(
-      path.join(this.historyDir, 'agent-runs.jsonl'),
-      entry
-    );
+    this._appendToJSONL(path.join(this.historyDir, 'agent-runs.jsonl'), entry);
 
     // Update metrics
     this._updateMetrics('agent', 'run', duration, {
       tokensUsed: entry.tokensUsed,
-      cost: entry.cost
+      cost: entry.cost,
     });
   }
 
@@ -1220,20 +1258,13 @@ class Observability {
       timestamp: new Date().toISOString(),
       context,
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
     };
 
-    this._appendToJSONL(
-      path.join(this.historyDir, 'errors.jsonl'),
-      entry
-    );
+    this._appendToJSONL(path.join(this.historyDir, 'errors.jsonl'), entry);
 
     // Write detailed error log
-    const errorLog = path.join(
-      this.logsDir,
-      'errors',
-      `${Date.now()}.log`
-    );
+    const errorLog = path.join(this.logsDir, 'errors', `${Date.now()}.log`);
     fs.mkdirSync(path.dirname(errorLog), { recursive: true });
     fs.writeFileSync(errorLog, JSON.stringify(entry, null, 2));
   }
@@ -1276,15 +1307,13 @@ class Observability {
         count: 0,
         totalDuration: 0,
         avgDuration: 0,
-        ...extra
+        ...extra,
       };
     }
 
     metrics[category][operation].count++;
     metrics[category][operation].totalDuration += duration;
-    metrics[category][operation].avgDuration =
-      metrics[category][operation].totalDuration /
-      metrics[category][operation].count;
+    metrics[category][operation].avgDuration = metrics[category][operation].totalDuration / metrics[category][operation].count;
 
     // Merge extra data
     Object.assign(metrics[category][operation], extra);
@@ -1314,27 +1343,14 @@ function main() {
     const duration = Date.now() - startTime;
 
     // Log success
-    obs.logCommand(
-      `${category} ${subcommand}`,
-      rest,
-      { success: true, output: result },
-      duration
-    );
+    obs.logCommand(`${category} ${subcommand}`, rest, { success: true, output: result }, duration);
   } catch (error) {
     const duration = Date.now() - startTime;
 
     // Log error
-    obs.logError(
-      `${category} ${subcommand} ${rest.join(' ')}`,
-      error
-    );
+    obs.logError(`${category} ${subcommand} ${rest.join(' ')}`, error);
 
-    obs.logCommand(
-      `${category} ${subcommand}`,
-      rest,
-      { success: false, error: error.message },
-      duration
-    );
+    obs.logCommand(`${category} ${subcommand}`, rest, { success: false, error: error.message }, duration);
 
     console.error(`Error executing command: ${error.message}`);
     process.exit(1);
@@ -1354,12 +1370,8 @@ const { outputJSON, outputText } = require('../../lib/utils');
  * Usage: kfa project metrics [--period today|week|month] [--format json|text]
  */
 function execute(args) {
-  const period = args.includes('--period')
-    ? args[args.indexOf('--period') + 1]
-    : 'today';
-  const format = args.includes('--format')
-    ? args[args.indexOf('--format') + 1]
-    : 'text';
+  const period = args.includes('--period') ? args[args.indexOf('--period') + 1] : 'today';
+  const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'text';
 
   const obs = new Observability();
   const metrics = obs.getMetrics(period);
@@ -1432,6 +1444,7 @@ ls .kfa/logs/errors/                     # Error logs
 ### Фаза 6: Documentation & Prime Prompts Expansion (1 день)
 
 #### Цель
+
 Расширить библиотеку prime prompts и создать comprehensive документацию.
 
 #### Prime Prompts Expansion
@@ -1531,6 +1544,7 @@ docs/
 ### Фаза 7: Testing & Validation (1 день)
 
 #### Цель
+
 Comprehensive тестирование всех новых компонентов.
 
 #### Test Plan
@@ -1578,50 +1592,52 @@ for i in {1..100}; do kfa db status; done  # Cache hit rate should be ~99%
 
 ### Context Efficiency
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Total Context | 25,925 tokens | ~200 tokens | **99.2%** ↓ |
-| BMAD Modules | 26,000 tokens | 2,000 tokens | **92.3%** ↓ |
-| Agent Tools | 925 tokens | Integrated in CLI | - |
-| Available Context | 174K tokens | 199K tokens | **+25K tokens** |
+| Metric            | Before        | After             | Improvement     |
+| ----------------- | ------------- | ----------------- | --------------- |
+| Total Context     | 25,925 tokens | ~200 tokens       | **99.2%** ↓     |
+| BMAD Modules      | 26,000 tokens | 2,000 tokens      | **92.3%** ↓     |
+| Agent Tools       | 925 tokens    | Integrated in CLI | -               |
+| Available Context | 174K tokens   | 199K tokens       | **+25K tokens** |
 
 ### Developer Experience
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| CLI Tools | 3 (Python, Node, BMAD) | 1 (KFA CLI) | **66%** simpler |
-| Add Tool Time | 10-15 min | <5 min | **66%** faster |
-| Add Workflow Time | 30-60 min | <10 min (prime prompt) | **83%** faster |
-| Learning Curve | High | Low | **Significant** ↓ |
+| Metric            | Before                 | After                  | Improvement       |
+| ----------------- | ---------------------- | ---------------------- | ----------------- |
+| CLI Tools         | 3 (Python, Node, BMAD) | 1 (KFA CLI)            | **66%** simpler   |
+| Add Tool Time     | 10-15 min              | <5 min                 | **66%** faster    |
+| Add Workflow Time | 30-60 min              | <10 min (prime prompt) | **83%** faster    |
+| Learning Curve    | High                   | Low                    | **Significant** ↓ |
 
 ### Performance
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| DB Status Check | ~500ms | ~50ms (cached) | **90%** faster |
-| Test Execution | 60s | 60s first, 5s cached | **92%** faster (repeated) |
-| Agent Run | 30s | 30s first, instant cached | **100%** faster (repeated) |
-| Cache Hit Rate | 0% | 90%+ | **New capability** |
+| Metric          | Before | After                     | Improvement                |
+| --------------- | ------ | ------------------------- | -------------------------- |
+| DB Status Check | ~500ms | ~50ms (cached)            | **90%** faster             |
+| Test Execution  | 60s    | 60s first, 5s cached      | **92%** faster (repeated)  |
+| Agent Run       | 30s    | 30s first, instant cached | **100%** faster (repeated) |
+| Cache Hit Rate  | 0%     | 90%+                      | **New capability**         |
 
 ### Maintainability
 
-| Aspect | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Code Duplication | High | Low | Unified CLI |
-| Documentation | Scattered | Centralized | Single source of truth |
-| Observability | Partial | Full | Complete visibility |
-| Extensibility | Complex | Simple | Template-based |
+| Aspect           | Before    | After       | Improvement            |
+| ---------------- | --------- | ----------- | ---------------------- |
+| Code Duplication | High      | Low         | Unified CLI            |
+| Documentation    | Scattered | Centralized | Single source of truth |
+| Observability    | Partial   | Full        | Complete visibility    |
+| Extensibility    | Complex   | Simple      | Template-based         |
 
 ---
 
 ## 🚀 Implementation Roadmap
 
 ### Week 1: Foundation
+
 - **Day 1-2:** Unified KFA CLI (Фаза 1)
 - **Day 3:** Prime Prompts Library (Фаза 2)
 - **Day 4-5:** BMAD Simplification (Фаза 3)
 
 ### Week 2: Integration & Polish
+
 - **Day 1-2:** ADW Integration (Фаза 4)
 - **Day 3:** Observability & Metrics (Фаза 5)
 - **Day 4:** Documentation (Фаза 6)
@@ -1666,6 +1682,7 @@ kfa test all     # New
 ## 📚 References
 
 ### Articles
+
 1. [What if you don't need MCP?](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/)
 2. [Beyond MCP](https://github.com/disler/beyond-mcp)
 
@@ -1685,6 +1702,7 @@ kfa test all     # New
 ## ✅ Success Metrics
 
 ### Quantitative
+
 - [ ] Context consumption <500 tokens (99%+ reduction)
 - [ ] Add tool time <5 minutes (66% faster)
 - [ ] Cache hit rate >90% for repeated operations
@@ -1692,6 +1710,7 @@ kfa test all     # New
 - [ ] Zero regressions
 
 ### Qualitative
+
 - [ ] Simplified developer experience
 - [ ] Unified tooling interface
 - [ ] Complete observability
@@ -1705,6 +1724,7 @@ kfa test all     # New
 This improvement plan transforms KFA's agentic development approach from a complex, fragmented system to a streamlined, unified platform that embodies the best practices from "What if you don't need MCP?" and "Beyond MCP".
 
 **Key Transformations:**
+
 1. **99% context reduction** through progressive disclosure
 2. **Unified KFA CLI** replacing fragmented Python/Node tools
 3. **Intelligent caching** for 90% performance boost
@@ -1717,6 +1737,7 @@ The result: **A world-class agentic development platform optimized for human-AI 
 ---
 
 **Next Steps:**
+
 1. Review and approve this plan
 2. Set up development environment
 3. Begin Фаза 1 implementation

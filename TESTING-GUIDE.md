@@ -7,6 +7,7 @@
 ## 📋 Testing Overview
 
 ### Test Coverage:
+
 ```
 E2E Tests:        195 tests (144 passing, 51 blocked)
 Unit Tests:       TBD
@@ -15,6 +16,7 @@ API Tests:        Via E2E business-processes.spec.ts
 ```
 
 ### Testing Stack:
+
 - **E2E**: Playwright
 - **Runner**: Vitest
 - **Assertions**: Chai/Expect
@@ -25,12 +27,14 @@ API Tests:        Via E2E business-processes.spec.ts
 ## 🚀 Quick Start
 
 ### Run All Tests:
+
 ```bash
 cd kfa-website
 npm test
 ```
 
 ### Run Specific Test File:
+
 ```bash
 # Business Processes
 npm test tests/e2e/business-processes.spec.ts
@@ -43,11 +47,13 @@ npm test tests/e2e/auth-roles.spec.ts
 ```
 
 ### Run Single Test:
+
 ```bash
 npm test tests/e2e/business-processes.spec.ts -t "USER can submit membership application"
 ```
 
 ### Watch Mode:
+
 ```bash
 npm test -- --watch
 ```
@@ -81,6 +87,7 @@ tests/e2e/
 **File:** `tests/e2e/business-processes.spec.ts`
 
 **Covers:**
+
 - Membership Application Process (7 tests)
 - Payment Processing (6 tests)
 - Content Creation & Moderation (7 tests)
@@ -91,25 +98,27 @@ tests/e2e/
 - User Management (6 tests)
 
 **Run:**
+
 ```bash
 npm test tests/e2e/business-processes.spec.ts
 ```
 
 **Example Test:**
+
 ```typescript
 test('USER can submit membership application', async ({ request }) => {
   const response = await request.post(`${API_URL}/applications`, {
     headers: {
-      'Authorization': `Bearer ${userToken}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${userToken}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     data: {
       membership_type: 'full',
       organization: 'Test Company',
       position: 'Financial Analyst',
       // ...
-    }
+    },
   });
 
   expect(response.status()).toBe(201);
@@ -123,11 +132,13 @@ test('USER can submit membership application', async ({ request }) => {
 ### 2. CMS Tests
 
 **Files:**
+
 - `cms-news.spec.ts` - News CRUD operations
 - `cms-media.spec.ts` - Media upload/management
 - `cms-auth.spec.ts` - CMS authentication
 
 **Run:**
+
 ```bash
 npm test tests/e2e/cms-news.spec.ts
 npm test tests/e2e/cms-media.spec.ts
@@ -141,6 +152,7 @@ npm test tests/e2e/cms-auth.spec.ts
 **File:** `auth-roles.spec.ts`
 
 **Covers:**
+
 - User registration
 - User login
 - Role-based access (admin, member, user)
@@ -148,6 +160,7 @@ npm test tests/e2e/cms-auth.spec.ts
 - Token management
 
 **Run:**
+
 ```bash
 npm test tests/e2e/auth-roles.spec.ts
 ```
@@ -157,11 +170,13 @@ npm test tests/e2e/auth-roles.spec.ts
 ### 4. Visual & UI Tests
 
 **Files:**
+
 - `visual.spec.ts` - Visual regression
 - `navigation.spec.ts` - Navigation flows
 - `home.spec.ts` - Home page
 
 **Run:**
+
 ```bash
 npm test tests/e2e/visual.spec.ts
 npm test tests/e2e/navigation.spec.ts
@@ -180,7 +195,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   timeout: 30000,
   expect: {
-    timeout: 5000
+    timeout: 5000,
   },
   use: {
     baseURL: 'http://localhost:3000',
@@ -204,18 +219,18 @@ const testAccounts = {
   user: {
     email: 'user@kfa.kg',
     password: 'password',
-    role: 'user'
+    role: 'user',
   },
   member: {
     email: 'member@kfa.kg',
     password: 'password',
-    role: 'member'
+    role: 'member',
   },
   admin: {
     email: 'admin@kfa.kg',
     password: 'password',
-    role: 'admin'
-  }
+    role: 'admin',
+  },
 };
 ```
 
@@ -226,11 +241,13 @@ const testAccounts = {
 ## 📊 Test Results Interpretation
 
 ### Passing Test:
+
 ```
 ✓ USER can submit membership application (245ms)
 ```
 
 ### Failing Test:
+
 ```
 ✗ MEMBER can create payment
   Expected status 201, received 422
@@ -238,6 +255,7 @@ const testAccounts = {
 ```
 
 ### Blocked Test:
+
 ```
 ⊗ ADMIN can issue certificate
   Error: ECONNREFUSED - API endpoint not available
@@ -248,16 +266,19 @@ const testAccounts = {
 ## 🐛 Debugging Tests
 
 ### 1. Enable Verbose Output
+
 ```bash
 npm test -- --reporter=verbose
 ```
 
 ### 2. Run Single Test with Debugging
+
 ```bash
 npm test tests/e2e/business-processes.spec.ts -t "USER can submit" -- --debug
 ```
 
 ### 3. Check API Responses
+
 ```typescript
 test('Debug API response', async ({ request }) => {
   const response = await request.get(`${API_URL}/news`);
@@ -269,6 +290,7 @@ test('Debug API response', async ({ request }) => {
 ```
 
 ### 4. Use Playwright Trace Viewer
+
 ```bash
 # After test failure
 npx playwright show-trace trace.zip
@@ -281,17 +303,20 @@ npx playwright show-trace trace.zip
 Before running tests, ensure:
 
 ### Backend:
+
 - [ ] Backend is running (`php artisan serve`)
 - [ ] Database is configured
 - [ ] Migrations are run
 - [ ] Test accounts exist
 
 ### Frontend:
+
 - [ ] Frontend is running (`npm run dev`)
 - [ ] Environment variables are set
 - [ ] API URL is correct
 
 ### Test Environment:
+
 - [ ] API_URL in tests matches backend
 - [ ] Test accounts have correct roles
 - [ ] Database has seed data (optional)
@@ -303,6 +328,7 @@ Before running tests, ensure:
 ### Current Status (as of 2025-11-13):
 
 **Passing:**
+
 ```
 ✅ Membership Applications  - 7/7 tests
 ✅ Payment Processing       - 6/6 tests
@@ -313,6 +339,7 @@ Before running tests, ensure:
 ```
 
 **Blocked (Missing Backend APIs):**
+
 ```
 ⊗ Certification Process     - 8 tests (need courses API)
 ⊗ Membership Lifecycle      - 5 tests (need membership API)
@@ -320,6 +347,7 @@ Before running tests, ensure:
 ```
 
 **Total:**
+
 - 144 tests passing (74%)
 - 51 tests blocked (26%)
 - 0 tests failing
@@ -329,6 +357,7 @@ Before running tests, ensure:
 ## 🎯 Testing Best Practices
 
 ### 1. Use Descriptive Test Names
+
 ```typescript
 // ❌ Bad
 test('test 1', async () => {});
@@ -338,6 +367,7 @@ test('USER can submit membership application and receive pending status', async 
 ```
 
 ### 2. Clean Up After Tests
+
 ```typescript
 test.afterEach(async ({ request }) => {
   // Clean up created resources
@@ -348,6 +378,7 @@ test.afterEach(async ({ request }) => {
 ```
 
 ### 3. Use Proper Assertions
+
 ```typescript
 // Check status code
 expect(response.status()).toBe(201);
@@ -361,6 +392,7 @@ expect(data.data.status).toBe('pending');
 ```
 
 ### 4. Handle Async Properly
+
 ```typescript
 // ❌ Bad
 test('test', async ({ request }) => {
@@ -411,26 +443,26 @@ jobs:
 ## 📝 Writing New Tests
 
 ### Test Template:
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
 const API_URL = 'http://localhost/api';
 
 test.describe('Feature Name', () => {
-
   let authToken: string;
 
   test.beforeAll(async ({ request }) => {
     // Setup: Login, create resources, etc.
     const response = await request.post(`${API_URL}/login`, {
-      data: { email: 'test@kfa.kg', password: 'password' }
+      data: { email: 'test@kfa.kg', password: 'password' },
     });
     authToken = (await response.json()).token;
   });
 
   test('should do something', async ({ request }) => {
     const response = await request.get(`${API_URL}/endpoint`, {
-      headers: { 'Authorization': `Bearer ${authToken}` }
+      headers: { Authorization: `Bearer ${authToken}` },
     });
 
     expect(response.status()).toBe(200);
@@ -449,7 +481,9 @@ test.describe('Feature Name', () => {
 ## 🚨 Common Test Issues
 
 ### Issue: Tests timeout
+
 **Solution:**
+
 ```typescript
 // Increase timeout for slow tests
 test('slow test', async ({ request }) => {
@@ -459,7 +493,9 @@ test('slow test', async ({ request }) => {
 ```
 
 ### Issue: Flaky tests
+
 **Solution:**
+
 ```typescript
 // Add retry logic
 test('flaky test', async ({ request }) => {
@@ -469,7 +505,9 @@ test('flaky test', async ({ request }) => {
 ```
 
 ### Issue: Database state issues
+
 **Solution:**
+
 ```typescript
 // Use unique identifiers
 const uniqueEmail = `test-${Date.now()}@kfa.kg`;
@@ -480,16 +518,19 @@ const uniqueEmail = `test-${Date.now()}@kfa.kg`;
 ## 📊 Test Reports
 
 ### Generate HTML Report:
+
 ```bash
 npm test -- --reporter=html
 ```
 
 ### View Report:
+
 ```bash
 npx playwright show-report
 ```
 
 ### CI/CD Report:
+
 ```yaml
 - name: Upload test results
   uses: actions/upload-artifact@v3
@@ -504,12 +545,14 @@ npx playwright show-report
 ## ✅ Testing Checklist
 
 ### Before Committing:
+
 - [ ] All tests pass locally
 - [ ] New features have tests
 - [ ] No console errors
 - [ ] Test coverage maintained
 
 ### Before Deploying:
+
 - [ ] All E2E tests pass
 - [ ] API tests pass
 - [ ] Visual tests pass
@@ -517,4 +560,4 @@ npx playwright show-report
 
 ---
 
-*Testing Guide v1.0.0 - Updated: 2025-11-13*
+_Testing Guide v1.0.0 - Updated: 2025-11-13_

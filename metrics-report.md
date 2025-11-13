@@ -34,8 +34,8 @@
 
 ## Performance
 
-| Metric | Lightweight CLI | MCP | Improvement |
-|--------|-----------------|-----|-------------|
-| Load Time | Instant | ~2 seconds | ↑ 100% |
-| Memory | ~5MB | ~150MB | ↓ 96.7% |
-| Extension Time | 10-15 min | 2-4 hours | ↓ 95% |
+| Metric         | Lightweight CLI | MCP        | Improvement |
+| -------------- | --------------- | ---------- | ----------- |
+| Load Time      | Instant         | ~2 seconds | ↑ 100%      |
+| Memory         | ~5MB            | ~150MB     | ↓ 96.7%     |
+| Extension Time | 10-15 min       | 2-4 hours  | ↓ 95%       |

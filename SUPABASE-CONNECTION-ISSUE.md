@@ -18,6 +18,7 @@ SQLSTATE[08006] [7] could not translate host name
 ### Причина
 
 **Supabase использует только IPv6** для прямого подключения к БД:
+
 ```
 Host: db.eofneihisbhucxcydvac.supabase.co
 IPv6: 2406:da1c:f42:ae04:8338:4850:1ff5:d035
@@ -43,6 +44,7 @@ IPv4: НЕТ
 Вместо прямого PostgreSQL подключения использовать Supabase REST API через HTTP.
 
 **Преимущества:**
+
 - ✅ Работает через HTTP/HTTPS (нет проблем с IPv6)
 - ✅ Автоматическая авторизация через API keys
 - ✅ Встроенная поддержка Row Level Security
@@ -52,12 +54,14 @@ IPv4: НЕТ
 **Реализация:**
 
 1. **Установить Supabase PHP клиент:**
+
    ```bash
    cd kfa-backend/kfa-api
    composer require supabase/supabase-php
    ```
 
 2. **Создать Supabase сервис:**
+
    ```php
    // app/Services/SupabaseService.php
    use Supabase\CreateClient;
@@ -91,12 +95,12 @@ IPv4: НЕТ
 
 **Статус:** ⏳ READY TO IMPLEMENT
 
-
 ### Решение #2: Docker с IPv6 Support
 
 Запустить Laravel backend в Docker контейнере с поддержкой IPv6.
 
 **Преимущества:**
+
 - ✅ Полная изоляция
 - ✅ Работает на всех платформах
 - ✅ IPv6 поддержка
@@ -104,6 +108,7 @@ IPv4: НЕТ
 **Реализация:**
 
 1. **Создать Dockerfile:**
+
    ```dockerfile
    FROM php:8.2-fpm
 
@@ -116,13 +121,14 @@ IPv4: НЕТ
    ```
 
 2. **docker-compose.yml:**
+
    ```yaml
    version: '3.8'
    services:
      app:
        build: .
        ports:
-         - "8000:8000"
+         - '8000:8000'
        environment:
          DB_HOST: db.eofneihisbhucxcydvac.supabase.co
          DB_PORT: 6543
@@ -136,35 +142,33 @@ IPv4: НЕТ
 
 **Статус:** ⏳ READY TO IMPLEMENT
 
-
 ### Решение #3: Использовать Supabase JS Client на Frontend
 
 Все операции с БД выполнять на frontend через Supabase JS.
 
 **Преимущества:**
+
 - ✅ Самое простое решение
 - ✅ Нет проблем с подключением
 - ✅ Realtime из коробки
 
 **Недостатки:**
+
 - ❌ Логика на frontend (security concerns)
 - ❌ Требует Row Level Security policies
 
 **Реализация:**
 
 Frontend уже использует Supabase:
+
 ```typescript
 // kfa-website/src/lib/supabase.ts
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+export const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 ```
 
 **Статус:** ✅ ALREADY IMPLEMENTED
-
 
 ### Решение #4: PostgreSQL Proxy с IPv4
 
@@ -173,16 +177,17 @@ export const supabase = createClient(
 **Сложность:** ⚠️ HIGH
 **Не рекомендуется** для production
 
-
 ### Решение #5: Включить IPv6 на Windows
 
 **Проверить:**
+
 ```bash
 ipconfig /all
 # Искать "IPv6 Address"
 ```
 
 **Включить:**
+
 ```bash
 # PowerShell (Administrator)
 Set-NetIPInterface -InterfaceAlias "Ethernet" -AddressFamily IPv6 -Dhcp Enabled
@@ -213,6 +218,7 @@ Set-NetIPInterface -InterfaceAlias "Ethernet" -AddressFamily IPv6 -Dhcp Enabled
 ### Шаги Реализации
 
 **Сейчас (5 минут):**
+
 ```bash
 # 1. Установить Supabase PHP клиент
 cd kfa-backend/kfa-api
@@ -228,12 +234,14 @@ php artisan tinker
 ```
 
 **На этой неделе:**
+
 - [ ] Рефакторинг существующих моделей для работы с Supabase API
 - [ ] Создание helper methods
 - [ ] Обновление документации
 - [ ] Тестирование всех endpoints
 
 **В этом месяце:**
+
 - [ ] Настройка Docker (опционально)
 - [ ] CI/CD с Supabase
 - [ ] Performance optimization
@@ -242,13 +250,13 @@ php artisan tinker
 
 ## 📊 Сравнение Решений
 
-| Решение | Сложность | Время | Production Ready | Рекомендуется |
-|---------|-----------|-------|------------------|---------------|
-| Supabase REST API | 🟢 LOW | 1 hour | ✅ YES | ✅ **ДА** |
-| Docker IPv6 | 🟡 MEDIUM | 2-3 hours | ✅ YES | ✅ Опционально |
-| Frontend Only | 🟢 LOW | 0 (готово) | ⚠️ LIMITED | ❌ Нет |
-| PostgreSQL Proxy | 🔴 HIGH | 4-6 hours | ❌ NO | ❌ Нет |
-| Enable IPv6 Windows | 🟡 MEDIUM | Varies | ⚠️ MAYBE | ⚠️ Можно попробовать |
+| Решение             | Сложность | Время      | Production Ready | Рекомендуется        |
+| ------------------- | --------- | ---------- | ---------------- | -------------------- |
+| Supabase REST API   | 🟢 LOW    | 1 hour     | ✅ YES           | ✅ **ДА**            |
+| Docker IPv6         | 🟡 MEDIUM | 2-3 hours  | ✅ YES           | ✅ Опционально       |
+| Frontend Only       | 🟢 LOW    | 0 (готово) | ⚠️ LIMITED       | ❌ Нет               |
+| PostgreSQL Proxy    | 🔴 HIGH   | 4-6 hours  | ❌ NO            | ❌ Нет               |
+| Enable IPv6 Windows | 🟡 MEDIUM | Varies     | ⚠️ MAYBE         | ⚠️ Можно попробовать |
 
 ---
 
@@ -288,6 +296,7 @@ php artisan migrate
 **Выберите решение:**
 
 1. **Быстрое (SQLite для dev):**
+
    ```bash
    # Изменить DB_CONNECTION на sqlite в .env
    # Создать database/database.sqlite
@@ -295,6 +304,7 @@ php artisan migrate
    ```
 
 2. **Рекомендуемое (Supabase REST API):**
+
    ```bash
    composer require supabase/supabase-php
    # Создать SupabaseService

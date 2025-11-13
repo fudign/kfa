@@ -7,7 +7,7 @@ const { outputInfo, outputSuccess, outputError, parseFormat } = require('../../l
  */
 async function execute(args) {
   // Parse arguments
-  const taskIndex = args.findIndex(arg => !arg.startsWith('--'));
+  const taskIndex = args.findIndex((arg) => !arg.startsWith('--'));
 
   if (taskIndex === -1) {
     outputError('Usage: kfa adw chore "<task>" [options]');
@@ -58,7 +58,6 @@ async function execute(args) {
         }
       }
     }
-
   } catch (err) {
     if (format === 'json') {
       console.log(JSON.stringify({ error: err.message || err.error }, null, 2));
