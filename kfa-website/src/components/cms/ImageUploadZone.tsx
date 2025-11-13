@@ -108,14 +108,14 @@ export function ImageUploadZone({
       const { data: mediaData, error: mediaError } = await supabase
         .from('media')
         .insert({
-          filename: file.name,
+          filename: fileName,
+          original_filename: file.name,
           path: filePath,
           url: publicUrl,
           mime_type: file.type,
           size: file.size,
-          uploaded_by: user.id,
-          type: 'image',
-          alt_text: file.name,
+          uploader_id: user.id,
+          collection: 'news',
         })
         .select()
         .single();
