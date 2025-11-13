@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MediaPicker } from '@/components/cms/MediaPicker';
-import { newsAPI } from '@/services/api';
-import { usePermission } from '@/hooks/usePermission';
+import { supabaseNewsAPI as newsAPI } from '@/lib/supabase-news';
+import { useAuthStore } from '@/stores/authStore';
 import type { News, PaginatedResponse, Media } from '@/types';
 import { newsSchema } from '@/schemas/news.schema';
 import {
@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export function NewsManagerPage() {
-  const { can } = usePermission();
+  const { hasAnyRole } = useAuthStore();
   const [news, setNews] = useState<PaginatedResponse<News> | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -214,7 +214,7 @@ export function NewsManagerPage() {
     resetForm();
   };
 
-  if (!can('content.view')) {
+  if (!hasAnyRole(['admin', 'editor', 'moderator'])) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">

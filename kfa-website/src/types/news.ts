@@ -2,12 +2,7 @@ import { Media } from './index';
 
 export type NewsStatus =
   | 'draft'
-  | 'submitted'
-  | 'pending'
-  | 'approved'
-  | 'rejected'
   | 'published'
-  | 'unpublished'
   | 'archived';
 
 export interface News {
