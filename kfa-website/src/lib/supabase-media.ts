@@ -125,7 +125,7 @@ export class SupabaseMediaService {
       const path = collection ? `${collection}/${filename}` : filename
 
       // Загружаем файл в Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from(this.BUCKET)
         .upload(path, file, {
           cacheControl: '3600',
@@ -271,8 +271,8 @@ export class SupabaseMediaService {
   static async uploadImage(
     file: File,
     collection?: string,
-    maxWidth = 1920,
-    maxHeight = 1920
+    _maxWidth = 1920,
+    _maxHeight = 1920
   ): Promise<Media> {
     // Для простоты пока используем обычную загрузку
     // В будущем можно добавить ресайз через canvas
