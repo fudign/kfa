@@ -188,7 +188,9 @@ async function addTestNews() {
 
   try {
     // Получаем текущего пользователя (нужен для author_id)
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       console.log('⚠️  Пользователь не авторизован');
@@ -205,11 +207,7 @@ async function addTestNews() {
           author_id: user?.id || null,
         };
 
-        const { data, error } = await supabase
-          .from('news')
-          .insert(newsData)
-          .select()
-          .single();
+        const { data, error } = await supabase.from('news').insert(newsData).select().single();
 
         if (error) {
           console.error(`❌ Ошибка при добавлении "${news.title}":`, error.message);

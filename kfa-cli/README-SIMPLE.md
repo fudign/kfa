@@ -7,6 +7,7 @@
 ## Why Simple Tools?
 
 Instead of complex classes and abstractions, we use **simple Node.js scripts** that:
+
 - ✓ Do one thing well
 - ✓ Output to files for composition
 - ✓ Consume minimal context (~25 tokens per tool)
@@ -65,11 +66,11 @@ echo "Status saved to .kfa/status/"
 
 ## Context Efficiency
 
-| Approach | Lines of Code | Context Used | Notes |
-|----------|--------------|--------------|-------|
-| **Old (Classes)** | ~400 lines (4 files) | ~5000 tokens | DatabaseClient, Cache, Utils |
-| **New (Simple)** | ~140 lines (2 files) | ~1500 tokens | Self-contained scripts |
-| **Savings** | 65% fewer lines | **70% less context** | No abstractions |
+| Approach          | Lines of Code        | Context Used         | Notes                        |
+| ----------------- | -------------------- | -------------------- | ---------------------------- |
+| **Old (Classes)** | ~400 lines (4 files) | ~5000 tokens         | DatabaseClient, Cache, Utils |
+| **New (Simple)**  | ~140 lines (2 files) | ~1500 tokens         | Self-contained scripts       |
+| **Savings**       | 65% fewer lines      | **70% less context** | No abstractions              |
 
 ## For Agents
 
@@ -89,6 +90,7 @@ if (status.status === 'connected') {
 ```
 
 **Benefits:**
+
 - No context bloat from tool code
 - Results persist in files
 - Easy to chain operations
@@ -133,12 +135,12 @@ That's it! No classes, no abstractions, just **~30 lines**.
 
 ## Comparison with MCP
 
-| Feature | MCP Server | Simple Scripts |
-|---------|-----------|----------------|
-| Setup | Complex server infrastructure | Just Node.js |
-| Context | 13,700-18,000 tokens per server | ~25 tokens per tool |
-| Maintenance | Multiple files, routing logic | One file per tool |
-| Composition | Through MCP protocol | Shell pipes & files |
-| Learning curve | High (protocol, schema) | Low (just Node.js) |
+| Feature        | MCP Server                      | Simple Scripts      |
+| -------------- | ------------------------------- | ------------------- |
+| Setup          | Complex server infrastructure   | Just Node.js        |
+| Context        | 13,700-18,000 tokens per server | ~25 tokens per tool |
+| Maintenance    | Multiple files, routing logic   | One file per tool   |
+| Composition    | Through MCP protocol            | Shell pipes & files |
+| Learning curve | High (protocol, schema)         | Low (just Node.js)  |
 
 **Simple scripts win on all fronts for agent tooling.**

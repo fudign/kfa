@@ -33,14 +33,14 @@
 
 #### Дублированные команды:
 
-| Команда | agent-tools | kfa-cli | Разница |
-|---------|-------------|---------|---------|
-| db status | 26 LOC (simple) | 50 LOC (cache + lib) | 2x сложнее |
-| db migrate | ~30 LOC | ~40 LOC + DatabaseClient | Дублирование логики |
-| db seed | ~25 LOC | ~35 LOC + DatabaseClient | Дублирование логики |
-| db backup | ~35 LOC | ~40 LOC + DatabaseClient | Дублирование логики |
-| test unit | ~30 LOC | ~35 LOC | Минимальное |
-| test e2e | ~35 LOC | ~40 LOC | Минимальное |
+| Команда    | agent-tools     | kfa-cli                  | Разница             |
+| ---------- | --------------- | ------------------------ | ------------------- |
+| db status  | 26 LOC (simple) | 50 LOC (cache + lib)     | 2x сложнее          |
+| db migrate | ~30 LOC         | ~40 LOC + DatabaseClient | Дублирование логики |
+| db seed    | ~25 LOC         | ~35 LOC + DatabaseClient | Дублирование логики |
+| db backup  | ~35 LOC         | ~40 LOC + DatabaseClient | Дублирование логики |
+| test unit  | ~30 LOC         | ~35 LOC                  | Минимальное         |
+| test e2e   | ~35 LOC         | ~40 LOC                  | Минимальное         |
 
 **Вывод:** `agent-tools/` проще и следует философии статьи лучше, чем `kfa-cli/`.
 
@@ -51,11 +51,13 @@
 #### 2.1. Библиотека `lib/database.js` (118 строк)
 
 **Проблема:**
+
 - Создает класс `DatabaseClient` с методами, которые просто вызывают Laravel artisan
 - Добавляет сложность без реальной пользы
 - Противоречит принципу "просто используйте bash"
 
 **Пример:**
+
 ```javascript
 // kfa-cli/lib/database.js - 118 строк сложности
 class DatabaseClient {
@@ -75,12 +77,14 @@ exec('cd backend && php artisan db:show', (error, stdout) => {
 #### 2.2. Система Кеширования (`lib/cache.js`)
 
 **Проблема:**
+
 - 6-часовой TTL кеш для операций БД
 - Создает `.kfa/cache/` директорию
 - Усложняет отладку (устаревшие данные)
 - Файловая система сама по себе является кешем!
 
 **Цитата из статьи:**
+
 > "Agents can run Bash and write code well. By relying on these native abilities, you conserve context."
 
 Кеширование противоречит этому принципу - агент может просто перезапустить команду.
@@ -88,6 +92,7 @@ exec('cd backend && php artisan db:show', (error, stdout) => {
 #### 2.3. Observability система (`lib/observability.js`)
 
 **Проблема:**
+
 - Логирование команд в `.kfa/history/`
 - Метрики в `.kfa/metrics/`
 - Усложняет код команд
@@ -117,6 +122,7 @@ agent-tools/
 ```
 
 **Проблема:**
+
 - `kfa-cli/` пытается быть фреймворком
 - `agent-tools/` просто выполняет задачи
 
@@ -136,6 +142,7 @@ agent-tools/
    - Меньше контекста
 
 2. **Упростите `kfa-cli/` до тонкой обертки**
+
    ```bash
    # Вместо дублирования логики:
    kfa db status  # вызывает node agent-tools/db/status.js
@@ -154,6 +161,7 @@ agent-tools/
 #### 1. Упростите `agent-tools/` инструменты
 
 **Текущее состояние:**
+
 ```javascript
 // agent-tools/db/status.js - 26 строк
 const { exec } = require('child_process');
@@ -176,14 +184,14 @@ exec(testCmd, (error, stdout, stderr) => {
 ```
 
 **Можно еще проще (как в статье):**
+
 ```javascript
 #!/usr/bin/env node
 // agent-tools/db/status.js - 10 строк
 const { execSync } = require('child_process');
 
 try {
-  const output = execSync('cd kfa-backend/kfa-api && php artisan db:show',
-    { encoding: 'utf8' });
+  const output = execSync('cd kfa-backend/kfa-api && php artisan db:show', { encoding: 'utf8' });
   console.log(JSON.stringify({ success: true, output }));
 } catch (e) {
   console.log(JSON.stringify({ success: false, error: e.message }));
@@ -198,6 +206,7 @@ try {
 **Философия статьи:** Bash для простых операций, Node.js только когда нужна логика.
 
 **Пример:**
+
 ```bash
 #!/bin/bash
 # agent-tools/db/status.sh (еще проще!)
@@ -243,6 +252,7 @@ alias kfa-health='bash agent-tools/examples/kfa-full-check.sh'
 ```
 
 **Использование:**
+
 ```bash
 # В .bashrc или .zshrc
 source ~/Desktop/kfa-6-alpha/.kfa/aliases.sh
@@ -256,6 +266,7 @@ kfa-deploy
 #### 2. Документация для агентов
 
 **Цитата из статьи:**
+
 > "Store tool documentation separately to avoid constant context overhead"
 
 **Создайте:** `agent-tools/TOOL-INDEX.txt` (plain text, минимум токенов)
@@ -310,8 +321,8 @@ const TOOL_MAP = {
   'test unit': 'node tools/test/run-unit.js',
   'test e2e': 'node tools/test/run-e2e.js',
   'test all': 'bash tools/scripts/test-all.sh',
-  'deploy': 'bash tools/scripts/full-deploy.sh',
-  'check': 'bash tools/examples/kfa-dev-workflow.sh',
+  deploy: 'bash tools/scripts/full-deploy.sh',
+  check: 'bash tools/examples/kfa-dev-workflow.sh',
 };
 
 const cmd = args.join(' ');
@@ -408,23 +419,23 @@ echo "source $(pwd)/.kfa/aliases.sh" >> ~/.bashrc
 
 ### До Оптимизации:
 
-| Метрика | Значение |
-|---------|----------|
-| Общий код | ~3,500 строк (agent-tools + kfa-cli) |
-| Токены документации | ~925 |
-| Систем инструментов | 2 (дублирование) |
-| Абстракций | 3 (Database, Cache, Observability) |
-| Средний размер инструмента | 42 LOC |
+| Метрика                    | Значение                             |
+| -------------------------- | ------------------------------------ |
+| Общий код                  | ~3,500 строк (agent-tools + kfa-cli) |
+| Токены документации        | ~925                                 |
+| Систем инструментов        | 2 (дублирование)                     |
+| Абстракций                 | 3 (Database, Cache, Observability)   |
+| Средний размер инструмента | 42 LOC                               |
 
 ### После Оптимизации:
 
-| Метрика | Значение | Улучшение |
-|---------|----------|-----------|
-| Общий код | ~900 строк | **-74%** ↓ |
-| Токены документации | ~100 | **-89%** ↓ |
-| Систем инструментов | 1 (tools/) | **-50%** ↓ |
-| Абстракций | 0 (прямые вызовы) | **-100%** ↓ |
-| Средний размер инструмента | 15 LOC | **-64%** ↓ |
+| Метрика                    | Значение          | Улучшение   |
+| -------------------------- | ----------------- | ----------- |
+| Общий код                  | ~900 строк        | **-74%** ↓  |
+| Токены документации        | ~100              | **-89%** ↓  |
+| Систем инструментов        | 1 (tools/)        | **-50%** ↓  |
+| Абстракций                 | 0 (прямые вызовы) | **-100%** ↓ |
+| Средний размер инструмента | 15 LOC            | **-64%** ↓  |
 
 ### Дополнительные Преимущества:
 
@@ -492,7 +503,7 @@ const readline = require('readline');
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 rl.question('Run migrations? (y/n): ', (answer) => {
@@ -519,6 +530,7 @@ last_deploy=$(cat .kfa/state/deploy.txt 2>/dev/null)
 ```
 
 **Цитата из статьи:**
+
 > "The author demonstrates adding an interactive element picker and cookies tool in minutes versus debugging existing implementations."
 
 ---
@@ -528,14 +540,20 @@ last_deploy=$(cat .kfa/state/deploy.txt 2>/dev/null)
 ### 1. Простота побеждает Абстракцию
 
 ❌ **Плохо:**
+
 ```javascript
 class DatabaseClient {
-  constructor() { /* сложная инициализация */ }
-  async checkStatus() { /* 30 строк логики */ }
+  constructor() {
+    /* сложная инициализация */
+  }
+  async checkStatus() {
+    /* 30 строк логики */
+  }
 }
 ```
 
 ✅ **Хорошо:**
+
 ```javascript
 execSync('php artisan db:show');
 ```
@@ -558,6 +576,7 @@ execSync('php artisan db:show');
 ### 5. Быстрое Расширение
 
 **Цитата:**
+
 > "The author demonstrates adding an interactive element picker and cookies tool in minutes"
 
 **Ваша цель:** Новый инструмент за 5-10 минут

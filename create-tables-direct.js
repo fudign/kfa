@@ -34,10 +34,10 @@ async function executeSQL(sql) {
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': data.length,
-        'apikey': SUPABASE_SERVICE_KEY,
-        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-        'Prefer': 'return=minimal'
-      }
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        Prefer: 'return=minimal',
+      },
     };
 
     const req = https.request(options, (res) => {
@@ -152,7 +152,7 @@ async function createTables() {
   return newsResult.success && mediaResult.success;
 }
 
-createTables().then(success => {
+createTables().then((success) => {
   if (success) {
     console.log('\n✅ Tables created successfully!');
     console.log('\n📌 Now run: node setup-everything-auto.js');

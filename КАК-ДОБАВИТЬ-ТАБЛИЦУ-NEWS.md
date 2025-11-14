@@ -34,13 +34,13 @@ Test news data inserted successfully
 
 И таблицу с 5 тестовыми новостями:
 
-| id | title | status | featured |
-|----|-------|--------|----------|
-| 1 | Добро пожаловать... | published | ⭐ true |
-| 2 | Как работать с редактором... | published | false |
-| 3 | Черновик новости... | draft | false |
-| 4 | Работа с изображениями... | published | false |
-| 5 | Новости о развитии... | published | ⭐ true |
+| id  | title                        | status    | featured |
+| --- | ---------------------------- | --------- | -------- |
+| 1   | Добро пожаловать...          | published | ⭐ true  |
+| 2   | Как работать с редактором... | published | false    |
+| 3   | Черновик новости...          | draft     | false    |
+| 4   | Работа с изображениями...    | published | false    |
+| 5   | Новости о развитии...        | published | ⭐ true  |
 
 ### Шаг 5: Проверьте интерфейс
 
@@ -53,6 +53,7 @@ Test news data inserted successfully
 ## Что создаст SQL скрипт:
 
 ### 1. Таблица `public.news`
+
 - **id** - уникальный идентификатор
 - **title** - заголовок новости
 - **slug** - URL-friendly название
@@ -68,6 +69,7 @@ Test news data inserted successfully
 - **created_at, updated_at** - служебные даты
 
 ### 2. Индексы для производительности
+
 - По slug (для быстрого поиска по URL)
 - По status (для фильтрации)
 - По published_at (для сортировки)
@@ -76,6 +78,7 @@ Test news data inserted successfully
 - По category (для категорий)
 
 ### 3. RLS Политики безопасности
+
 - Публичный доступ к опубликованным новостям
 - Чтение всех новостей для пользователей с правом `content.view`
 - Создание для пользователей с правом `content.create`
@@ -83,9 +86,11 @@ Test news data inserted successfully
 - Удаление для пользователей с правом `content.delete`
 
 ### 4. Триггеры
+
 - Автоматическое обновление `updated_at` при изменении
 
 ### 5. Тестовые данные
+
 - 5 новостей для проверки работы системы
 - 3 опубликованных новости (2 избранных)
 - 1 черновик
@@ -96,6 +101,7 @@ Test news data inserted successfully
 ## Если возникли проблемы
 
 ### Ошибка: "Table already exists"
+
 Значит таблица уже создана. Проверьте данные:
 
 ```sql
@@ -103,6 +109,7 @@ SELECT * FROM public.news ORDER BY created_at DESC;
 ```
 
 ### Ошибка с permissions
+
 Убедитесь что у вас есть права:
 
 ```sql
@@ -116,11 +123,13 @@ WHERE role = 'admin';
 ### Новости не отображаются в интерфейсе
 
 1. **Проверьте данные в БД:**
+
    ```sql
    SELECT COUNT(*) FROM public.news;
    ```
 
 2. **Проверьте RLS политики:**
+
    ```sql
    SELECT * FROM pg_policies WHERE tablename = 'news';
    ```
@@ -162,6 +171,7 @@ WHERE role = 'admin';
 ## Контакты для помощи
 
 Если что-то не работает:
+
 1. Проверьте консоль браузера (F12 → Console)
 2. Проверьте Network tab (F12 → Network) на ошибки API
 3. Убедитесь что вы вошли как admin

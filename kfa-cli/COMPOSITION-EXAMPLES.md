@@ -63,12 +63,14 @@ console.log('Full report saved to .kfa/status-report/full-report.json');
 ## Context Efficiency
 
 **Before (with classes):**
+
 - DatabaseClient class: ~119 lines
 - Cache class: ~147 lines
 - Utils: ~100+ lines
 - Total context: ~5000+ tokens
 
 **After (simple scripts):**
+
 - status-simple.js: ~95 lines (self-contained)
 - migrate-simple.js: ~45 lines (self-contained)
 - Total context: ~1500 tokens
@@ -104,6 +106,7 @@ From the article:
 > "MCP servers consume substantial context—the examples cited use 13,700-18,000 tokens for browser tools, representing 6-9% of Claude's available context."
 
 Our approach:
+
 - **Minimal context**: Tool descriptions are <50 tokens each
 - **Persistent results**: Files don't consume context
 - **Composable**: Shell scripting beats MCP routing
@@ -124,7 +127,9 @@ const outputFile = args.includes('--output') ? args[args.indexOf('--output') + 1
 
 try {
   // Do your work
-  const result = { /* your result */ };
+  const result = {
+    /* your result */
+  };
 
   // Output
   const output = JSON.stringify(result, null, 2);

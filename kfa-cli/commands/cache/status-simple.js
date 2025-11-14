@@ -22,7 +22,7 @@ function getCacheStats(namespace) {
       totalEntries: 0,
       validEntries: 0,
       expiredEntries: 0,
-      totalSize: 0
+      totalSize: 0,
     };
   }
 
@@ -31,7 +31,7 @@ function getCacheStats(namespace) {
   let validCount = 0;
   let expiredCount = 0;
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const filepath = path.join(cacheDir, file);
     try {
       const stats = fs.statSync(filepath);
@@ -53,16 +53,14 @@ function getCacheStats(namespace) {
     totalEntries: files.length,
     validEntries: validCount,
     expiredEntries: expiredCount,
-    totalSize
+    totalSize,
   };
 }
 
 try {
   if (!fs.existsSync(cacheBaseDir)) {
     const result = { message: 'No cache found', caches: [] };
-    const output = format === 'json'
-      ? JSON.stringify(result, null, 2)
-      : '✓ Cache Status: Empty (no caches yet)';
+    const output = format === 'json' ? JSON.stringify(result, null, 2) : '✓ Cache Status: Empty (no caches yet)';
 
     if (outputFile) {
       fs.writeFileSync(outputFile, output);
@@ -74,7 +72,7 @@ try {
   }
 
   // Get all cache namespaces
-  const namespaces = fs.readdirSync(cacheBaseDir).filter(name => {
+  const namespaces = fs.readdirSync(cacheBaseDir).filter((name) => {
     return fs.statSync(path.join(cacheBaseDir, name)).isDirectory();
   });
 
@@ -88,16 +86,17 @@ try {
     totalEntries,
     validEntries,
     caches,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
-  const output = format === 'json'
-    ? JSON.stringify(result, null, 2)
-    : `✓ Cache Status\n` +
-      `  Total Size: ${(totalSize / 1024).toFixed(2)} KB\n` +
-      `  Total Entries: ${totalEntries}\n` +
-      `  Valid: ${validEntries}\n` +
-      `  Namespaces: ${namespaces.join(', ')}`;
+  const output =
+    format === 'json'
+      ? JSON.stringify(result, null, 2)
+      : `✓ Cache Status\n` +
+        `  Total Size: ${(totalSize / 1024).toFixed(2)} KB\n` +
+        `  Total Entries: ${totalEntries}\n` +
+        `  Valid: ${validEntries}\n` +
+        `  Namespaces: ${namespaces.join(', ')}`;
 
   if (outputFile) {
     fs.writeFileSync(outputFile, output);
@@ -107,11 +106,8 @@ try {
   }
 
   process.exit(0);
-
 } catch (error) {
-  const output = format === 'json'
-    ? JSON.stringify({ error: error.message }, null, 2)
-    : `✗ Error: ${error.message}`;
+  const output = format === 'json' ? JSON.stringify({ error: error.message }, null, 2) : `✗ Error: ${error.message}`;
 
   if (outputFile) {
     fs.writeFileSync(outputFile, output);

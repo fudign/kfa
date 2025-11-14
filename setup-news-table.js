@@ -19,8 +19,8 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 async function setupNewsTable() {
@@ -29,10 +29,7 @@ async function setupNewsTable() {
   try {
     // 1. Check if table exists by trying to query it
     console.log('1️⃣ Checking if news table exists...');
-    const { data: existing, error: checkError } = await supabase
-      .from('news')
-      .select('id')
-      .limit(1);
+    const { data: existing, error: checkError } = await supabase.from('news').select('id').limit(1);
 
     if (checkError && checkError.code === '42P01') {
       // Table doesn't exist, create it via SQL
@@ -151,9 +148,7 @@ async function setupNewsTable() {
 
     // 2. Check if there's any data
     console.log('\n2️⃣ Checking existing news...');
-    const { data: newsCount, error: countError } = await supabase
-      .from('news')
-      .select('id', { count: 'exact', head: true });
+    const { data: newsCount, error: countError } = await supabase.from('news').select('id', { count: 'exact', head: true });
 
     if (countError) throw countError;
 
@@ -164,11 +159,7 @@ async function setupNewsTable() {
       console.log('\n3️⃣ Adding test news data...');
 
       // Get admin user
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select('id, email')
-        .eq('role', 'admin')
-        .limit(1);
+      const { data: profiles } = await supabase.from('profiles').select('id, email').eq('role', 'admin').limit(1);
 
       const authorId = profiles?.[0]?.id;
 
@@ -176,13 +167,14 @@ async function setupNewsTable() {
         {
           title: 'Добро пожаловать в систему управления новостями',
           slug: 'welcome-to-news-system',
-          content: '<p>Это тестовая новость для проверки работы CMS.</p><p>Вы можете редактировать, публиковать и удалять новости через панель управления.</p>',
+          content:
+            '<p>Это тестовая новость для проверки работы CMS.</p><p>Вы можете редактировать, публиковать и удалять новости через панель управления.</p>',
           excerpt: 'Тестовая новость для проверки работы системы',
           status: 'published',
           featured: true,
           author_id: authorId,
           published_at: new Date().toISOString(),
-          category: 'Общее'
+          category: 'Общее',
         },
         {
           title: 'Как работать с редактором новостей',
@@ -193,7 +185,7 @@ async function setupNewsTable() {
           featured: false,
           author_id: authorId,
           published_at: new Date().toISOString(),
-          category: 'Инструкции'
+          category: 'Инструкции',
         },
         {
           title: 'Черновик новости',
@@ -203,14 +195,12 @@ async function setupNewsTable() {
           status: 'draft',
           featured: false,
           author_id: authorId,
-          category: 'Разное'
-        }
+          category: 'Разное',
+        },
       ];
 
       for (const news of testNews) {
-        const { error: insertError } = await supabase
-          .from('news')
-          .insert(news);
+        const { error: insertError } = await supabase.from('news').insert(news);
 
         if (insertError) {
           console.error(`   ❌ Error adding "${news.title}":`, insertError.message);
@@ -231,7 +221,7 @@ async function setupNewsTable() {
 
     console.log(`\n📰 News in database (${allNews?.length || 0} total):`);
     if (allNews && allNews.length > 0) {
-      allNews.forEach(news => {
+      allNews.forEach((news) => {
         const badge = news.status === 'published' ? '🟢' : news.status === 'draft' ? '🟡' : '⚪';
         const star = news.featured ? '⭐' : '  ';
         console.log(`   ${badge} ${star} ${news.title} [${news.status}]`);
@@ -243,7 +233,6 @@ async function setupNewsTable() {
     console.log('   1. Go to https://kfa-website.vercel.app/dashboard/news');
     console.log('   2. Logout and login again to refresh permissions');
     console.log('   3. You should see the news manager interface\n');
-
   } catch (error) {
     console.error('\n❌ Error:', error.message);
     console.error(error);

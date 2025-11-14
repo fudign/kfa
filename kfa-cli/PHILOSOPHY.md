@@ -7,18 +7,30 @@ Inspired by: [What if you don't need MCP?](https://mariozechner.at/posts/2025-11
 ### 1. Simple Over Complex
 
 **Before:**
+
 ```javascript
 // Complex abstraction - database.js (119 lines)
 class DatabaseClient {
-  constructor() { /* setup */ }
-  async checkStatus() { /* complex logic */ }
-  async migrate() { /* complex logic */ }
-  async seed() { /* complex logic */ }
-  _extractEnvVar() { /* helper */ }
+  constructor() {
+    /* setup */
+  }
+  async checkStatus() {
+    /* complex logic */
+  }
+  async migrate() {
+    /* complex logic */
+  }
+  async seed() {
+    /* complex logic */
+  }
+  _extractEnvVar() {
+    /* helper */
+  }
 }
 ```
 
 **After:**
+
 ```javascript
 // Simple script - status-simple.js (95 lines, self-contained)
 const { execSync } = require('child_process');
@@ -33,6 +45,7 @@ console.log(JSON.stringify(result, null, 2));
 Every tool writes results to files **by default or via --output flag**.
 
 **Why?**
+
 - **Zero context consumption**: Files don't take up LLM context
 - **Persistent**: Results available for later analysis
 - **Composable**: Other tools can read the files
@@ -41,6 +54,7 @@ Every tool writes results to files **by default or via --output flag**.
 ### 3. No Shared Dependencies
 
 **Before:**
+
 ```javascript
 // Multiple files depend on shared classes
 const { DatabaseClient } = require('../../lib/database');
@@ -49,6 +63,7 @@ const { outputJSON } = require('../../lib/utils');
 ```
 
 **After:**
+
 ```javascript
 // Everything inline, no imports except built-ins
 const { execSync } = require('child_process');
@@ -77,12 +92,14 @@ Compare with MCP: **99% context savings**
 ### 5. Agent-Friendly
 
 Agents can:
+
 - ✓ Run tool with simple shell command
 - ✓ Read output from file
 - ✓ Chain multiple tools
 - ✓ No need to understand complex abstractions
 
 **Example agent workflow:**
+
 ```bash
 # Step 1: Check database
 node kfa-cli/commands/db/status-simple.js --output db.json
@@ -146,21 +163,25 @@ Context: ~1500 tokens (70% reduction)
 ## Real-World Benefits
 
 ### 1. Faster Agent Execution
+
 - No context bloat
 - No need to load/understand abstractions
 - Direct tool invocation
 
 ### 2. Easier Maintenance
+
 - One file per tool
 - No hidden dependencies
 - Copy-paste to create new tool
 
 ### 3. Better Debugging
+
 - All logic in one place
 - Clear input/output
 - File-based results for inspection
 
 ### 4. Zero Infrastructure
+
 - No MCP server
 - No complex routing
 - Just Node.js scripts
@@ -168,6 +189,7 @@ Context: ~1500 tokens (70% reduction)
 ## When to Use This Approach
 
 ✅ **Use simple scripts when:**
+
 - Building agent tools
 - Context budget is limited
 - Tools need to be composable
@@ -175,6 +197,7 @@ Context: ~1500 tokens (70% reduction)
 - Need file-based persistence
 
 ❌ **Consider alternatives when:**
+
 - Building complex interactive UIs
 - Need real-time bidirectional communication
 - Require stateful sessions

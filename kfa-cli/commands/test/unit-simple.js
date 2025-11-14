@@ -27,7 +27,7 @@ const logStream = fs.createWriteStream(outputFile);
 // Direct test execution
 const proc = spawn('npm', ['test'], {
   cwd: process.cwd(),
-  stdio: ['pipe', 'pipe', 'pipe']
+  stdio: ['pipe', 'pipe', 'pipe'],
 });
 
 // Stream output to both console and file

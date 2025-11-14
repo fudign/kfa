@@ -19,14 +19,14 @@ try {
 
   const output = execSync(cmd, {
     cwd: backendPath,
-    encoding: 'utf8'
+    encoding: 'utf8',
   });
 
   const result = {
     success: true,
     command: cmd,
     output,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   if (outputFile) {
@@ -38,13 +38,12 @@ try {
   }
 
   process.exit(0);
-
 } catch (error) {
   const result = {
     success: false,
     error: error.message,
     stderr: error.stderr?.toString() || '',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   if (outputFile) {

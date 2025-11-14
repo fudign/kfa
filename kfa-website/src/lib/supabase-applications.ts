@@ -18,7 +18,6 @@ export interface MembershipApplicationData {
   phone: string
   experience: string
   motivation: string
-  agreeToTerms: boolean
 }
 
 export interface MembershipApplication {
@@ -32,7 +31,6 @@ export interface MembershipApplication {
   phone: string
   experience: string
   motivation: string
-  agree_to_terms: boolean
   status: ApplicationStatus
   reviewed_by?: number
   reviewed_at?: string
@@ -63,7 +61,6 @@ export class SupabaseApplicationsService {
           phone: data.phone,
           experience: data.experience,
           motivation: data.motivation,
-          agree_to_terms: data.agreeToTerms,
           status: 'pending',
         })
         .select()

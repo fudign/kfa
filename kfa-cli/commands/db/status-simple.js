@@ -25,9 +25,10 @@ const outputFile = args.includes('--output') ? args[args.indexOf('--output') + 1
 if (useCache && fs.existsSync(cacheFile)) {
   const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
   if (Date.now() < cached.expires) {
-    const output = format === 'json'
-      ? JSON.stringify({ ...cached.data, cached: true }, null, 2)
-      : `✓ Database: connected (cached)\n  Host: ${cached.data.host}\n  DB: ${cached.data.database}\n  Latency: ${cached.data.latency}ms`;
+    const output =
+      format === 'json'
+        ? JSON.stringify({ ...cached.data, cached: true }, null, 2)
+        : `✓ Database: connected (cached)\n  Host: ${cached.data.host}\n  DB: ${cached.data.database}\n  Latency: ${cached.data.latency}ms`;
 
     if (outputFile) {
       fs.writeFileSync(outputFile, output);
@@ -59,7 +60,7 @@ try {
   // Direct command execution
   execSync('php artisan db:show', {
     cwd: backendPath,
-    stdio: 'pipe'
+    stdio: 'pipe',
   });
 
   const latency = Date.now() - startTime;
@@ -68,22 +69,26 @@ try {
     host: dbHost,
     database: dbName,
     latency,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   // Write to cache
   if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir, { recursive: true });
   }
-  fs.writeFileSync(cacheFile, JSON.stringify({
-    data: result,
-    expires: Date.now() + (6 * 60 * 60 * 1000) // 6 hours
-  }));
+  fs.writeFileSync(
+    cacheFile,
+    JSON.stringify({
+      data: result,
+      expires: Date.now() + 6 * 60 * 60 * 1000, // 6 hours
+    }),
+  );
 
   // Output
-  const output = format === 'json'
-    ? JSON.stringify({ ...result, cached: false }, null, 2)
-    : `✓ Database: connected\n  Host: ${dbHost}\n  DB: ${dbName}\n  Latency: ${latency}ms`;
+  const output =
+    format === 'json'
+      ? JSON.stringify({ ...result, cached: false }, null, 2)
+      : `✓ Database: connected\n  Host: ${dbHost}\n  DB: ${dbName}\n  Latency: ${latency}ms`;
 
   if (outputFile) {
     fs.writeFileSync(outputFile, output);
@@ -93,11 +98,11 @@ try {
   }
 
   process.exit(0);
-
 } catch (error) {
-  const output = format === 'json'
-    ? JSON.stringify({ status: 'error', error: error.message }, null, 2)
-    : `✗ Database: disconnected\n  Error: ${error.message}`;
+  const output =
+    format === 'json'
+      ? JSON.stringify({ status: 'error', error: error.message }, null, 2)
+      : `✗ Database: disconnected\n  Error: ${error.message}`;
 
   if (outputFile) {
     fs.writeFileSync(outputFile, output);

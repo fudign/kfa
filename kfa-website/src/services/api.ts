@@ -319,7 +319,6 @@ export interface MembershipApplicationData {
   phone: string;
   experience: string;
   motivation: string;
-  agreeToTerms: boolean;
 }
 
 // Import Supabase service for applications

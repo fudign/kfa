@@ -20,8 +20,8 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 // Execute raw SQL via Supabase REST API
@@ -35,14 +35,16 @@ async function executeSQL(sql) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_SERVICE_KEY,
-        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-      }
+        apikey: SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+      },
     };
 
     const req = https.request(options, (res) => {
       let data = '';
-      res.on('data', (chunk) => { data += chunk; });
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
       res.on('end', () => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve({ success: true, data });
@@ -149,12 +151,7 @@ async function setup() {
     `;
 
     // Try direct insertion first
-    const { data: adminProfile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('role', 'admin')
-      .limit(1)
-      .single();
+    const { data: adminProfile } = await supabase.from('profiles').select('id').eq('role', 'admin').limit(1).single();
 
     const adminId = adminProfile?.id;
 
@@ -169,7 +166,7 @@ async function setup() {
         featured: true,
         author_id: adminId,
         published_at: new Date().toISOString(),
-        category: 'Общее'
+        category: 'Общее',
       },
       {
         title: 'Как работать с редактором новостей',
@@ -180,7 +177,7 @@ async function setup() {
         featured: false,
         author_id: adminId,
         published_at: new Date().toISOString(),
-        category: 'Инструкции'
+        category: 'Инструкции',
       },
       {
         title: 'Черновик новости',
@@ -190,15 +187,12 @@ async function setup() {
         status: 'draft',
         featured: false,
         author_id: adminId,
-        category: 'Разное'
-      }
+        category: 'Разное',
+      },
     ];
 
     // Check if table exists by trying to query
-    const { error: checkError } = await supabase
-      .from('news')
-      .select('id')
-      .limit(1);
+    const { error: checkError } = await supabase.from('news').select('id').limit(1);
 
     if (checkError) {
       console.log('   ⚠️  Table does not exist, trying to create via API...');
@@ -219,17 +213,12 @@ async function setup() {
     }
 
     // Insert test news
-    const { data: existingNews } = await supabase
-      .from('news')
-      .select('id')
-      .limit(1);
+    const { data: existingNews } = await supabase.from('news').select('id').limit(1);
 
     if (!existingNews || existingNews.length === 0) {
       console.log('   📝 Adding test news...');
       for (const news of testNews) {
-        const { error: insertError } = await supabase
-          .from('news')
-          .insert(news);
+        const { error: insertError } = await supabase.from('news').insert(news);
 
         if (!insertError) {
           console.log(`   ✅ Added: "${news.title}"`);
@@ -286,10 +275,7 @@ async function setup() {
       GRANT USAGE, SELECT ON SEQUENCE public.media_id_seq TO authenticated;
     `;
 
-    const { error: mediaCheckError } = await supabase
-      .from('media')
-      .select('id')
-      .limit(1);
+    const { error: mediaCheckError } = await supabase.from('media').select('id').limit(1);
 
     if (mediaCheckError) {
       console.log('   ⚠️  Table does not exist, trying to create...');
@@ -311,15 +297,32 @@ async function setup() {
       .from('profiles')
       .update({
         permissions: [
-          'content.view', 'content.create', 'content.edit', 'content.delete', 'content.publish',
-          'media.view', 'media.upload', 'media.edit', 'media.delete',
-          'events.view', 'events.create', 'events.edit', 'events.delete',
-          'members.view', 'members.edit',
-          'partners.view', 'partners.create', 'partners.edit', 'partners.delete',
-          'settings.view', 'settings.edit',
-          'analytics.view', 'users.view', 'users.manage'
+          'content.view',
+          'content.create',
+          'content.edit',
+          'content.delete',
+          'content.publish',
+          'media.view',
+          'media.upload',
+          'media.edit',
+          'media.delete',
+          'events.view',
+          'events.create',
+          'events.edit',
+          'events.delete',
+          'members.view',
+          'members.edit',
+          'partners.view',
+          'partners.create',
+          'partners.edit',
+          'partners.delete',
+          'settings.view',
+          'settings.edit',
+          'analytics.view',
+          'users.view',
+          'users.manage',
         ],
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq('role', 'admin');
 
@@ -333,14 +336,14 @@ async function setup() {
     console.log('\n4️⃣ Checking Storage bucket...');
 
     const { data: buckets } = await supabase.storage.listBuckets();
-    const mediaExists = buckets?.some(b => b.name === 'media');
+    const mediaExists = buckets?.some((b) => b.name === 'media');
 
     if (!mediaExists) {
       console.log('   📦 Creating "media" bucket...');
       const { error: bucketError } = await supabase.storage.createBucket('media', {
         public: true,
         fileSizeLimit: 10485760, // 10MB
-        allowedMimeTypes: ['image/*', 'video/*', 'application/pdf']
+        allowedMimeTypes: ['image/*', 'video/*', 'application/pdf'],
       });
 
       if (bucketError) {
@@ -363,25 +366,18 @@ async function setup() {
 
     if (!newsError && newsData) {
       console.log(`   ✅ News table: ${newsData.length} records`);
-      newsData.slice(0, 3).forEach(n => {
+      newsData.slice(0, 3).forEach((n) => {
         console.log(`      - ${n.title} [${n.status}]`);
       });
     }
 
-    const { data: mediaData, error: mediaError } = await supabase
-      .from('media')
-      .select('id')
-      .limit(1);
+    const { data: mediaData, error: mediaError } = await supabase.from('media').select('id').limit(1);
 
     if (!mediaError) {
       console.log(`   ✅ Media table: accessible`);
     }
 
-    const { data: adminData } = await supabase
-      .from('profiles')
-      .select('permissions')
-      .eq('role', 'admin')
-      .single();
+    const { data: adminData } = await supabase.from('profiles').select('permissions').eq('role', 'admin').single();
 
     if (adminData) {
       const hasMedia = adminData.permissions?.includes('media.upload');
@@ -401,7 +397,6 @@ async function setup() {
       console.log('   - Public: YES ✅');
       console.log('   - Save\n');
     }
-
   } catch (error) {
     console.error('\n❌ Error during setup:', error.message);
     console.error(error);

@@ -54,7 +54,7 @@ async function setupDatabase() {
 
   const client = new Client({
     connectionString,
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
   });
 
   try {
@@ -281,25 +281,43 @@ async function setupDatabase() {
       if (existingNews[0].count === '0') {
         console.log('   📝 Inserting test news...');
 
-        await client.query(`
+        await client.query(
+          `
           INSERT INTO public.news (title, slug, content, excerpt, status, featured, author_id, published_at, category)
           VALUES
             ($1, $2, $3, $4, $5, $6, $7, NOW(), $8),
             ($9, $10, $11, $12, $13, $14, $15, NOW(), $16),
             ($17, $18, $19, $20, $21, $22, $23, NULL, $24)
-        `, [
-          'Добро пожаловать в систему управления новостями', 'welcome-to-news-system',
-          '<h2>Добро пожаловать!</h2><p>Это тестовая новость для проверки работы CMS системы.</p>',
-          'Тестовая новость для проверки работы системы', 'published', true, adminId, 'Общее',
+        `,
+          [
+            'Добро пожаловать в систему управления новостями',
+            'welcome-to-news-system',
+            '<h2>Добро пожаловать!</h2><p>Это тестовая новость для проверки работы CMS системы.</p>',
+            'Тестовая новость для проверки работы системы',
+            'published',
+            true,
+            adminId,
+            'Общее',
 
-          'Как работать с редактором новостей', 'how-to-use-news-editor',
-          '<h2>Руководство</h2><p>Редактор новостей поддерживает форматирование текста, изображения и медиа.</p>',
-          'Руководство по работе с редактором', 'published', false, adminId, 'Инструкции',
+            'Как работать с редактором новостей',
+            'how-to-use-news-editor',
+            '<h2>Руководство</h2><p>Редактор новостей поддерживает форматирование текста, изображения и медиа.</p>',
+            'Руководство по работе с редактором',
+            'published',
+            false,
+            adminId,
+            'Инструкции',
 
-          'Черновик новости', 'draft-news-example',
-          '<p>Это пример черновика новости.</p>',
-          'Пример черновика', 'draft', false, adminId, 'Разное'
-        ]);
+            'Черновик новости',
+            'draft-news-example',
+            '<p>Это пример черновика новости.</p>',
+            'Пример черновика',
+            'draft',
+            false,
+            adminId,
+            'Разное',
+          ],
+        );
 
         console.log('   ✅ Added 3 test news');
       } else {
@@ -319,7 +337,7 @@ async function setupDatabase() {
       SELECT id, title, status, featured FROM public.news ORDER BY created_at DESC LIMIT 5;
     `);
 
-    newsList.forEach(n => {
+    newsList.forEach((n) => {
       const badge = n.status === 'published' ? '🟢' : '🟡';
       const star = n.featured ? '⭐' : '  ';
       console.log(`      ${badge} ${star} ${n.title}`);
@@ -335,7 +353,6 @@ async function setupDatabase() {
     console.log('   1. Go to https://kfa-website.vercel.app/dashboard/news');
     console.log('   2. Logout and login again');
     console.log('   3. You should see news and can create new ones with images\n');
-
   } catch (error) {
     console.error('\n❌ Error:', error.message);
     if (error.code === 'ENOTFOUND' || error.code === 'ETIMEDOUT') {
@@ -351,7 +368,7 @@ async function setupDatabase() {
   }
 }
 
-setupDatabase().catch(err => {
+setupDatabase().catch((err) => {
   console.error('Fatal error:', err);
   process.exit(1);
 });

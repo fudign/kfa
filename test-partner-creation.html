@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Partner Creation</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #00ff00;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #00ff00;
+      color: #1a1a1a;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #00cc00;
+    }
+    #output {
+      background: #000;
+      padding: 20px;
+      border: 1px solid #00ff00;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    .error {
+      color: #ff0000;
+    }
+    .success {
+      color: #00ff00;
+    }
+    .info {
+      color: #00aaff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test Partner Creation</h1>
+
+  <div>
+    <button onclick="checkConnection()">1. Check Supabase Connection</button>
+    <button onclick="checkTable()">2. Check Partners Table</button>
+    <button onclick="testCreate()">3. Test Create Partner</button>
+    <button onclick="clearOutput()">Clear Output</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://eofneihisbhucxcydvac.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NzI5NjksImV4cCI6MjA3ODQ0ODk2OX0.9jHkxmjfWQRu6DbFOiqaYH9URxKGHiH7q64HVMYt1eo';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function log(message, type = 'info') {
+      const output = document.getElementById('output');
+      const timestamp = new Date().toLocaleTimeString();
+      const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+      output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function clearOutput() {
+      document.getElementById('output').innerHTML = '';
+    }
+
+    async function checkConnection() {
+      log('Checking Supabase connection...', 'info');
+      try {
+        const { data, error } = await supabase.from('profiles').select('count').limit(1);
+        if (error) throw error;
+        log('✅ Supabase connection successful!', 'success');
+      } catch (error) {
+        log(`❌ Connection error: ${error.message}`, 'error');
+        log(`Error details: ${JSON.stringify(error, null, 2)}`, 'error');
+      }
+    }
+
+    async function checkTable() {
+      log('Checking partners table structure...', 'info');
+      try {
+        // Try to select from partners table
+        const { data, error } = await supabase
+          .from('partners')
+          .select('*')
+          .limit(1);
+
+        if (error) throw error;
+
+        log('✅ Partners table exists!', 'success');
+        log(`Current partners count: ${data ? data.length : 0}`, 'info');
+        if (data && data.length > 0) {
+          log(`Sample partner structure: ${JSON.stringify(data[0], null, 2)}`, 'info');
+        }
+      } catch (error) {
+        log(`❌ Table check error: ${error.message}`, 'error');
+        log(`Error code: ${error.code}`, 'error');
+        log(`Error details: ${JSON.stringify(error, null, 2)}`, 'error');
+
+        if (error.message.includes('Could not find')) {
+          log('\n💡 Solution: Run ADD-SLUG-TO-PARTNERS.sql in Supabase SQL Editor', 'info');
+        }
+      }
+    }
+
+    async function testCreate() {
+      log('Testing partner creation...', 'info');
+
+      const testPartner = {
+        name: 'Test Partner ' + Date.now(),
+        slug: 'test-partner-' + Date.now(),
+        description: 'Test description',
+        category: 'other',
+        status: 'active',
+        is_featured: false,
+        display_order: 0
+      };
+
+      log(`Attempting to create: ${JSON.stringify(testPartner, null, 2)}`, 'info');
+
+      try {
+        const { data, error } = await supabase
+          .from('partners')
+          .insert(testPartner)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        log('✅ Partner created successfully!', 'success');
+        log(`Created partner: ${JSON.stringify(data, null, 2)}`, 'success');
+      } catch (error) {
+        log(`❌ Creation error: ${error.message}`, 'error');
+        log(`Error code: ${error.code}`, 'error');
+        log(`Error hint: ${error.hint || 'N/A'}`, 'error');
+        log(`Error details: ${JSON.stringify(error, null, 2)}`, 'error');
+
+        if (error.message.includes('Could not find')) {
+          log('\n💡 Solution: The partners table is missing or not in schema cache', 'error');
+          log('1. Go to Supabase Dashboard > SQL Editor', 'info');
+          log('2. Run: ADD-SLUG-TO-PARTNERS.sql', 'info');
+          log('   OR if table doesn\'t exist: supabase-cms-tables.sql', 'info');
+        } else if (error.message.includes('slug')) {
+          log('\n💡 Solution: The slug field is missing from partners table', 'error');
+          log('Run ADD-SLUG-TO-PARTNERS.sql in Supabase SQL Editor', 'info');
+        } else if (error.code === '42P01') {
+          log('\n💡 Solution: Table does not exist', 'error');
+          log('Run supabase-cms-tables.sql in Supabase SQL Editor', 'info');
+        }
+      }
+    }
+
+    // Auto-check on load
+    log('🚀 Test utility loaded. Click buttons to run tests.', 'info');
+    log('\n⚠️  IMPORTANT: Update SUPABASE_URL and SUPABASE_ANON_KEY in this file first!', 'error');
+  </script>
+</body>
+</html>

@@ -55,6 +55,7 @@ Policy definition: bucket_id = 'media'
 ```
 
 Или через SQL в SQL Editor:
+
 ```sql
 CREATE POLICY "Public Access"
 ON storage.objects FOR SELECT
@@ -72,6 +73,7 @@ Policy definition: bucket_id = 'media'
 ```
 
 Или через SQL:
+
 ```sql
 CREATE POLICY "Authenticated Upload"
 ON storage.objects FOR INSERT
@@ -89,6 +91,7 @@ Policy definition: bucket_id = 'media' AND (storage.foldername(name))[1] = 'news
 ```
 
 Или через SQL:
+
 ```sql
 CREATE POLICY "Users Update Own Files"
 ON storage.objects FOR UPDATE
@@ -107,6 +110,7 @@ Policy definition: bucket_id = 'media' AND (storage.foldername(name))[1] = 'news
 ```
 
 Или через SQL:
+
 ```sql
 CREATE POLICY "Users Delete Own Files"
 ON storage.objects FOR DELETE
@@ -135,15 +139,18 @@ USING (bucket_id = 'media');
 ## Проверка созданных объектов
 
 ### Проверить таблицу media:
+
 ```sql
 SELECT * FROM public.media LIMIT 10;
 ```
 
 ### Проверить bucket:
+
 1. Supabase Dashboard → Storage
 2. Должен быть bucket с именем `media`
 
 ### Проверить политики storage:
+
 ```sql
 SELECT * FROM storage.policies WHERE bucket_id = 'media';
 ```
@@ -171,20 +178,25 @@ USING (bucket_id = 'media');
 ## Устранение проблем
 
 ### Ошибка: "Bucket does not exist"
+
 → Создайте bucket `media` через Dashboard (Шаг 2)
 
 ### Ошибка: "Не авторизован"
+
 → Войдите в систему через /auth/login
 
 ### Ошибка: "new row violates row-level security policy"
+
 → Проверьте политики таблицы media (Шаг 1)
 
 ### Ошибка: "Policy violation"
+
 → Настройте политики storage (Шаг 3)
 
 ## После настройки
 
 После успешной настройки вы сможете:
+
 - ✅ Загружать изображения для новостей
 - ✅ Просматривать загруженные изображения
 - ✅ Использовать медиатеку для выбора изображений
@@ -193,5 +205,6 @@ USING (bucket_id = 'media');
 ## Дополнительная информация
 
 Документация Supabase Storage:
+
 - https://supabase.com/docs/guides/storage
 - https://supabase.com/docs/guides/storage/security/access-control

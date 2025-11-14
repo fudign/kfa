@@ -7,7 +7,8 @@
 const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = 'https://eofneihisbhucxcydvac.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
+const SUPABASE_SERVICE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvZm5laWhpc2JodWN4Y3lkdmFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjg3Mjk2OSwiZXhwIjoyMDc4NDQ4OTY5fQ.wQmUve9SryzkjL9J69WEF2cOaYDzIGb6ZbTpDjuHgHo';
 
 const ADMIN_PERMISSIONS = [
   'content.view',
@@ -33,7 +34,7 @@ const ADMIN_PERMISSIONS = [
   'settings.edit',
   'analytics.view',
   'users.view',
-  'users.manage'
+  'users.manage',
 ];
 
 const EDITOR_PERMISSIONS = [
@@ -46,16 +47,10 @@ const EDITOR_PERMISSIONS = [
   'media.edit',
   'events.view',
   'events.create',
-  'events.edit'
+  'events.edit',
 ];
 
-const MODERATOR_PERMISSIONS = [
-  'content.view',
-  'content.edit',
-  'media.view',
-  'events.view',
-  'members.view'
-];
+const MODERATOR_PERMISSIONS = ['content.view', 'content.edit', 'media.view', 'events.view', 'members.view'];
 
 async function main() {
   console.log('\n╔══════════════════════════════════════════════════════╗');
@@ -65,8 +60,8 @@ async function main() {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
-    }
+      persistSession: false,
+    },
   });
 
   console.log('✅ Подключение к Supabase установлено\n');
@@ -81,17 +76,14 @@ async function main() {
   }
 
   console.log(`   Найдено пользователей в auth.users: ${authUsers.users.length}`);
-  authUsers.users.forEach(user => {
+  authUsers.users.forEach((user) => {
     console.log(`   - ${user.email} (ID: ${user.id.substring(0, 8)}...)`);
   });
   console.log();
 
   // Step 2: Check profiles table
   console.log('📊 ШАГ 2: Проверка таблицы profiles...\n');
-  const { data: profiles, error: profilesError } = await supabase
-    .from('profiles')
-    .select('*')
-    .order('email');
+  const { data: profiles, error: profilesError } = await supabase.from('profiles').select('*').order('email');
 
   if (profilesError) {
     if (profilesError.message.includes('does not exist')) {
@@ -111,7 +103,7 @@ async function main() {
             created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
           );
-        `
+        `,
       });
 
       if (createError) {
@@ -127,25 +119,19 @@ async function main() {
   console.log('🔄 ШАГ 3: Синхронизация profiles с auth.users...\n');
 
   for (const user of authUsers.users) {
-    const { data: existingProfile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('id', user.id)
-      .single();
+    const { data: existingProfile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
 
     if (!existingProfile) {
       console.log(`   Создаем profile для: ${user.email}`);
 
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .insert({
-          id: user.id,
-          email: user.email,
-          name: user.email.split('@')[0],
-          role: 'user',
-          roles: ['user'],
-          permissions: []
-        });
+      const { error: insertError } = await supabase.from('profiles').insert({
+        id: user.id,
+        email: user.email,
+        name: user.email.split('@')[0],
+        role: 'user',
+        roles: ['user'],
+        permissions: [],
+      });
 
       if (insertError) {
         console.log(`   ❌ Ошибка: ${insertError.message}`);
@@ -158,10 +144,7 @@ async function main() {
 
   // Step 4: Get current profiles
   console.log('📊 ШАГ 4: Текущее состояние profiles...\n');
-  const { data: currentProfiles, error: currentError } = await supabase
-    .from('profiles')
-    .select('email, role, permissions')
-    .order('email');
+  const { data: currentProfiles, error: currentError } = await supabase.from('profiles').select('email, role, permissions').order('email');
 
   if (currentError) {
     console.log('❌ Ошибка получения profiles:', currentError.message);
@@ -169,7 +152,7 @@ async function main() {
   }
 
   console.log('   Текущие пользователи:');
-  currentProfiles.forEach(p => {
+  currentProfiles.forEach((p) => {
     const permCount = p.permissions?.length || 0;
     const status = permCount > 0 ? '✅' : '❌';
     console.log(`   ${status} ${p.email} (${p.role}) - ${permCount} permissions`);
@@ -180,9 +163,7 @@ async function main() {
   console.log('🔧 ШАГ 5: Обновление permissions для админов...\n');
 
   // Find admin users
-  const adminProfiles = currentProfiles.filter(p =>
-    p.role === 'admin' || p.email.includes('admin')
-  );
+  const adminProfiles = currentProfiles.filter((p) => p.role === 'admin' || p.email.includes('admin'));
 
   if (adminProfiles.length === 0) {
     console.log('⚠️  Админы не найдены!');
@@ -198,7 +179,7 @@ async function main() {
           role: 'admin',
           roles: ['admin'],
           permissions: ADMIN_PERMISSIONS,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('email', firstUser.email);
 
@@ -219,7 +200,7 @@ async function main() {
           role: 'admin',
           roles: ['admin'],
           permissions: ADMIN_PERMISSIONS,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('email', admin.email);
 
@@ -235,8 +216,8 @@ async function main() {
   // Step 6: Update other roles
   console.log('🔧 ШАГ 6: Обновление других ролей...\n');
 
-  const editorProfiles = currentProfiles.filter(p => p.role === 'editor');
-  const moderatorProfiles = currentProfiles.filter(p => p.role === 'moderator');
+  const editorProfiles = currentProfiles.filter((p) => p.role === 'editor');
+  const moderatorProfiles = currentProfiles.filter((p) => p.role === 'moderator');
 
   for (const editor of editorProfiles) {
     console.log(`   Обновляем editor: ${editor.email}`);
@@ -245,7 +226,7 @@ async function main() {
       .update({
         roles: ['editor'],
         permissions: EDITOR_PERMISSIONS,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq('email', editor.email);
     console.log(`   ✅ Добавлено ${EDITOR_PERMISSIONS.length} permissions`);
@@ -258,7 +239,7 @@ async function main() {
       .update({
         roles: ['moderator'],
         permissions: MODERATOR_PERMISSIONS,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq('email', moderator.email);
     console.log(`   ✅ Добавлено ${MODERATOR_PERMISSIONS.length} permissions`);
@@ -267,13 +248,10 @@ async function main() {
 
   // Step 7: Verify results
   console.log('🔍 ШАГ 7: Проверка результатов...\n');
-  const { data: finalProfiles } = await supabase
-    .from('profiles')
-    .select('email, role, permissions')
-    .order('email');
+  const { data: finalProfiles } = await supabase.from('profiles').select('email, role, permissions').order('email');
 
   console.log('   Финальное состояние:');
-  finalProfiles.forEach(p => {
+  finalProfiles.forEach((p) => {
     const permCount = p.permissions?.length || 0;
     const hasContentView = p.permissions?.includes('content.view');
     const status = hasContentView ? '✅' : '⚠️';
@@ -290,12 +268,10 @@ async function main() {
   console.log('╚══════════════════════════════════════════════════════╝\n');
 
   console.log('📊 Сводка:\n');
-  const adminsWithAccess = finalProfiles.filter(p =>
-    p.role === 'admin' && p.permissions?.includes('content.view')
-  );
+  const adminsWithAccess = finalProfiles.filter((p) => p.role === 'admin' && p.permissions?.includes('content.view'));
 
   console.log(`   ✅ Админов с доступом к новостям: ${adminsWithAccess.length}`);
-  adminsWithAccess.forEach(a => {
+  adminsWithAccess.forEach((a) => {
     console.log(`      - ${a.email} (${a.permissions.length} permissions)`);
   });
   console.log();
@@ -304,7 +280,7 @@ async function main() {
   console.log('   1. Открой: https://kfa-website.vercel.app');
   console.log('   2. ВЫЙДИ из аккаунта (если залогинен)');
   console.log('   3. ВОЙДИ заново:');
-  adminsWithAccess.forEach(a => {
+  adminsWithAccess.forEach((a) => {
     console.log(`      - Email: ${a.email}`);
   });
   console.log('   4. Открой /dashboard');
@@ -318,7 +294,7 @@ main()
     console.log('✅ Скрипт завершен успешно\n');
     process.exit(0);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('\n❌ ОШИБКА:', error.message);
     console.error(error);
     process.exit(1);

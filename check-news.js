@@ -20,10 +20,7 @@ async function checkNews() {
 
   try {
     // Получаем все новости
-    const { data, error, count } = await supabase
-      .from('news')
-      .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false });
+    const { data, error, count } = await supabase.from('news').select('*', { count: 'exact' }).order('created_at', { ascending: false });
 
     if (error) {
       console.error('❌ Ошибка при получении новостей:', error.message);

@@ -25,6 +25,7 @@ kfa-cli/
 ```
 
 **Key Features:**
+
 - ✓ No shared classes or dependencies
 - ✓ Direct execution with Node.js built-ins only
 - ✓ File-based output via `--output` flag
@@ -42,6 +43,7 @@ Created comprehensive guides:
 ### 3. Practical Examples
 
 **Composition Script:**
+
 - `tools/simple/full-status-check.sh` - Demonstrates tool chaining
 - Combines multiple tool outputs
 - Creates unified status report
@@ -53,21 +55,43 @@ Created comprehensive guides:
 ```javascript
 // lib/database.js - 119 lines
 class DatabaseClient {
-  constructor() { /* ... */ }
-  async checkStatus() { /* ... */ }
-  async migrate() { /* ... */ }
-  async seed() { /* ... */ }
-  async backup() { /* ... */ }
-  _extractEnvVar() { /* ... */ }
+  constructor() {
+    /* ... */
+  }
+  async checkStatus() {
+    /* ... */
+  }
+  async migrate() {
+    /* ... */
+  }
+  async seed() {
+    /* ... */
+  }
+  async backup() {
+    /* ... */
+  }
+  _extractEnvVar() {
+    /* ... */
+  }
 }
 
 // lib/cache.js - 147 lines
 class Cache {
-  constructor() { /* ... */ }
-  get() { /* ... */ }
-  set() { /* ... */ }
-  clear() { /* ... */ }
-  stats() { /* ... */ }
+  constructor() {
+    /* ... */
+  }
+  get() {
+    /* ... */
+  }
+  set() {
+    /* ... */
+  }
+  clear() {
+    /* ... */
+  }
+  stats() {
+    /* ... */
+  }
   // ... more methods
 }
 
@@ -99,9 +123,11 @@ const fs = require('fs');
 ### 1. Minimal Context Consumption
 
 From the article:
+
 > "MCP servers consume 13,700-18,000 tokens for browser tools, representing 6-9% of Claude's available context."
 
 Our approach:
+
 - Tool description: ~25 tokens
 - Tool code: Not loaded (file-based execution)
 - Tool result: Written to file (zero context)
@@ -128,6 +154,7 @@ cat .kfa/status-report/*.json | jq -s 'add'
 ### 3. Agent-Friendly
 
 Agents can:
+
 - Invoke tools with simple commands
 - Read results from files (outside context)
 - Chain multiple operations
@@ -154,7 +181,9 @@ const outputFile = args.includes('--output') ? args[args.indexOf('--output') + 1
 
 try {
   // Your logic here
-  const result = { /* your data */ };
+  const result = {
+    /* your data */
+  };
 
   const output = JSON.stringify(result, null, 2);
   if (outputFile) {
@@ -206,22 +235,23 @@ All tools work together through **file-based composition**.
 ### Coexistence Strategy
 
 Both approaches can coexist:
+
 - **Keep** `kfa-cli/commands/` (old) for complex workflows
 - **Use** `kfa-cli/commands/*-simple.js` (new) for agent operations
 - Gradually migrate as needed
 
 ## Comparison with MCP
 
-| Aspect | MCP Server | Simple Scripts |
-|--------|-----------|----------------|
-| **Setup** | Complex server infrastructure | Just Node.js |
-| **Context** | 13,700-18,000 tokens | ~25 tokens per tool |
-| **Code Size** | Multiple files, routing | One file per tool |
-| **Dependencies** | Protocol implementation | Built-in modules only |
-| **Composition** | Through MCP protocol | Shell pipes & files |
-| **Maintenance** | Update server + schema | Edit single file |
-| **Learning Curve** | High (protocol docs) | Low (just JavaScript) |
-| **Agent Usage** | Via MCP client | Direct shell execution |
+| Aspect             | MCP Server                    | Simple Scripts         |
+| ------------------ | ----------------------------- | ---------------------- |
+| **Setup**          | Complex server infrastructure | Just Node.js           |
+| **Context**        | 13,700-18,000 tokens          | ~25 tokens per tool    |
+| **Code Size**      | Multiple files, routing       | One file per tool      |
+| **Dependencies**   | Protocol implementation       | Built-in modules only  |
+| **Composition**    | Through MCP protocol          | Shell pipes & files    |
+| **Maintenance**    | Update server + schema        | Edit single file       |
+| **Learning Curve** | High (protocol docs)          | Low (just JavaScript)  |
+| **Agent Usage**    | Via MCP client                | Direct shell execution |
 
 **Simple scripts win on all fronts for agent tooling.**
 
@@ -266,6 +296,7 @@ bash tools/simple/full-status-check.sh
 ## Conclusion
 
 Successfully implemented MCP-alternative approach:
+
 - ✅ **70% context reduction**
 - ✅ **Simple, self-contained tools**
 - ✅ **File-based composition**
