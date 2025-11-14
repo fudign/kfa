@@ -45,6 +45,64 @@ export class SupabaseApplicationsService {
   private static readonly TABLE = 'membership_applications'
 
   /**
+   * Отправить уведомление в Telegram о новой заявке
+   */
+  private static async sendTelegramNotification(application: MembershipApplication): Promise<void> {
+    try {
+      const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+      const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+      if (!botToken || !chatId) {
+        console.log('Telegram notifications not configured (missing credentials)');
+        return;
+      }
+
+      const message = `
+🔔 *Новая заявка на членство КФА*
+
+👤 *ФИО:* ${application.first_name} ${application.last_name}
+📧 *Email:* ${application.email}
+📱 *Телефон:* ${application.phone}
+${application.organization_name ? `🏢 *Организация:* ${application.organization_name}\n` : ''}💼 *Должность:* ${application.position}
+📋 *Тип:* ${application.membership_type === 'individual' ? 'Индивидуальное' : 'Корпоративное'}
+
+*Опыт:*
+${application.experience.substring(0, 200)}${application.experience.length > 200 ? '...' : ''}
+
+*Мотивация:*
+${application.motivation.substring(0, 200)}${application.motivation.length > 200 ? '...' : ''}
+
+👉 [Посмотреть все заявки](https://kfa-website.vercel.app/dashboard/applications)
+      `.trim();
+
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown',
+          disable_web_page_preview: true,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Telegram API error:', errorData);
+      } else {
+        console.log('✅ Telegram notification sent successfully');
+      }
+    } catch (error) {
+      console.error('Failed to send Telegram notification:', error);
+      // Не бросаем ошибку - уведомление не критично для отправки заявки
+    }
+  }
+
+  /**
    * Отправить заявку на членство
    */
   static async submit(data: MembershipApplicationData): Promise<{ success: boolean; application?: MembershipApplication }> {
@@ -71,9 +129,15 @@ export class SupabaseApplicationsService {
         throw new Error(error.message || 'Failed to submit application')
       }
 
+      // Отправить уведомление в Telegram (асинхронно, не блокирует)
+      const application = insertData as MembershipApplication;
+      this.sendTelegramNotification(application).catch(err =>
+        console.error('Telegram notification failed (non-critical):', err)
+      );
+
       return {
         success: true,
-        application: insertData as MembershipApplication
+        application
       }
     } catch (error: any) {
       console.error('Error submitting application:', error)
