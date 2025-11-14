@@ -142,6 +142,106 @@ bash agent-tools/examples/kfa-deployment-workflow.sh
 
 ---
 
+## 🤖 Agentic Development Layer
+
+### Обзор
+
+KFA использует **Agentic Development** - подход, где AI агенты помогают разрабатывать проект по заранее определенным шаблонам.
+
+**Быстрый старт:**
+
+```bash
+# Установить uv для workflows
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Настроить .env
+echo "ANTHROPIC_API_KEY=your_key" >> .env
+
+# Тестирование
+./adws/adw_kfa_test.py --quick
+
+# Деплой
+./adws/adw_kfa_deploy.py
+
+# Добавить фичу
+./adws/adw_kfa_add_feature.py "Describe your feature"
+```
+
+### Структура Agentic Layer
+
+```
+.claude/commands/     # Slash команды для агентов
+  ├── kfa-add-feature.md
+  ├── kfa-deploy.md
+  ├── kfa-debug.md
+  ├── kfa-fix-db.md
+  └── kfa-test.md
+
+adws/                 # AI Developer Workflows
+  ├── adw_modules/    # Базовые модули
+  ├── adw_kfa_test.py # Тестирование
+  ├── adw_kfa_deploy.py # Деплой
+  └── adw_kfa_add_feature.py # Добавление фич
+
+agent-tools/          # Легковесные CLI инструменты
+specs/                # Спецификации задач
+agents/               # Выходные данные workflows
+```
+
+### Доступные Workflows
+
+**Тестирование:**
+
+```bash
+./adws/adw_kfa_test.py              # Полные тесты
+./adws/adw_kfa_test.py --quick      # Быстрая проверка
+./adws/adw_kfa_test.py --verbose    # С подробным выводом
+```
+
+**Деплой:**
+
+```bash
+./adws/adw_kfa_deploy.py            # С проверками
+./adws/adw_kfa_deploy.py --skip-tests # Без тестов
+./adws/adw_kfa_deploy.py --force    # Принудительно
+```
+
+**Добавление фич:**
+
+```bash
+./adws/adw_kfa_add_feature.py "Add member registration"
+./adws/adw_kfa_add_feature.py "Add event calendar" --model opus
+```
+
+### Slash Commands
+
+Используйте в интерактивном режиме Claude Code:
+
+```
+/kfa-fix-db      - Исправить проблемы БД
+/kfa-add-feature - Добавить новую фичу
+/kfa-deploy      - Деплой приложения
+/kfa-debug       - Отладка проблем
+/kfa-test        - Запустить тесты
+```
+
+### Документация Agentic Layer
+
+- **[KFA-AGENTIC-LAYER-GUIDE.md](KFA-AGENTIC-LAYER-GUIDE.md)** - Полное руководство
+- **[KFA-AGENTIC-QUICK-START.md](KFA-AGENTIC-QUICK-START.md)** - Быстрый старт
+- **[adws/README.md](adws/README.md)** - Документация workflows
+- **[specs/README.md](specs/README.md)** - Формат спецификаций
+
+### Преимущества
+
+- 🤖 AI-управляемая разработка
+- 📋 Структурированные workflows
+- 🔄 Автоматизация типичных задач
+- 📊 Observability всех операций
+- 🎯 Следование best practices
+
+---
+
 ## 📚 Документация
 
 ### Основная Документация
