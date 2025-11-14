@@ -359,3 +359,39 @@ export class SupabasePartnersService {
 
 // Экспорт для удобства
 export const supabasePartnersAPI = SupabasePartnersService
+
+// Re-export Partner type
+export type { Partner } from '@/types'
+
+// Simple API wrapper for components
+export const partnersAPI = {
+  async fetchAll(params?: {
+    status?: PartnerStatus
+    category?: PartnerCategory
+    sortBy?: string
+    sortOrder?: 'asc' | 'desc'
+  }): Promise<Partner[]> {
+    const result = await SupabasePartnersService.getAll({
+      status: params?.status,
+      category: params?.category,
+      per_page: 100, // Get all for frontend display
+    })
+    return result.data
+  },
+
+  async getById(id: number): Promise<Partner> {
+    return SupabasePartnersService.getById(id)
+  },
+
+  async create(data: PartnerCreateData): Promise<Partner> {
+    return SupabasePartnersService.create(data)
+  },
+
+  async update(id: number, data: PartnerUpdateData): Promise<Partner> {
+    return SupabasePartnersService.update(id, data)
+  },
+
+  async delete(id: number): Promise<void> {
+    return SupabasePartnersService.delete(id)
+  },
+}
