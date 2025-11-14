@@ -114,7 +114,6 @@ function ApplicationFormSection() {
         phone: formData.phone,
         experience: formData.experience,
         motivation: formData.motivation,
-        agreeToTerms: formData.agreeToTerms,
       };
 
       const response = await applicationsAPI.submit(applicationData);
@@ -269,38 +268,37 @@ function ApplicationFormSection() {
 
             {/* Organization Info (shown for corporate/institutional) */}
             {(formData.membershipType === 'corporate' || formData.membershipType === 'institutional') && (
-              <>
-                <div>
-                  <label htmlFor="organizationName" className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    {t('form.fields.organizationName.label')}
-                  </label>
-                  <input
-                    type="text"
-                    id="organizationName"
-                    name="organizationName"
-                    value={formData.organizationName}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="position" className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    {t('form.fields.position.label')}
-                  </label>
-                  <input
-                    type="text"
-                    id="position"
-                    name="position"
-                    value={formData.position}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
-                    required
-                  />
-                </div>
-              </>
+              <div>
+                <label htmlFor="organizationName" className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  {t('form.fields.organizationName.label')}
+                </label>
+                <input
+                  type="text"
+                  id="organizationName"
+                  name="organizationName"
+                  value={formData.organizationName}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
+                  required
+                />
+              </div>
             )}
+
+            {/* Position - always shown */}
+            <div>
+              <label htmlFor="position" className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                {t('form.fields.position.label')}
+              </label>
+              <input
+                type="text"
+                id="position"
+                name="position"
+                value={formData.position}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white"
+                required
+              />
+            </div>
 
             {/* Contact Information */}
             <div className="grid gap-6 md:grid-cols-2">
