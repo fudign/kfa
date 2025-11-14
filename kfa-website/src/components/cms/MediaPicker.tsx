@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { mediaAPI } from '@/services/api';
+import { storageService } from '@/lib/supabase-storage';
 import type { Media, PaginatedResponse } from '@/types';
 import {
   Upload,
@@ -106,18 +107,86 @@ export function MediaPicker({
 
     try {
       setUploading(true);
+      setError(null);
 
+      // Загружаем файлы напрямую в Supabase Storage
+      const uploadedFiles: any[] = [];
       for (const file of Array.from(files)) {
-        await mediaAPI.upload(file, 'picker');
+        try {
+          const result = await storageService.uploadFile(file, {
+            bucket: 'media',
+            folder: 'uploads',
+          });
+
+          uploadedFiles.push({
+            id: Date.now() + Math.random(), // Временный ID
+            url: result.url,
+            path: result.path,
+            filename: file.name,
+            mime_type: file.type,
+            size: file.size,
+            is_image: file.type.startsWith('image/'),
+            is_pdf: file.type === 'application/pdf',
+          });
+        } catch (uploadError) {
+          console.error('Error uploading file:', file.name, uploadError);
+          throw uploadError;
+        }
       }
 
-      await loadMedia();
+      // Если загрузка успешна, обновляем список медиа
+      // Либо добавляем загруженные файлы в текущий список
+      if (uploadedFiles.length > 0) {
+        // Добавляем загруженные файлы в начало списка
+        setMedia(prev => {
+          if (!prev) {
+            return {
+              data: uploadedFiles,
+              meta: {
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                path: '/media',
+                per_page: 20,
+                to: uploadedFiles.length,
+                total: uploadedFiles.length,
+              },
+              links: {
+                first: '/media?page=1',
+                last: '/media?page=1',
+                prev: null,
+                next: null,
+              },
+            };
+          }
+          return {
+            ...prev,
+            data: [...uploadedFiles, ...prev.data],
+            meta: {
+              ...prev.meta,
+              total: prev.meta.total + uploadedFiles.length,
+            },
+          };
+        });
+
+        // Автоматически выбираем загруженные файлы
+        if (!multiple && uploadedFiles.length === 1) {
+          // Для single select сразу возвращаем файл
+          onSelect(uploadedFiles[0]);
+          onClose();
+        } else {
+          // Для multiple select добавляем в выбранные
+          setSelected(prev => [...prev, ...uploadedFiles.map(f => f.id)]);
+        }
+      }
+
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading files:', error);
-      alert('Ошибка при загрузке файлов');
+      setError(error.message || 'Ошибка при загрузке файлов');
+      alert(`Ошибка при загрузке файлов: ${error.message || 'Неизвестная ошибка'}`);
     } finally {
       setUploading(false);
     }
