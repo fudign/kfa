@@ -322,9 +322,13 @@ export interface MembershipApplicationData {
   agreeToTerms: boolean;
 }
 
+// Import Supabase service for applications
+import { applicationsService } from '@/lib/supabase-applications';
+
 export const applicationsAPI = {
   submit: async (data: MembershipApplicationData) => {
-    const response = await api.post('/applications', data);
-    return response.data;
+    // Use Supabase directly instead of Laravel API
+    const response = await applicationsService.submit(data);
+    return response;
   },
 };

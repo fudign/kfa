@@ -56,6 +56,7 @@ const SettingsManagerPage = lazy(() => import('@/pages/dashboard/SettingsManager
 const NewsManagerPage = lazy(() => import('@/pages/dashboard/NewsManager').then(m => ({ default: m.NewsManagerPage })));
 const EventsManagerPage = lazy(() => import('@/pages/dashboard/EventsManager').then(m => ({ default: m.EventsManagerPage })));
 const MembersManagerPage = lazy(() => import('@/pages/dashboard/MembersManager').then(m => ({ default: m.MembersManagerPage })));
+const ApplicationsManagerPage = lazy(() => import('@/pages/dashboard/ApplicationsManager').then(m => ({ default: m.ApplicationsManagerPage })));
 
 // Lazy loading для legal и error страниц
 const PrivacyPage = lazy(() => import('@/pages/legal/Privacy').then(m => ({ default: m.PrivacyPage })));
@@ -198,6 +199,16 @@ function App() {
           element={
             <ProtectedRoute requirePermission="partners.view">
               <PartnersManagerPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Управление заявками на членство - требуется право applications.view */}
+        <Route
+          path="/dashboard/applications"
+          element={
+            <ProtectedRoute requirePermission="applications.view">
+              <ApplicationsManagerPage />
             </ProtectedRoute>
           }
         />
