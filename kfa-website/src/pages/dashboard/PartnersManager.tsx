@@ -43,6 +43,7 @@ export function PartnersManagerPage() {
     display_order: 0,
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [lastError, setLastError] = useState<any>(null);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -148,9 +149,11 @@ export function PartnersManagerPage() {
       setEditingPartner(null);
       resetForm();
       await loadPartners();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving partner:', error);
-      alert('Ошибка при сохранении партнера');
+      setLastError(error);
+      const errorMessage = error?.message || 'Произошла неизвестная ошибка';
+      alert(`Ошибка при сохранении партнера: ${errorMessage}\n\nДетали в консоли (F12)`);
     }
   };
 
@@ -178,9 +181,10 @@ export function PartnersManagerPage() {
     try {
       await partnersAPI.delete(id);
       await loadPartners();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting partner:', error);
-      alert('Ошибка при удалении партнера');
+      const errorMessage = error?.message || 'Произошла неизвестная ошибка';
+      alert(`Ошибка при удалении партнера: ${errorMessage}`);
     }
   };
 
@@ -238,6 +242,49 @@ export function PartnersManagerPage() {
             </button>
           )}
         </div>
+
+        {/* Error Display */}
+        {lastError && (
+          <div className="rounded-lg border-2 border-red-500 bg-red-50 p-4 dark:bg-red-900/20">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h3 className="mb-2 font-bold text-red-900 dark:text-red-100">
+                  🔴 Последняя ошибка:
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <strong>Сообщение:</strong> {lastError.message || 'N/A'}
+                  </div>
+                  <div>
+                    <strong>Код:</strong> {lastError.code || 'N/A'}
+                  </div>
+                  {lastError.hint && (
+                    <div>
+                      <strong>Подсказка:</strong> {lastError.hint}
+                    </div>
+                  )}
+                  {lastError.details && (
+                    <div>
+                      <strong>Детали:</strong> {lastError.details}
+                    </div>
+                  )}
+                  <details className="mt-2">
+                    <summary className="cursor-pointer font-semibold">Полный объект ошибки</summary>
+                    <pre className="mt-2 overflow-auto rounded bg-black p-2 text-xs text-green-400">
+                      {JSON.stringify(lastError, null, 2)}
+                    </pre>
+                  </details>
+                </div>
+              </div>
+              <button
+                onClick={() => setLastError(null)}
+                className="ml-4 rounded p-1 hover:bg-red-100 dark:hover:bg-red-900"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
@@ -325,14 +372,14 @@ export function PartnersManagerPage() {
 
                   <div className="flex flex-wrap gap-2">
                     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${getCategoryBadgeColor(partner.category)}`}>
-                      {partner.category_label}
+                      {partner.category_label || partner.category}
                     </span>
                     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${
                       partner.status === 'active'
                         ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
                         : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                     }`}>
-                      {partner.status_label}
+                      {partner.status_label || (partner.status === 'active' ? 'Активный' : 'Неактивный')}
                     </span>
                   </div>
 

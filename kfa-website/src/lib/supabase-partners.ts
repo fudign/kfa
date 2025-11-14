@@ -141,24 +141,38 @@ export class SupabasePartnersService {
    */
   static async create(partnerData: PartnerCreateData): Promise<Partner> {
     try {
+      // Генерируем уникальный slug из названия
+      let slug = this.generateSlug(partnerData.name)
+      let slugExists = await this.checkSlugExists(slug)
+      let counter = 1
+
+      // Если slug уже существует, добавляем номер
+      while (slugExists) {
+        slug = `${this.generateSlug(partnerData.name)}-${counter}`
+        slugExists = await this.checkSlugExists(slug)
+        counter++
+      }
+
       const { data, error } = await supabase
         .from(this.TABLE)
         .insert({
-          name: partnerData.name,
-          description: partnerData.description,
-          logo: partnerData.logo,
-          website: partnerData.website,
-          email: partnerData.email,
-          phone: partnerData.phone,
-          category: partnerData.category,
-          status: partnerData.status,
-          is_featured: partnerData.is_featured,
-          display_order: partnerData.display_order,
+          ...partnerData,
+          slug,
         })
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        console.error('Supabase error details:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+          data: partnerData,
+          slug: slug
+        })
+        throw error
+      }
       if (!data) throw new Error('Failed to create partner')
 
       return {
@@ -177,12 +191,19 @@ export class SupabasePartnersService {
    */
   static async update(id: number, partnerData: PartnerUpdateData): Promise<Partner> {
     try {
+      const updateData: any = {
+        ...partnerData,
+        updated_at: new Date().toISOString(),
+      }
+
+      // Если изменяется имя, обновляем и slug
+      if (partnerData.name) {
+        updateData.slug = this.generateSlug(partnerData.name)
+      }
+
       const { data, error } = await supabase
         .from(this.TABLE)
-        .update({
-          ...partnerData,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', id)
         .select()
         .single()
@@ -284,6 +305,55 @@ export class SupabasePartnersService {
       other: 'Другое',
     }
     return labels[category] || category
+  }
+
+  /**
+   * Проверяет, существует ли slug в базе данных
+   */
+  private static async checkSlugExists(slug: string): Promise<boolean> {
+    try {
+      const { data, error } = await supabase
+        .from(this.TABLE)
+        .select('id')
+        .eq('slug', slug)
+        .limit(1)
+
+      if (error) throw error
+      return data && data.length > 0
+    } catch (error) {
+      console.error('Error checking slug:', error)
+      return false
+    }
+  }
+
+  /**
+   * Генерирует slug из строки
+   * Транслитерирует кириллицу, удаляет специальные символы
+   */
+  private static generateSlug(text: string): string {
+    // Таблица транслитерации кириллицы
+    const translitMap: Record<string, string> = {
+      'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
+      'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+      'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+      'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
+      'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+      'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo',
+      'Ж': 'Zh', 'З': 'Z', 'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M',
+      'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U',
+      'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sch',
+      'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+    }
+
+    return text
+      .split('')
+      .map(char => translitMap[char] || char)
+      .join('')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .replace(/-{2,}/g, '-')
+      .substring(0, 100) // Ограничим длину slug
   }
 }
 

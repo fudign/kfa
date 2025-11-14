@@ -99,9 +99,9 @@ export interface Partner {
   email: string | null;
   phone: string | null;
   category: 'platinum' | 'gold' | 'silver' | 'bronze' | 'other';
-  category_label: string;
+  category_label?: string;
   status: 'active' | 'inactive';
-  status_label: string;
+  status_label?: string;
   is_featured: boolean;
   display_order: number;
   social_links: Record<string, string> | null;

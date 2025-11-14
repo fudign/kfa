@@ -268,6 +268,7 @@ CREATE POLICY "Users can update their own registrations"
 CREATE TABLE IF NOT EXISTS public.partners (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
   description TEXT,
   logo TEXT,
   website TEXT,
@@ -283,6 +284,7 @@ CREATE TABLE IF NOT EXISTS public.partners (
 );
 
 -- Indexes
+CREATE INDEX IF NOT EXISTS partners_slug_idx ON public.partners(slug);
 CREATE INDEX IF NOT EXISTS partners_status_idx ON public.partners(status);
 CREATE INDEX IF NOT EXISTS partners_category_idx ON public.partners(category);
 CREATE INDEX IF NOT EXISTS partners_featured_idx ON public.partners(is_featured);

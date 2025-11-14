@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { newsAPI } from '@/services/api';
 import type { News } from '@/types';
 
@@ -67,36 +67,31 @@ const fallbackNewsItems: News[] = [
 
 export function NewsSection() {
   const { t } = useTranslation('home');
-  const [newsItems, setNewsItems] = useState<News[]>(fallbackNewsItems);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadNews();
-  }, []);
-
-  const loadNews = async () => {
-    try {
-      setLoading(true);
-      // Fetch published news, featured first, limit to 3
+  // Use React Query for caching and automatic refetching
+  const { data, isLoading } = useQuery({
+    queryKey: ['news', 'homepage'],
+    queryFn: async () => {
       const response = await newsAPI.getAll({
         status: 'published',
         featured: true,
         per_page: 3,
       });
-
-      if (response.data && response.data.length > 0) {
-        setNewsItems(response.data);
-      } else {
-        // If no news in database, keep fallback items
-        console.log('No news found in database, using fallback items');
+      return response;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - news don't change often
+    gcTime: 10 * 60 * 1000, // 10 minutes cache
+    retry: 1,
+    select: (data) => {
+      // Return actual data if available, otherwise fallback
+      if (data?.data && data.data.length > 0) {
+        return data.data;
       }
-    } catch (error) {
-      console.error('Error loading news:', error);
-      // On error, keep fallback items
-    } finally {
-      setLoading(false);
-    }
-  };
+      return fallbackNewsItems;
+    },
+  });
+
+  const newsItems = data || fallbackNewsItems;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -128,7 +123,7 @@ export function NewsSection() {
         </div>
 
         {/* Loading State */}
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center py-12">
             <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary-600 border-t-transparent"></div>
           </div>
@@ -146,6 +141,8 @@ export function NewsSection() {
                     <img
                       src={item.featured_image?.url || item.image || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800'}
                       alt={item.title}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {item.featured && (

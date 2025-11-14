@@ -85,6 +85,8 @@ export function PartnersSection() {
                 <img
                   src={partner.logoUrl}
                   alt={partner.name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-auto w-full max-w-[160px] object-contain opacity-70 transition-opacity group-hover:opacity-100"
                 />
               </div>
