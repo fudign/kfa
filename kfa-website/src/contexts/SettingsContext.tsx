@@ -27,7 +27,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
       // Flatten all categories into single object
       Object.values(allSettings).flat().forEach(setting => {
-        flatSettings[setting.key] = setting.value;
+        flatSettings[setting.key] = setting.value ?? '';
       });
 
       setSettings(flatSettings);
